@@ -1,0 +1,82 @@
+% Chapter 1
+
+\chapter{Introduction} % Main chapter title
+
+\label{Chapter1} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+\lhead{Chapter 1. \emph{Introduction}} % This is for the header on each page - perhaps a shortened title
+
+%----------------------------------------------------------------------------------------
+
+\section{The importance of music analysis}
+The incredible growth of the Web over the last pair of decades has drastically changed many of our habits. One of the areas that have been highly affected by this fast-paced growth is our consumption of multimedia contents: the use of physically-stored content is seeing itself heavily reduced, as we are more and more getting used to the access of huge databases of multimedia content through the Web.\\
+Music is one of these fields that have been revolutionized by this trend: the last decade has seen the rise of several Web services (iTunes, Spotify, Pandora, Google Music just to name a few) that offer their users an easy way to access their enormous catalogue of songs. Statistics show an increasing rate of annual growth for each of these services, in both the amount of users and of revenues: now they are among the most used ways of enjoying and discovering music. \\
+However, the transition to this type of services has brought to some new problems. One of them relies on the vastness of these databases: given that users want to easily discover new music suitable to their tastes through intelligently created playlists, a way to reasonably pick songs and artists among the entire catalogue is needed. \\
+This, among others, has been one reason of the rapid growth of \textbf{Music Information Retrieval} (MIR), an interdisciplinary research field whose subject is to provide new ways of finding information in music. Main techniques of describing music can be grouped into two categories: 
+\begin{itemize}
+\item Metadata (literally \textit{data describing data}), human-written descriptors of music
+\item Audio content descriptors, automatically computed from audio.
+\end{itemize}
+Providing each song of the collection with proper metadata would clearly be as much desirable as infeasible, given the amount of songs and the rate with which new songs are daily added to online digital music catalogues. Many efforts have consequently be taken in order to improve the quality and reliability of audio content descriptors. One advantage of this technique relies on the fact that these kind of descriptors could easily be computed not just for each kind of song, but also for any segment inside of it. This has for example been exploited by \textit{Shazam}, a widely-used smartphone app for music identification that analyzes peaks in the frequency-time spectrum throughout all song length to build a very robust song identification system \cite{shazam03}. Another popular product that performs audio content analysis just for short segments of a song is The Infinite Jukebox\footnote{infinitejuke.com/}, a web-application built upon Echonest library and written by Paul Lamere, that allows users to indefinitely listen to the same song, with the playback automatically jumping to points that sound very similar to the current one. However, there aren't many commercial applications that exploit this kind of techniques for creative interaction or manipulation of audio tracks at the moment.
+
+%----------------------------------------------------------------------------------------
+
+\section{Phonos Project}
+Phonos project\footnote{http://phonos.upf.edu/} is an initiative of the \textbf{Music Technology Group} (Universitat Pompeu Fabra, Barcelona) in collaboration with \textbf{Phonos Foundation}. Phonos was founded in 1974 by J.M. Mestres Quadreny, Andres Lewin-Richter and Luis Callejo, and for many years it has been the only studio of electroacoustic music in Spain. Many of the electroacoustic musicians in Spain attended the courses of the composer Gabriel Brncic at Phonos. It became Phonos Foundation 1982 and in 1984 it was registered at the Generalitat de Catalunya. In 1994, an agreement of co-operation with Music Technology group was established, with the purpose of promoting cultural activities related to research in the music technology. 
+In 2014, an exhibition at Museum de la Musica has been planned, with the purpose of celebrating the 40th anniversary of Phonos and showing many of the instruments used in the studio, while allowing visitors to listen to the music works produced there during all these years. Given the songs' average length and their complexity, a way for the visitors to quickly and nicely explore a catalogue of songs produced in these 40 years was needed.
+
+\begin{figure}[htbp]
+  \centering
+    \includegraphics{Figures/phonos.png}
+    \rule{35em}{0.5pt}
+  \caption[Phonos]{Phonos Logo.}
+  \label{fig:Phonos}
+\end{figure}
+
+%----------------------------------------------------------------------------------------
+
+\section{GiantSteps}
+GiantSteps\footnote{http://www.giantsteps-project.eu/} is a STREP project coordinated by JCP-Consult SAS in France in collaboration with the MTG funded by the European Commission. The aim of this project is to create the "seven-league boots" for music production in the next decade and beyond, that is, exploiting the latest fields in the field of MIR to make computer music production easier for anyone. Indeed, despite the increasing amount of software and plugins for computer music creation, it's still considered very hard to master these instruments and producing songs\footnote{ "Computer music today is like piloting a jet with all the lights turned off." (S. Jordà). http://vimeo.com/28963593} because it requires not only musical knowledge but also familiarity with the tools (both software and hardware) that the artist decide to use, and whose way of usage may greatly vary between each other. The GiantSteps project targets three different directions:
+\begin{itemize}
+\item Developing \textbf{musical expert agents}, that could provide suggestions from sample to song level, while guiding users lacking inspiration, technical or musical knowledge
+\item Developing improved \textbf{interfaces}, implementing novel visualisation techniques that provide meaningful feedback to enable fast comprehensibility for novices and improved workflow for professionals.
+\item Developing \textbf{low complexity algorithms}, so that the technologies developed can be accessible through low cost portable devices. 
+\end{itemize}
+
+Started on November 2013, GiantSteps will last 36 months and the institutions involved are:
+\begin{itemize}
+\item \textbf{Music Technology Group}, Universitat Pompeu Fabra, Barcelona, Spain
+\item \textbf{JCP-Consult SAS}, France
+\item \textbf{Johannes Kepler Universität Linz}, Austria
+\item \textbf{Red Bull Music Academy}, Germany
+\item \textbf{STEIM}, Amsterdam, Netherlands
+\item \textbf{Reactable Systems}, Barcelona, Spain
+\item \textbf{Native Instruments}, Germany
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+    \includegraphics{Figures/giantsteps.png}
+    \rule{35em}{0.5pt}
+  \caption[GiantSteps]{GiantSteps Logo.}
+  \label{fig:GiantSteps}
+\end{figure}
+
+%----------------------------------------------------------------------------------------
+
+\section{Purpose of this work}
+The purpose of this work is to develop a software, to be used by visitors during the exhibition \textit{Phonos, 40 anys de música electrònica a Barcelona}, that allows users to easily explore a medium-sized collection of music. This software is intended to exploit latest MIR findings to create a flow of music, composed of short segments of each song, concatenated in a way that the listener can barely realize of the hops between different songs. The application developed is meant to be part of the GiantSteps and therefore should follow the three guidelines explained in the previous page.
+
+\subsection{Structure of the dissertation}
+This dissertation is organized as follows:
+\begin{itemize}
+\item The first part will at first give an overview regarding music analysis techniques, explaining \textit{metadata}, audio content analysis and the differences between them. Then, common techniques of music similarity computation will be explained. In this chapter, there will also be an explanation of the reasons that lead me to the choice of some techniques over others.
+\item The second part will be about the methodology, explaining the different stages of the development, the problems faced and the techniques used.
+\item Finally, experimental results will be shown, together with some ideas regarding future development of the application.
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\newpage
+\thispagestyle{headings}
+\mbox{}
