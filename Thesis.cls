@@ -181,7 +181,7 @@
 %	defined as \examname above so you cite it as \examname
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Thesis Title} % Your thesis title - this is used in the title and abstract
+\thesistitle{A content-aware interactive explorer of digital music collections: The Phonos music explorer} % Your thesis title - this is used in the title and abstract
 %-------------------------------------------------  
 \supervisor{Dr. James \textsc{Smith}} % You supervisor's name - this is used in the title page
 %-------------------------------------------------   
