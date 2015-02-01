@@ -6,7 +6,10 @@ The main subject of MIR regards the \textit{extraction and inference of musicall
 
 
 \section{Metadata}
-By metadata we mean all the descriptors about a track that are not based on the audio content of the track itself, but rather on the 
+By metadata we mean all the descriptors about a track that are not based on the \textit{music context}. Therefore, they are not directly extracted from the audio signal but rather from external sources. They began to be deeply studied since the early 2000s, when first doubts about an upper threshold of the performance of audio content analysis systems arised \cite{aucou04}. Researchers then started exploring the possibility of performing retrieving tasks on written data that is related to the artist or to the piece. \\At first, the techniques were adapted from the Text-IR ones, but it was immediately clear that retrieving music is fairly more complex than retrieving text, because the music retrieved should also satisfy the musical taste of the user who performed the query. 
+\\The techniques used in this category may differ both in the sources used for retrieving data and in the way of computing a similarity score. Sources may include webpages, microblogs and collaborative tags; similarity score may be computed through a Vector Space Model (a very popular strategy in Text-IR) or through co-occurrence analysis.
+
+\subsection{Computing similarity with a Vector Space Model} 
 
 
 \section{Audio Content Analysis}
