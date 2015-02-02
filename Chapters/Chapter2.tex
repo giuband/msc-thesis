@@ -7,9 +7,21 @@ The main subject of MIR regards the \textit{extraction and inference of musicall
 
 \section{Metadata}
 By metadata we mean all the descriptors about a track that are not based on the \textit{music context}. Therefore, they are not directly extracted from the audio signal but rather from external sources. They began to be deeply studied since the early 2000s, when first doubts about an upper threshold of the performance of audio content analysis systems arised \cite{aucou04}. Researchers then started exploring the possibility of performing retrieving tasks on written data that is related to the artist or to the piece. \\At first, the techniques were adapted from the Text-IR ones, but it was immediately clear that retrieving music is fairly more complex than retrieving text, because the music retrieved should also satisfy the musical taste of the user who performed the query. 
-\\The techniques used in this category may differ both in the sources used for retrieving data and in the way of computing a similarity score. Sources may include webpages, microblogs and collaborative tags; similarity score may be computed through a Vector Space Model (a very popular strategy in Text-IR) or through co-occurrence analysis.
+\\The techniques used in this category may differ both in the sources used for retrieving data and in the way of computing a similarity score, and clearly the performance of a system using metadata for similarity computation is highly affected by both of these factors. Sources may include:
+\begin{itemize}
+\item manual annotation: description provided by experts; they may be referred to genre, mood, instrumentation, artist relations.
+\item collaborative filtering data: data indirectly provided by users of web communities, in the form of user ratings or listening behaviour information.
+\item social tags: data directly provided by users of social network of music (such as \textit{Last.fm}\footnote{\url{http://last.fm}}) or social games.
+\item information automatically mined from the Web. Sources in these cases may include web-pages related to music or microblogs (for instance the very popular \texit{Twitter}).
+\end{itemize}
+ The availability of some of them greatly depends on the size of the music collection under consideration; for instance, as manual expert annotations might be very accurate, they would be extremely costly and probably infeasible on large collections \cite{Szyma09}. In contrast, collaborative filtering data may be the most studied technique, given that it may be applied to other different fields (such as movies or books recommendation) with just little changes. Sources are picked also in relation to the subject of the research or of the system, that may be for example a recommendation or a similarity computation system. At this point, it's important to highlight the difference between the two of them: a recommendation system not only has to find similar music, but has also to take into account the personal taste of the user, and therefore it's generally considered more complex. For this kind of systems, collaborative filtering data has shown to lead to better results \cite{green09}. However, in the field of music similarity computation, social tags and keywords extracted from webpages have shown good performances. The computation of similarity may happen through a Vector Space Model (a technique adapted from the Text-IR) or through co-occurence analysis. In the next subsections we will see the characteristics and the performance of these two techniques.
 
-\subsection{Computing similarity with a Vector Space Model} 
-
+\subsection{Computing Similarity With a Vector Space Model} 
+\subsection{Computing Similarity With Co-Occurence Analysis}
 
 \section{Audio Content Analysis}
+
+
+\section{Conceptual Differences Between the Two Approaches}
+The performance of content-based approaches is considerably lower \cite{slaney2011}.
+It is challenging to try to make the so-called \textit{semantic gap} smaller \cite{aucou2009}
