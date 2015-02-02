@@ -7,7 +7,7 @@ The main subject of MIR regards the \textit{extraction and inference of musicall
 
 \section{Metadata}
 By metadata we mean all the descriptors about a track that are not based on the \textit{music context}. Therefore, they are not directly extracted from the audio signal but rather from external sources. They began to be deeply studied since the early 2000s, when first doubts about an upper threshold of the performance of audio content analysis systems arised \cite{aucou04}. Researchers then started exploring the possibility of performing retrieving tasks on written data that is related to the artist or to the piece. \\At first, the techniques were adapted from the Text-IR ones, but it was immediately clear that retrieving music is fairly more complex than retrieving text, because the music retrieved should also satisfy the musical taste of the user who performed the query. 
-\\The techniques used in this category may differ both in the sources used for retrieving data and in the way of computing a similarity score, and clearly the performance of a system using metadata for similarity computation is highly affected by both of these factors. Sources may include:
+\\The techniques used in this category may differ both in the sources used for retrieving data and in the way of computing a similarity score, and clearly the performance of a system using metadata for similarity computation is highly affected by both of these factors. Sources may include \cite{bogdanov13}:
 \begin{itemize}
 \item manual annotation: description provided by experts; they may be referred to genre, mood, instrumentation, artist relations.
 \item collaborative filtering data: data indirectly provided by users of web communities, in the form of user ratings or listening behaviour information.
@@ -20,8 +20,34 @@ By metadata we mean all the descriptors about a track that are not based on the 
 \subsection{Computing Similarity With Co-Occurence Analysis}
 
 \section{Audio Content Analysis}
+The main idea behind this kind of analysis is to directly extract useful information, through some algorithms (or library of algorithms), from the audio signal itself. The type of content information extracted may greatly vary in relation to the need of the research, but we can mainly distinguish four categories \cite{bogdanov13}:
+\begin{itemize}
+\item \textit{timbral} information: related to the overall quality and color of the sound.
+\item \textit{temporal} information: related to rhythmic aspects of the composition, such as tempo or length of measures.
+\item \textit{tonal} information: directly linked to the frequency analysis of the signal and to the pitch. It can describe \texit{what notes are being played} or the tonality of a given track.
+\item \textit{inferred semantic} information: information inferred (usually through machine learning techniques) from the previous categories, in the attempt of giving a more defined and understable shape to the data collected. This kind of information may include descriptors such as genre, valence or arousal.
+\end{itemize}
 
+Information extracted through this family of techniques may also be categorized in the following way:
+\begin{itemize}
+\item Low-level data: information that has no musical meaning and that, more in general, is not interpretable by humans. Examples of this kind of descriptors are Mel Frequency Cepstral Coefficients (MFCCs) and Zero Crossing Rate (ZCR).
+\item Mid-level data: information that has musical meaning but that is related to low-level music features. This kind of category mainly includes temporal and tonal descriptors. 
+\item High-level data: corresponding to inferred semantic information.
+\end{itemize}
 
-\section{Conceptual Differences Between the Two Approaches}
+Many of the studies conducted on the computation of music similarity through audio content descriptors have solely focused on low-level and timbral information, because this has been proved to bring alone to acceptable results with proper similarity measures \cite{mirage07}. However, more recent studies have shown some evidence of advantages in using high-level descriptors \cite{barrington07} \cite{west07} and, more in general, the most performant systems use data from all of these categories. \\In the next sections, a more detailed look among most important descriptors will be given.
+
+\subsection{Low-level Data}
+
+\subsection{Mid-level Data}
+\subsection{High-level Data}
+
+\subsection{Main Tools For Extracting Audio Content}
+\subsubsection*{Essentia}
+\subsubsection*{Echonest}
+\subsubsection*{jMIR}
+\subsubsection*{MIRtoolbox}
+
+\section{Conceptual Differences Between Metadata and Audio Content Information}
 The performance of content-based approaches is considerably lower \cite{slaney2011}.
 It is challenging to try to make the so-called \textit{semantic gap} smaller \cite{aucou2009}
