@@ -5,3 +5,9 @@
 \lhead{Chapter 3. \emph{Computing Music Similarity with Audio Content Descriptors}} 
 
 \section{Literature Review}
+
+The coherence of the tracks is a typical quality criterion for playlists \cite{logan04}. 
+Therefore, selecting and ordering tracks based on their similarities is an obvious strategy to generate playlists. The core of any similarity-based approach is its distance function, which characterizes the closeness of two tracks. How the distance function is actually designed depends on the available data, which could include the raw audio signal along with the features that can be derived from it, but also metadata, such as the artists, the genres, playcounts, or ratings [Slaney and White 2007]. In many cases, a signature or model of each track is determined first, in which the distance function is then applied. Typical examples for such functions applied on more abstract models of a track’s features are the earth-mover’s distance \cite{logan04}, the Kullback-Leibler (KL) divergence \cite{vignoli05}, or the Euclidean distance \cite{knees06}.
+
+See section 5.2 of \cite{bonnin14} for a background on how to assess the quality of a playlist: user studies, log analysis, objective measures, comparison with handcrafted playlists
+
