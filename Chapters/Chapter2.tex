@@ -16,7 +16,7 @@ By metadata we mean all the descriptors about a track that are not based on the 
 \end{itemize}
  The availability of some of them greatly depends on the size of the music collection under consideration; for instance, as manual expert annotations might be very accurate, they would be extremely costly and probably infeasible on large collections \cite{Szyma09}. In contrast, collaborative filtering data may be the most studied technique, given that it may be applied to other different fields (such as movies or books recommendation) with just little changes. It is the predominant approach in the field of Recommender Systems (RS) \cite{jannach12} and is mainly focused on user ratings, generally leading to better results \cite{green09}. However, some concerns are related to this technique. First, collaborative filtering approaches have not been designed to be used for playlist generation, but mainly for recommending artists or music. Second, the availibility of datasets for user ratings in the field of music is very limited compared to other fields, and research is often based on very small samples \cite{liu09}. Regarding listening behaviour information, they might be inaccurate  since they don't keep track of song durations and of the user activities while listening to music \cite{jawaheer10}. In addition, there's no way of collecting negative feedback (\textit{dislikes}) through them and, more in general, listening to a specific song doesn't necessarily imply liking that song \cite{bogdanov13}. \\Sources are picked also in relation to the subject of the research or of the system, that may be for example a recommendation or a similarity computation system. At this point, it's important to highlight the difference between the two of them: a recommendation system not only has to find similar music, but has also to take into account the personal taste of the user, and therefore it's generally considered as a basic tool to produce recommendation \cite{celma08}. In any case, the terms ``similarity'' and ``recommendation'' cannot be substituted, given that a good similarity computation system doesn't necessarily equate to a good recommendation system \cite{mcnee06}. 
  %For this kind of systems, collaborative filtering data has shown to lead to better results \cite{green09}. However, in the field of music similarity computation, social tags and keywords extracted from webpages have shown good performances. 
- The computation of similarity may happen through a Vector Space Model (a technique adapted from the Text-IR), co-occurence analysis or frequent-pattern mining. In the next subsections we will briefly show the characteristics and the performance of these techniques.
+ The computation of similarity may happen through a Vector Space Model (a technique adapted from the Text-IR), co-occurence analysis or frequent-pattern mining. In the next subsections we will briefly explain the characteristics and the performance of these techniques.
 
 \subsection{Vector Space Model} 
 The main idea of this technique lies on building a bag-of-words representation \footnote{A bag-of-words can be basically seen as an extension of a programming language ``dictionary'': it collects words (that sometimes may just be an abstraction of much more complex features, such as computer vision descriptors) from a document, and then computes the frequency with which each of them appears in the document. Two different documents are considered similar if they contain the same or similar words with a comparable frequency.} of a retrieved document, and then computing a term weight vector for each document. It's a frequently used technique in Text-IR (and in Computer Vision) which can safely be used when retrieving web pages related to music, in an attempt of computing similarity. One of the first work in this field \cite{whitman02} provided an analysis of this kind on music-related web pages retrieved with the queries (to the \textit{Google} search engine) ``artist'' \texttt{music review} and ``artist'' \texttt{genre style}, where words such as music and review where added to improve the chances of automatically retrieving webpages related to music. 
@@ -39,12 +39,66 @@ Information extracted through this family of techniques may also be categorized 
 \item High-level data: corresponding to inferred semantic information.
 \end{itemize}
 
-Many of the studies conducted on the computation of music similarity through audio content descriptors have solely focused on low-level and timbral information, because this has been proved to bring alone to acceptable results with proper similarity measures \cite{mirage07}. However, more recent studies have shown some evidence of advantages in using high-level descriptors \cite{barrington07} \cite{west07} and, more in general, the most performant systems use data from all of these categories. \\In the next sections, a more detailed look among most important descriptors will be given.
+Many of the studies conducted on the computation of music similarity through audio content descriptors have solely focused on low-level and timbral information, because this has been proved to bring alone to acceptable results with proper similarity measures \cite{mirage07}. However, more recent studies have shown some evidence of advantages in using high-level descriptors \cite{barrington07} \cite{west07} and, more in general, the most performant systems use data from all of these categories. When computing low and mid-level descriptors, the procedure requires the following operations:
+\begin{itemize}
+\item conversion of the signal from stereo to mono, in order to compute all the descriptors for just one signal
+\item down-sampling of the signal to improve the performance while computing the descriptors
+\item segmentation of the signal into frames, short segments (usually from 512 to 2048 audio samples). Consecutive frames are usually not disjoint: the so-called \textit{hop-size} determines the hop of samples between the beginning of a frame and the next one, and is normally half or a quarter as big as the \textit{frame size}.
+\item computation of Fourier Transform, with an appropriate windowing technique \footnote{Although this last step may not be strictly seen as a necessary operation, many descriptors rely on frequency analysis of the signal and therefore they require the computation of the Fourier Transform.}
+\end{itemize}
+The computation of descriptors is then performed on each frame, and finally a single value for each descriptor is computed by the means of some statistical analysis. Mean, median, variance and covariance are the most used statistical tools for calculating representative global values out of the enormous \textit{pool} of values computed in each frame.\\
+Some more operations may sometimes be needed, such as de-noising \footnote{A set of operations which purpose is to reduce the amount of background noise in a signal, therefore incrementing the \texit{signal-to-noise ratio} (\textit{SNR} or sometimes \textit{S/N}).} of time-scaling of the signal. \\
+\\In the next sections, a more detailed look among most important descriptors will be given.
 
-\subsection{Low-level Data}
+\subsection{Low-level Descriptors}
 
-\subsection{Mid-level Data}
-\subsection{High-level Data}
+\subsection{Mid-level Descriptors}
+\subsubsection{Rhythm}
+In traditional music notation, there are several notations for tempo. It may be expressed in BPM (beats per minute), MPM (measures per minute; commonly used in ballroom dance music) or by semantic notations indicating a range of BPM; an example of this last category of notations may be the popular system of Italian markings, such as \textit{presto} (168-200 BPM), \textit{andante} (84-90 BPM) or \textit{allegro} (120-128 BPM). \\ In the field of MIR, accurate notations are needed, therefore semantic annotations are disregarded in favour of more precise notation such as BPM and Onset Rate (OR).
+\\ \\ 
+\textbf{Onset Rate} \\ 
+IDEAS: image of ADSR, some flowchart for a standard onset detection algorithm (look at figures folder)
+Onsets are generally defined as the beginning of a new musical note, and onset rate is therefore defined as the number of onsets in a time interval. This definition however hides several difficulties: in polyphonic music, nominally simultaneous notes may be spread over tens of seconds, making this definition more blurred \cite{dixon06}. Moreover, several instruments have a long attack time and this makes the task of defining an onset time even harder. \\Several ways of computing an onset detection function have been proposed, according to what aspects are taken into account for defining an onset. Actually, onset detection may be performed in time domain (when looking for significant changes in the overall energy), frequency domain (if looking for events regarding just a specific range of frequencies), phase domain or complex domain. 
+Important algorithms for this task are:
+\begin{itemize}
+\item \textit{HFC}, the High Frequency Content detection function that looks for important changes on highest frequencies. It is very useful for detecting percussive events.
+\item Spectral Flux, that decomposes the entire audible range of frequencies (approxitamely the interval 20-20000 Hz) into bins, measures changes in magnitude in each bin, and then sums all the positive changes across all the bins.
+\item the Complex-Domain spectral difference function \cite{bello04} taking into account changes in magnitude and phase. It emphasizes note onsets either as a result of significant change in energy in the magnitude spectrum, and/or a deviation from the expected phase values in the phase spectrum, caused by a change in pitch.
+\end{itemize}  
+HFC was proposed by Masri in \cite{masri96}. Let us consider the short-time Fourier transform (STFT) of the signal $x(n)$:\\
+\begin{equation}
+X_k(n) = \sum\limits_{m=-\frac{N}{2}}^{\frac{N}{2}-1} x(nh + m)w(m)e^{-\frac{2j\pi mk}{N}}
+\end{equation}
+where $w(m)$ is again an $N$-point window, and $h$ is the hop size, or time shift, between adjacent windows. The idea behind HFC is to give more weight to higher frequencies, by defining a onset function whose values are computed in the follwing way:
+\begin{equation}
+HFC(n) = \frac{1}{N}\sum\limits_{k=-\frac{N}{2}}^{\frac{N}{2}-1} k\abs{X_k(n)}^{2}
+\end{equation}
+
+The HFC function produces sharp peaks during attack transients and is notably successful when faced with percussive onsets, where transients are well modeled as bursts of white noise \cite{bello05}.\\
+On the other hand, the Spectral Flux $SF$ function is defined as follows:
+\begin{equation}
+SF(n) = \sum\limits_{k=-\frac{N}{2}}^{\frac{N}{2}-1} H(\abs{X(n, k)} - H(\abs{X(n - 1, k)})
+\end{equation}
+where $H = \frac{x + \abs{x}}{2}$ is the half-wave rectifier function. This algorithm greatly characterizes changes in magnitude spectrum but it quite weak to frequency-modulation phenomena (such as vibrato). To this end, the recently proposed variant SuperFlux \cite{bock13} seems to achieve much better results. \\
+Another interesting onset function is the \textit{Complex Domain}, that calculates expected the expected amplitude and phase of the current bin $X(n, k)$ based on the previous two bins $X(n - 1, k)$ and $X(n -2, k)$. By assuming constant amplitude the expected value $X_T(n, k)$ is then computed:
+\begin{equation}
+X_T(n, k) = \abs{X(n - 1, k)}e^{\psi (n - 1, k) + \psi ' (n - 1, k)} 
+\end{equation}
+and therefore a complex domain onset detection function CD can be defined as the sum of absolute deviations from the target values \cite{dixon06}:
+\begin{equation}
+CD(n) = \sum\limits_{k=-\frac{N}{2}}^{\frac{N}{2}-1} \abs{X(n, k)-X_T(n,k)}
+\end{equation}
+
+Given an onset function (for instance one of the already cited $HFC(n)$, $SF(n)$ or $CD(n)$), onsets are then extracted by a peak-picking algorithm which finds local maxima in the detection function, subject to various constraints. Threshold and constraints used in the peak-picking algorithm has a large impact on the results, specifically on the ratio of false positives\footnote{Real onsets that are not detected by the algorithm} to false negatives\footnote{Points that are classified as onsets by the algorithm, while they are actually not.}. For instance, a higher threshold may lead to a lower number of false negatives but to a higher number of false positive, while a lower threshold may have the opposite effect. A compromise, mostly specific to the application, has to been found.
+\\ \\ 
+\textbf{BPM} \\ 
+The algorithms for detecting the beats-per-minute (generally called \textit{beat tracking algorithms}) greatly rely on onset detection funcions. The basic idea is to look for some time-pattern that may explain the distribution of onsets over time, and hence derive BPM. They usually require more than one onset detection function to achieve good results. One of the most performant beat tracking algorithm is TempoTapDegara, presented by N. Degara et al. in \cite{degara12}. \\ EXPLAIN ALGORITHM HERE
+
+\subsubsection{Tonality}
+Many efforts have been taken in order to improve the techniques for detecting tonality or harmonic content of a song, as this is one of the most main aspects of western music (a direct consequence of tonality is the detection of predominant melody; to understand why this is so important just ask yourself how many times you whistled or sang a song to let other people recognize it). One of the most important descriptor for this aspect of music is called Harmonic Pitch Content Profile (\textbf{HPCP}, also called chromagram). It represents the energy distribution along the pitches or pitch classes; in other words it is a $12k$-sized vector (where k usually equals 1, but higher values are allowed if we're interested in the distribution of more pitch classes or if we are not using a chromatic scale) where each element corresponds to the corresponding energy of that pitch, indipendently from the octave. It is obtained in the following way:
+
+
+\subsection{High-level Descriptors}
 
 \subsection{Main Tools For Extracting Audio Content}
 \subsubsection*{Essentia}
