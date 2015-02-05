@@ -89,13 +89,16 @@ and therefore a complex domain onset detection function CD can be defined as the
 CD(n) = \sum\limits_{k=-\frac{N}{2}}^{\frac{N}{2}-1} \abs{X(n, k)-X_T(n,k)}
 \end{equation}
 
-Given an onset function (for instance one of the already cited $HFC(n)$, $SF(n)$ or $CD(n)$), onsets are then extracted by a peak-picking algorithm which finds local maxima in the detection function, subject to various constraints. Threshold and constraints used in the peak-picking algorithm has a large impact on the results, specifically on the ratio of false positives\footnote{Real onsets that are not detected by the algorithm} to false negatives\footnote{Points that are classified as onsets by the algorithm, while they are actually not.}. For instance, a higher threshold may lead to a lower number of false negatives but to a higher number of false positive, while a lower threshold may have the opposite effect. A compromise, mostly specific to the application, has to been found.
+Given an onset function (for instance one of the already cited $HFC(n)$, $SF(n)$ or $CD(n)$), onsets are then extracted by a peak-picking algorithm which finds local maxima in the detection function, subject to various constraints. Threshold and constraints used in the peak-picking algorithm has a large impact on the results, specifically on the ratio of false positives\footnote{True onsets that are not detected by the algorithm.} to false negatives\footnote{Points that are classified as onsets by the algorithm, while they are actually not.}. For instance, a higher threshold may lead to a lower number of false negatives but to a higher number of false positive, while a lower threshold may have the opposite effect. A compromise, mostly specific to the application, has to been found.
 \\ \\ 
 \textbf{BPM} \\ 
 The algorithms for detecting the beats-per-minute (generally called \textit{beat tracking algorithms}) greatly rely on onset detection funcions. The basic idea is to look for some time-pattern that may explain the distribution of onsets over time, and hence derive BPM. They usually require more than one onset detection function to achieve good results. One of the most performant beat tracking algorithm is TempoTapDegara, presented by N. Degara et al. in \cite{degara12}. \\ EXPLAIN ALGORITHM HERE
 
 \subsubsection{Tonality}
-Many efforts have been taken in order to improve the techniques for detecting tonality or harmonic content of a song, as this is one of the most main aspects of western music (a direct consequence of tonality is the detection of predominant melody; to understand why this is so important just ask yourself how many times you whistled or sang a song to let other people recognize it). One of the most important descriptor for this aspect of music is called Harmonic Pitch Content Profile (\textbf{HPCP}, also called chromagram). It represents the energy distribution along the pitches or pitch classes; in other words it is a $12k$-sized vector (where k usually equals 1, but higher values are allowed if we're interested in the distribution of more pitch classes or if we are not using a chromatic scale) where each element corresponds to the corresponding energy of that pitch, indipendently from the octave. It is obtained in the following way:
+Many efforts have been taken in order to improve the techniques for detecting tonality or harmonic content of a song, as this is one of the most main aspects of western music (a direct consequence of tonality is the detection of predominant melody; to understand why this is so important just ask yourself how many times you whistled or sang a song to let other people recognize it). Many studies have focused on this aspect of music were not oriented toward the computation of similarity between tracks, but instead toward different tasks, such as \textit{automatic trascription of a polyphonic audio signal} (mainly into a MIDI representation) and \textit{source separation}, that is the task of isolating a single and specific instrument among many playing together. \\
+From a music point of view, in western music, an octave is made of 12 different pitches, and seven differents notes take place in this discrete range. According to the pitch assigned to each note, we may have different \textit{keys}, that are a combination of a \textit{tonic} (the central pitch) and the mode. \textit{Major} and \textit{minor} are the most popular modes. (ADD IMAGE OF THESE TWO MODES) \\
+\textit{Harmony} is a term that denotes the simultaneous combination of notes, called \textit{chords}, and over time, \textit{chord progressions}.  \\
+One of the most important descriptor for extracting information related to tonality is called Harmonic Pitch Content Profile (\textbf{HPCP}, also called chromagram). This is directly related to tonality and chord detection: chords can be recognized from from the HPCP without even precisely detecting what notes are being played, and tonality can also be inferred by HPCP (and in this case a previous estimation of chords is not necessary). An HPCP, proposed for the first time by Fujishima in \cite{fujishima99}
 
 
 \subsection{High-level Descriptors}
@@ -105,6 +108,8 @@ Many efforts have been taken in order to improve the techniques for detecting to
 \subsubsection*{Echonest}
 \subsubsection*{jMIR}
 \subsubsection*{MIRtoolbox}
+
+\section{Computing Music Similarity with Audio Content Descriptors}
 
 \section{Conceptual Differences Between Metadata and Audio Content Information}
 The performance of content-based approaches is considerably lower \cite{slaney2011}.
