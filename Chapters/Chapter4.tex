@@ -1,9 +1,19 @@
-\chapter{Case Study: Approach} % Main chapter title
+\chapter{Case Study: Requirements and Approach} % Main chapter title
 
 \label{Chapter4} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Chapter 4. \emph{Case Study: Approach}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\lhead{Chapter 4. \emph{Case Study: Requirements and Approach}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
-91 hours 43 mins 35 secs  <-- length of entire catalogue
+\section{Catalogue of music}
+\label{sec:catalogue}
+The catalogue of music provided features NUM songs, for a total length of 91 hours, 43 minutes and 35 seconds. This catalogue has been provided with metadata indicating only artist, year of release and title of each song. Furthermore, all of these work can be labelled as belonging to the electro-acoustic genre, which usually indicates very abstract and arrhythmic, for which is difficult to provide semantic descriptors or tags. Given this latter feature of the music and the length of the entire catalogue, the possibility of manually annotating it with proper metadata has been soon disregarded. This collection of music has therefore represented a great chance for developing a system based on the latest findings on audio content analysis.
+
+\section{Requirements}
+\label{sec:requirements}
+Despite its intended use as part of the exhibition \textit{``Phonos, 40 anys de música electrònica a Barcelona''}, the software developed should feature good flexibility to different catalogues of music, in order to be exploited as a part of the research for the GiantSteps project. This has represented a strong requirement during the development, and has induced the adoption of several descriptors that may not be particularly meaningful for the Phonos catalogue of songs, but that has extended the range of possible music catalogues in which the system performance could be satisfactory. Furthermore, as a part of a research project, the system developed should be easily extendable in other research activities, hence a robust, consistent and well-document code is preferred. \\
+
+
+\section{Design of the system}
+\label{sec:design}
 
 Justify the choice of audio content analysis over metadata, \textbf{of splitting app in two parts (analysis + rt app)}
