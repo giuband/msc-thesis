@@ -9,10 +9,10 @@ The main subject of MIR regards the \textit{extraction and inference of musicall
 By metadata we mean all the descriptors about a track that are not based on the \textit{music content}. Therefore, they are not directly extracted from the audio signal but rather from external sources. They began to be deeply studied since the early 2000s, when first doubts about an upper threshold of the performance of audio content analysis systems arised \cite{aucou04}. Researchers then started exploring the possibility of performing retrieving tasks on written data that is related to the artist or to the piece. \\At first, the techniques were adapted from the Text-IR ones, but it was immediately clear that retrieving music is fairly more complex than retrieving text, because the music retrieved should also satisfy the musical taste of the user who performed the query. 
 \\The techniques used in this category may differ both in the sources used for retrieving data and in the way of computing a similarity score, and clearly the performance of a system using metadata for similarity computation is highly affected by both of these factors. Sources may include \cite{bogdanov13}:
 \begin{itemize}
-\item manual annotation: description provided by experts; they may be referred to genre, mood, instrumentation, artist relations.
-\item collaborative filtering data: data indirectly provided by users of web communities, in the form of user ratings or listening behaviour information.
-\item social tags: data directly provided by users of social network of music (such as \textit{Last.fm}\footnote{\url{http://last.fm}}) or social games.
-\item information automatically mined from the Web. Sources in these cases may include web-pages related to music or microblogs (for instance the very popular \texit{Twitter}).
+\item Manual annotation: description provided by experts; they may be referred to genre, mood, instrumentation, artist relations.
+\item Collaborative filtering data: data indirectly provided by users of web communities, in the form of user ratings or listening behaviour information.
+\item Social tags: data directly provided by users of social network of music (such as \textit{Last.fm}\footnote{\url{http://last.fm}}) or social games.
+\item Information automatically mined from the Web. Sources in these cases may include web-pages related to music or microblogs (for instance the very popular \texit{Twitter}).
 \end{itemize}
  The availability of some of them greatly depends on the size of the music collection under consideration; for instance, as manual expert annotations might be very accurate, they would be extremely costly and probably infeasible on large collections \cite{Szyma09}. In contrast, collaborative filtering data may be the most studied technique, given that it may be applied to other different fields (such as movies or books recommendation) with just little changes. It is the predominant approach in the field of Recommender Systems (RS) \cite{jannach12} and is mainly focused on user ratings, generally leading to better results \cite{green09}. However, some concerns are related to this technique. First, collaborative filtering approaches have not been designed to be used for playlist generation, but mainly for recommending artists or music. Second, the availibility of datasets for user ratings in the field of music is very limited compared to other fields, and research is often based on very small samples \cite{liu09}. Regarding listening behaviour information, they might be inaccurate  since they don't keep track of song durations and of the user activities while listening to music \cite{jawaheer10}. In addition, there's no way of collecting negative feedback (\textit{dislikes}) through them and, more in general, listening to a specific song doesn't necessarily imply liking that song \cite{bogdanov13}. \\Sources are picked also in relation to the subject of the research or of the system, that may be for example a recommendation or a similarity computation system. At this point, it's important to highlight the difference between the two of them: a recommendation system not only has to find similar music, but has also to take into account the personal taste of the user, and therefore it's generally considered as a basic tool to produce recommendation \cite{celma08}. In any case, the terms ``similarity'' and ``recommendation'' cannot be substituted, given that a good similarity computation system doesn't necessarily equate to a good recommendation system \cite{mcnee06}. 
  %For this kind of systems, collaborative filtering data has shown to lead to better results \cite{green09}. However, in the field of music similarity computation, social tags and keywords extracted from webpages have shown good performances. 
@@ -26,10 +26,10 @@ The main idea of this technique lies on building a bag-of-words representation \
 \section{Audio Content Analysis}
 The main idea behind this kind of analysis is to directly extract useful information, through some algorithms (or library of algorithms), from the audio signal itself. The type of content information extracted may greatly vary in relation to the need of the research, but we can mainly distinguish four categories \cite{bogdanov13}:
 \begin{itemize}
-\item \textit{timbral} information: related to the overall quality and color of the sound.
-\item \textit{temporal} information: related to rhythmic aspects of the composition, such as tempo or length of measures.
-\item \textit{tonal} information: directly linked to the frequency analysis of the signal and to the pitch. It can describe \texit{what notes are being played} or the tonality of a given track.
-\item \textit{inferred semantic} information: information inferred (usually through machine learning techniques) from the previous categories, in the attempt of giving a more defined and understable shape to the data collected. This kind of information may include descriptors such as genre, valence or arousal.
+\item \textit{Timbral} information: related to the overall quality and color of the sound.
+\item \textit{Temporal} information: related to rhythmic aspects of the composition, such as tempo or length of measures.
+\item \textit{Tonal} information: directly linked to the frequency analysis of the signal and to the pitch. It can describe \texit{what notes are being played} or the tonality of a given track.
+\item \textit{Inferred semantic} information: information inferred (usually through machine learning techniques) from the previous categories, in the attempt of giving a more defined and understable shape to the data collected. This kind of information may include descriptors such as genre, valence or arousal.
 \end{itemize}
 
 Information extracted through this family of techniques may also be categorized in the following way:
@@ -41,10 +41,10 @@ Information extracted through this family of techniques may also be categorized 
 
 Many of the studies conducted on the computation of music similarity through audio content descriptors have solely focused on low-level and timbral information, because this has been proved to bring alone to acceptable results with proper similarity measures \cite{mirage07}. However, more recent studies have shown some evidence of advantages in using high-level descriptors \cite{barrington07} \cite{west07} and, more in general, the most performant systems use data from all of these categories. When computing low and mid-level descriptors, the procedure requires the following operations:
 \begin{itemize}
-\item conversion of the signal from stereo to mono, in order to compute all the descriptors for just one signal
-\item down-sampling of the signal to improve the performance while computing the descriptors
-\item segmentation of the signal into frames, short segments (usually from 512 to 2048 audio samples). Consecutive frames are usually not disjoint: the so-called \textit{hop-size} determines the hop of samples between the beginning of a frame and the next one, and is normally half or a quarter as big as the \textit{frame size}.
-\item computation of Fourier Transform, with an appropriate windowing technique \footnote{Although this last step may not be strictly seen as a necessary operation, many descriptors rely on frequency analysis of the signal and therefore they require the computation of the Fourier Transform.}
+\item Conversion of the signal from stereo to mono, in order to compute all the descriptors for just one signal
+\item Down-sampling of the signal to improve the performance while computing the descriptors
+\item Segmentation of the signal into frames, short segments (usually from 512 to 2048 audio samples). Consecutive frames are usually not disjoint: the so-called \textit{hop-size} determines the hop of samples between the beginning of a frame and the next one, and is normally half or a quarter as big as the \textit{frame size}.
+\item Computation of Fast Fourier Transform, with an appropriate prior windowing technique \footnote{Although this last step may not be strictly seen as a necessary operation, many descriptors rely on frequency analysis of the signal and therefore they require the computation of the Fourier Transform.}.
 \end{itemize}
 The computation of descriptors is then performed on each frame, and finally a single value for each descriptor is computed by the means of some statistical analysis. Mean, median, variance and covariance are the most used statistical tools for calculating representative global values out of the enormous \textit{pool} of values computed in each frame.\\
 Some more operations may sometimes be needed, such as de-noising \footnote{A set of operations which purpose is to reduce the amount of background noise in a signal, therefore incrementing the \texit{signal-to-noise ratio} (\textit{SNR} or sometimes \textit{S/N}).} of time-scaling of the signal. \\
@@ -98,13 +98,55 @@ The algorithms for detecting the beats-per-minute (generally called \textit{beat
 Many efforts have been taken in order to improve the techniques for detecting tonality or harmonic content of a song, as this is one of the most main aspects of western music (a direct consequence of tonality is the detection of predominant melody; to understand why this is so important just ask yourself how many times you whistled or sang a song to let other people recognize it). Many studies have focused on this aspect of music were not oriented toward the computation of similarity between tracks, but instead toward different tasks, such as \textit{automatic trascription of a polyphonic audio signal} (mainly into a MIDI representation) and \textit{source separation}, that is the task of isolating a single and specific instrument among many playing together. \\
 From a music point of view, in western music, an octave is made of 12 different pitches, and seven differents notes take place in this discrete range. According to the pitch assigned to each note, we may have different \textit{keys}, that are a combination of a \textit{tonic} (the central pitch) and the mode. \textit{Major} and \textit{minor} are the most popular modes. (ADD IMAGE OF THESE TWO MODES) \\
 \textit{Harmony} is a term that denotes the simultaneous combination of notes, called \textit{chords}, and over time, \textit{chord progressions}.  \\
-One of the most important descriptor for extracting information related to tonality is called Harmonic Pitch Content Profile (\textbf{HPCP}, also called chromagram). This is directly related to tonality and chord detection: chords can be recognized from from the HPCP without even precisely detecting what notes are being played, and tonality can also be inferred by HPCP (and in this case a previous estimation of chords is not necessary). An HPCP, proposed for the first time by Fujishima in \cite{fujishima99}
+One of the most important descriptor for extracting information related to tonality is called Harmonic Pitch Content Profile (\textbf{\textit{HPCP}}, also called chromagram). This is directly related to tonality and chord detection: chords can be recognized from from the \textit{HPCP} without even precisely detecting what notes are being played, and tonality can also be inferred by \textit{HPCP} (and in this case a previous estimation of chords is not necessary). \\
+An \textit{HPCP} is a $12k$-sized vector indicating the level energy for each profile class. If $k=1$, the \textit{HPCP} represents the intensities of the twelve semitone pitch classes, otherwise of subdivision of these\footnote{It may be extremely useful to study subdivision of semitone pitch classes when dealing with non-chromatic scales, that are very popular in eastern music.}. In \cite{gomez06}, Gómez proposes to distinguish tonality features on temporal scales: 
+\begin{itemize}
+\item Instantaneous: features attached to an analysis frame.
+\item Global: features related to a wider audio segment, for instance a phrase, a chorus or the whole song.
+\end{itemize}
+Furthermore, Gómez proposes to split tonal descriptors in both low-level and high-level descriptors. We hence obtain the representation of tonal descriptors shown in Table \ref{table:tonaldescriptors}.
+\begin{table}[h]
+\begin{center}
+\begin{tabular} { l l l }
+\hline
+Name         & Temporal Scale & Level of abstraction \\ \hline
+HPCP         & Instantaneous  & Low                  \\ 
+Chord        & Instantaneous  & High                 \\ 
+Average HPCP & Global         & Low                  \\ 
+Key          & Global         & High                 \\ \hline
+\end{tabular}
+\caption{Main tonal descriptors.}
+\label{table:tonaldescriptors}
+\end{center}
+\end{table}
 
+The general approach for computing \textit{HPCP} is indicated in figure PUT BLOCK DIAGRAM HERE and can be summarized as follows:
+\begin{itemize}
+\item At first, some pre-processing of the audio signal may be performed. For instance, a transient detection algorithm may be used to detect and eliminate regions where the harmonic structure is noisy. This step is usually performed to decrease the computational cost of the \textit{HPCP} without affecting its output \cite{bonada00}.
+\item At this point, spectral analysis is required: once the signal is segmented into frames of a proper size and a windowing function is applied, the Fast Fourier Transform (\textit{FFT}) is computed to get the frequency spectrum. Frames should not be too short, in order to have a better frequency resolution. 
+\item A peak-picking algorithm is run to find those frequencies corresponding to local maxima in the spectrum. Usually, these algorithms are not run only on the interval [100, 5000] Hz: this has shown much better results, because outside this range the signal is predominantly noisy, due to some percussion and instrumental noise \cite{gomez06}.
+\item The \textit{HPCP} is finally computed; many approaches have been developed for this task, all based on the pitch content profile algorithm presented by Fujishima in \cite{fujishima99}. At first, a mapping of each frequency bin of the \textit{FFT} to a pitch class is needed (for instance, \textit{FFT} bins corresponding to frequencies like 430Hz, 432Hz or 444Hz are mapped to the A at 440Hz). Then, the amplitudes inside each region are summed up and divided by the number of bins inside that region. Finally, the bins obtained are collapsed, so that bins referring to the same note but in a different octave (for example A4 and A5) are collapsed in a single bin for that note, indicating the overall energy of it in the frame. The \textit{HPCP} is different from the PCP in the sense that a higher resolution may be used for \textit{HPCP} bins (decreasing the quantization level to less than a semitone) and a weight function is introduced into the feature computation. The \textit{HPCP} value of the $n$-th \textit{HPCP} bin is calculated as:
+\begin{equation}
+HPCP(n) = \sum\limits_{i=1}^{nPeaks} w(n, f_i)a_i^2
+\end{equation}
+where $a_i$ and $f_i$ are respectively the magnitude and the frequency of the $i$th peak, $nPeaks$ is the number of spectral peaks considered, and $w(n, f_i)$ is the weight of the frequency bin $f_i$ when considering the \textit{HPCP} bin $n$.
+\\ The performance of the \textit{HPCP} builder strongly relies on the weight function \cite{cabral05}. Note that, for how the common procedure of building \textit{HPCP} is defined, \textit{HPCP} are usually considered robust to noise and different tuning references. \\
+\textit{HPCP} values are usually normalized in order to store the relative importance of the $n$th \textit{HPCP} bin:
+\begin{equation}
+HPCP_{normalized}(n) = \frac{HPCP(n)}{Max_n(HPCP(n))}
+\end{equation}
+\end{itemize}
+
+Once the \textit{HPCP} are computed, additional tonal features may be computed, such as tonality or chords. Regarding tonality estimation, this is generally computed through a correlation analysis between the \textit{HPCP} obtained and a matrix of \textit{HPCP} profiles corresponding to different keys. 
 
 \subsection{High-level Descriptors}
 
 \subsection{Main Tools For Extracting Audio Content}
+Many tools are available for the extraction of audio content descriptors from an audio signal. Many of them have been developed by researchers following the research necessities of MIR. This great variety of tools offers support to several operative systems (mainly Linux, Mac OS X and Windows) and programming languages (Java, C++, C, Python, Matlab). Some of this tools may be offered as standalone software or as a Vamp plugin. Not all the tools for extracting audio content are open-source, therefore not being particularly useful for the research community. In the following paragraphs, we'll briefly show the features of the tools taken into consideration on the development of this work.
 \subsubsection*{Essentia}
+Essentia\footnote{\url{http://essentia.upf.edu/}} is an open-source C++ library of algorithms for audio analysis and audio-based music information retrieval. It has been developed at Music Technology Group\footnote{\url{http://mtg.upf.edu/}}, Universitat Pompeu Fabra, and has released under the Affero GPL license\footnote{\url{http://www.gnu.org/licenses/agpl.html}}. In its current version 2.0.1, it contains a large collection of spectral, temporal, tonal, and high-level music descriptors, algorithms for audio input/output functionality, standard digital signal processing blocks and statistical tools. The library can be complemented with Gaia \footnote{\url{https://github.com/MTG/gaia}}, a C++ library to apply similarity measures and classifications on the results of audio analysis. Both these libraries include Python 2.* bindings and support Linux, Mac OS X and Windows. Essentia has been in developed for over 7 years, incorporating the work of more than 20 researchers and developers through its history. \\
+It offers two different modes: standard and streaming, the first being imperative while the latter being declarative. Each processing block is offered as an algorithm, and has three different types of attributes: inputs, outputs and parameters. Different blocks may be linked in order to perform the required processing task. In figure INSERT FIGURE a block diagram of a processing task is shown, composed of several different algorithms linked together. See Appendix A for consulting the full list of descriptors provided by Essentia 2.0.1.
+
 \subsubsection*{Echonest}
 \subsubsection*{jMIR}
 \subsubsection*{MIRtoolbox}
