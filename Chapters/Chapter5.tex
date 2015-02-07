@@ -1,8 +1,17 @@
-\chapter{Computation of Audio Features} % Main chapter title
+\chapter{Off-line computation of audio features} % Main chapter title
 
 \label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Chapter 5. \emph{Computation of Audio Features}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\lhead{Chapter 5. \emph{Off-line computation of audio features}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+In order to achieve good performance, two very computationally intensive tasks of the system are performed off-line, and their output is then going to be used by the real-time application. These tasks consist of the computation of the audio content descriptors and of the building of a \textit{fast-map}, a high dimensionality space in which each point correspond to an excerpt. This space is built in a fashion that guarantees that nearby points of this space correspond to very similar excerpts.
 
-\section{Tools used for feature extraction, features extracted}
+
+\section{Audio content features extraction}
+Solving this problem has involved two very important choices: what audio content descriptors to use and what library or tool to use for computing them. \\Many factors have been taken into account for solving both of these problems.\\ Among the features of the tools, flexibility has constituted the strictest requirement: an easy way to compute descriptors for each excerpt of every track is required, while many tools provide only ways of computing descriptors for the entire file. In this latter case, the file should manually split into \textit{subfiles} (one for each segment), therefore implying a huge waste of memory. This has soon lead to the exclusion of \textit{jMir}, for it doesn't fulfill this requirement. \\ 
+Second, the tool should easily be callable by source code or bash scripts, and results of the analysis must be stored in output files. \\
+Third, the computation of descriptors should be as fast as possible, given that the excerpts to be analyzed are in the order of tens of thousands. \\
+Last but not least, the tool must provide descriptors whose usefulness for this specific case study has been empirically verified during the development of the system.\\
+All of these requirements lead to the choice of performing the audio analysis with Essentia and Echonest: the first for its speed, flexibility and reliability. Echonest has been used for some of its descriptors are not present or not as accurate in Essentia, and have shown a great usefulness during the development. \\ Furthermore, both of the two libraries are offered in Python, allowing the entire analysis task to be written in a single programming language, therefore improving the code consistency and readability.
+
+
 \section{Similarity computation (fast map)}
