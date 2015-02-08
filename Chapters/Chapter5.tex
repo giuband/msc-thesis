@@ -11,7 +11,54 @@ Solving this problem has involved two very important choices: what audio content
 Second, the tool should easily be callable by source code or bash scripts, and results of the analysis must be stored in output files. \\
 Third, the computation of descriptors should be as fast as possible, given that the excerpts to be analyzed are in the order of tens of thousands. \\
 Last but not least, the tool must provide descriptors whose usefulness for this specific case study has been empirically verified during the development of the system.\\
-All of these requirements lead to the choice of performing the audio analysis with Essentia and Echonest: the first for its speed, flexibility and reliability. Echonest has been used for some of its descriptors are not present or not as accurate in Essentia, and have shown a great usefulness during the development. \\ Furthermore, both of the two libraries are offered in Python, allowing the entire analysis task to be written in a single programming language, therefore improving the code consistency and readability.
+All of these requirements lead to the choice of performing the audio analysis with Essentia and Echo Nest: the first for its speed, flexibility and reliability. Echo Nest has been used for some of its descriptors are not present or not as accurate in Essentia, and have shown a great usefulness during the development. \\ Furthermore, both of the two libraries are offered in Python, allowing the entire analysis task to be written in a single programming language, therefore improving the code consistency and readability. \\
+The schema for the extraction of the audio features is illustrated in figure \ref{fig:extraction}. \\ 
+\begin{figure}[h]
+\caption{Schema for the extraction of audio features.}
+\label{fig:extraction}
+\end{figure}
+At first, the user is required to give the path of the folder in which the audio files are stored. The collection is entirely stored as .mp3 files with a sample rate of 44100Hz and a bitrate of 192kbps. The application then collects the path to all the .mp3 files in this folder, and mark them as to be analyzed if no previous analysis has be performed. An analysis of these files with Echo Nest (through Pyechonest) is performed, and we specifically use the following fields of the output of this analysis: \textit{bars}, \textit{BPM}, \textit{loudness}, \textit{HPCP} and \textit{acousticness}. \textit{Bars} give the starting and ending point of each bar detected and, although not particularly meaningful for the arhythmic Phonos catalogue of music, have shown to perform well on the additional and more generic personal catalogue used during development testing (see appendix~\ref{AppendixD}); therefore, it was decided to use them in order to improve the flexibility of the system. \\ Segmentation of songs into excerpts is then performed, based on starting and ending point of each bar. Then, we compute more specific descriptors with Essentia for these excerpts, with the following strategy:
+\begin{itemize}
+\item each excerpt is divided into frames, with a size of 2048 samples and a hop of 1024 samples. For each of these frames:
+\begin{itemize}
+\item we apply an Hann windowing function
+\item we apply the FFT algorithm provided by Essentia in order to get a spectral representation of the signal
+\item we look for peaks in the spectrum, collecting their frequencies and magnitudes, and then we use them to compute the dissonance in the frame, with Essentia's algorithm \texttt{Dissonance}
+\item an HFC onset function is computed on the spectrum, that will be used afterwards to compute the onset times
+\item the MFCC bands and coefficients are computed with Essentia's algorithm \texttt{Mfcc}\footnote{Essentia uses the MFCC-FB40 implementation, which decomposes the signal into 40 bands from 0 to 11000Hz, takes the log value of the spectrum energy in each mel band and finally applies a Discrete Cosine Trasform of the 40 bands down to 13 mel coefficients.} 
+\item the energy in 27 Bark bands of the spectrum is computed 
+\end{itemize}
+\item onset times in the excerpt are calculated, according to the onset function computed in each frame, and then onset rate is calculated with the formula:
+\begin{equation}
+OR_{excerpt} = \frac{Onsets_{excerpt}}{Length_{excerpt}}
+\end{equation}
+\item dissonance in the excerpt is computed as a mean of the dissonance in each of its frames
+\item a single Gaussian model for the collected MFCC values is computed. Specifically, we collect its mean, covariance and inverse covariance. Mean is a $13$ size vector, while covariance and inverse covariance are $13$x$13$ matrices. If a problem of ill-conditioned covariance matrices is encountered (i.e., a not positive semi-definite covariance matrix has been computed), only values of the diagonal of these problematic covariance matrices are used. This has allowed to avoid the presence of outliers when computing similarity, while still taking into account excerpts for which a covariance matrix of the MFCC values could not be correctly computed. 
+\item based on the HPCP values computed by Echo Nest, we use Essentia's \texttt{Key Detector} to associate a key to each first and fourth beat of the bar. The reason why we keep values for these two particular beats is that this allows us to perform a more precise tonal comparison when trying to merge two excerpts in the real-time application: if the key of the first beat of the inspected excerpt is very different from the key of the fourth beat of the excerpt for which we're looking for similar pieces, the candidate is discarded.
+\end{itemize} 
+This procedure is repeated for each excerpt, in order to get a deep description for all of them and perform more precise similarity computation in the real-time application. In addition, we store some additional level-song descriptors, specifically artist, title and year of release, and acousticness (computed with Echo Nest). Finally, for each song we create a corresponding JSON file in which we store all the descriptors computed. \\
+The list of descriptors computed during this task is summarized in table~\ref{table:offlinedescriptors}.
 
 
-\section{Similarity computation (fast map)}
+\begin{center}
+\begin{longtable}{| p{.15\textwidth} | p{.15\textwidth} | p{.15\textwidth} | p{.55\textwidth} |} 
+\hline
+\textbf{Name} & \textbf{Source} & \textbf{Level} & \textbf{Reason} \\ \hline
+Title, Artist, Year & Provided & Song-Level & Display more information about the current playing track in the GUI \\ \hline
+Acousticness & Echo Nest & Song-Level & Give the user the chance to filter music in regards to its nature (acoustic or electronic music) \\ \hline
+MFCC & Essentia & Bar-Level & Timbre similarity computation \\ \hline
+BPM & Echo Nest & Bar-Level & Avoid consecutive excerpts with very different BPM \\ \hline
+Onset Rate & Essentia & Bar-Level & Give the user the chance to filter music in regards to the presence of percussive elements \\ \hline
+Dissonance & Essentia & Bar-Level & Give the user the chance to filter music in regards to the dissonance\footnote{During development, it has been empirically noticed that dissonance has a significant correlation to the perception of noise: the more dissonant an excerpt is, the more it is perceived as noisy.} of excerpts \\ \hline
+Loudness & Echo Nest & Bar-Level & Give the user the chance to filter music in regards to its loudness \\ \hline
+Bark Bands & Essentia & Bar-Level & Give the user the chance to filter music in regards to its ``sparseness'', i.e. the amount of mel bands with significant energy level \\ \hline
+HPCP & Echo Nest & Beat-Level & Use them to compute key \\ \hline
+Key & Essentia & Beat-Level & Use them to discard the possibility of having two consecutive dissonant excerpts in the playlist \\ \hline
+\caption[List of descriptors computed offline]{Descriptors computed by the offline application.}
+\label{table:offlinedescriptors}
+\end{longtable}
+\end{center}
+
+
+\section{Fast map computation}
+The procedure just described for computing descriptors give us a 410 size vector. In order to achieve good real-time performance when comparing excerpt, a dimensionality reduction of these vectors is required.  
