@@ -17,7 +17,7 @@ The schema for the extraction of the audio features is illustrated in figure \re
 \caption{Schema for the extraction of audio features.}
 \label{fig:extraction}
 \end{figure}
-At first, the user is required to give the path of the folder in which the audio files are stored. The collection is entirely stored as .mp3 files with a sample rate of 44100Hz and a bitrate of 192kbps. The application then collects the path to all the .mp3 files in this folder, and mark them as to be analyzed if no previous analysis has be performed. An analysis of these files with Echo Nest (through Pyechonest) is performed, and we specifically use the following fields of the output of this analysis: \textit{bars}, \textit{BPM}, \textit{loudness}, \textit{HPCP} and \textit{acousticness}. \textit{Bars} give the starting and ending point of each bar detected and, although not particularly meaningful for the arhythmic Phonos catalogue of music, have shown to perform well on the additional and more generic personal catalogue used during development testing (see appendix~\ref{AppendixD}); therefore, it was decided to use them in order to improve the flexibility of the system. \\ Segmentation of songs into excerpts is then performed, based on starting and ending point of each bar. Then, we compute more specific descriptors with Essentia for these excerpts, with the following strategy:
+At first, the user is required to give the path of the folder in which the audio files are stored. The collection is entirely stored as .mp3 files with a sample rate of 44100Hz and a bitrate of 192kbps. The application then collects the path to all the .mp3 files in this folder, and mark them as to be analyzed if no previous analysis has be performed. An analysis of these files with Echo Nest (through Pyechonest) is performed, and we specifically use the following fields of the output of this analysis: \textit{bars}, \textit{BPM}, \textit{loudness}, \textit{HPCP} and \textit{acousticness}. \textit{Bars} give the starting and ending point of each bar detected and, although not particularly meaningful for the arhythmic Phonos catalogue of music, have shown to perform well on the additional and more generic personal catalogue used during development testing; therefore, it was decided to use them in order to improve the flexibility of the system. \\ Segmentation of songs into excerpts is then performed, based on starting and ending point of each bar. Then, we compute more specific descriptors with Essentia for these excerpts, with the following strategy:
 \begin{itemize}
 \item each excerpt is divided into frames, with a size of 2048 samples and a hop of 1024 samples. For each of these frames:
 \begin{itemize}
@@ -39,7 +39,7 @@ OR_{excerpt} = \frac{Onsets_{excerpt}}{Length_{excerpt}}
 This procedure is repeated for each excerpt, in order to get a deep description for all of them and perform more precise similarity computation in the real-time application. In addition, we store some additional level-song descriptors, specifically artist, title and year of release, and acousticness (computed with Echo Nest). Finally, for each song we create a corresponding JSON file in which we store all the descriptors computed. \\
 The list of descriptors computed during this task is summarized in table~\ref{table:offlinedescriptors}.
 
-
+\newpage
 \begin{center}
 \begin{longtable}{| p{.15\textwidth} | p{.15\textwidth} | p{.15\textwidth} | p{.55\textwidth} |} 
 \hline
@@ -61,4 +61,5 @@ Key & Essentia & Beat-Level & Use them to discard the possibility of having two 
 
 
 \section{Fast map computation}
-The procedure just described for computing descriptors give us a 410 size vector. In order to achieve good real-time performance when comparing excerpt, a dimensionality reduction of these vectors is required.  
+The procedure just described for computing descriptors give us a 410 size vector. In order to achieve good real-time performance when comparing excerpt, a dimensionality reduction of these vectors is required. Furthermore, as seen in \ref{sec:audiocontentsimilarity}, the computation of Kullback-Leibler divergence, although showing good results in capturing the timbre similarity, is a very intensive computational operation, and therefore a simpler distance measure with comparable results is preferred. \\
+These requirements were faced also in \cite{fastmap11}  
