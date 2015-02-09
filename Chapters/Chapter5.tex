@@ -67,14 +67,48 @@ In order to achieve good real-time performance when comparing these excerpt, a d
 These requirements were faced also in \cite{fastmap12}, in which Schnitzer et al. present a filter-and-refine method to speed up nearest neighbor searches with the Kullback-Leibler divergence for multivariate Gaussians, yielding high recall values of 95-99\% compared to a standard linear search. The original FastMap was proposed in 1995 by Faloutsos and Lin \cite{falo95} for indexing and data-mining multimedia datasets. It was used for the first time for computationally heavy, non-metric measures and nearest neighbor retrieval in \cite{athi04}, for speeding up classification of handwritten digits. FastMap was used for the first time in MIR by Cano et al. in \cite{cano02} in the attempt of reduing high dimensional music timbre similarity space into a 2-dimensional space. This was done not for speeding up classification, but rather for visualization purposes. \\
 The idea behind the use of a FastMap for classification or computing similarities is to compute with the original distance measure $D()$ (computationally intensive) just a subset of all the distances, specifically the distances between each point and a subset of $2k$ points (the \textit{``pivots''}); then, on the basis of these distances computed, each feature vector is mapped with a non-linear trasformation into a point of a $k$-dimension space, where a simpler distance measure can be applied, with a little loss of accuracy.
 
-\subsection*{Original FastMap}
 For choosing the $2k$ pivot elements, the original FastMap \cite{falo95} follows this strategy:
 \begin{itemize}
 \item $k$ element $x_1^1, x_2^1, ..., x_k^1$ are randomly selected from the collection of feature vectors
 \item for each $x_i^1$, its corresponding most distant object $x_i^2$ according the original distance measure $D()$ is picked
 \end{itemize}
 
+Each vector of features $x$ is then mapped into the point $(F_1(x), ..., F_k(x))$ of the new $k$-dimensional space, where $F_j(x)$ is computed with the formula:
+\begin{equation}
+\label{eq:fastmapeq}
+F_j(x) = \frac{D(x, x_j^1)^2 + D(x_j^1, x_j^2)^2 - D(x, x_j^2)^2}{2D(x_j^1, x_j^2)}
+\end{equation}
+In other words, the coordinate in the $j-th$ dimension of each point is determined by the pair $(x_j^1, x_j^2)$, specifically by the original distance (computed with $D()$) of the point from both these pivots and the distance between the pivots themselves. \\
+For our work, we have decided to use the Kullback-Leibler as the original distance function, computed with the closed formula:
+\begin{equation}
+KL(x_1, x_2) = \frac{1}{2}\left(tr(\Sigma_2^{-1}\Sigma_1) + (\mu_2 - \mu_1)^T \Sigma_2^{-1}(\mu_2 - \mu_1) - k + ln\left(\frac{det\Sigma_2}{det\Sigma_1}\right)\right)
+\end{equation}
+where $tr$ is the $trace$ operation of a matrix (i.e., the sum of the elements in its main diagonal), $\mu_i$ the mean vector of the MFCC values of point $i$, $\Sigma_i$ is its the covariance matrix, $\Sigma_i^{-1}$ its inverse covariance matrix, and $k$ the size of $\mu_i$. \\
+This formula has been used in the state-of-the-art similarity computation system and its accuracy in measuring the timbre similarity between MFCC values is no longer questionable. Anyways, we must take into account several aspects. \\ 
+As already seen in \ref{sec:audiocontentsimilarity}, the Kullback-Leibler cannot be intended as a pure distance measure, for it fails to be symmetric and to fulfill the triangle inequality. It can simply be made symmetric by considering the distance $SKL$ (symmetric Kullback-Leibler) defined as:
+\begin{equation}
+SKL(x_1, x_2) = \frac{1}{2}KL(x_1, x_2) + \frac{1}{2}KL(x_2, x_1)
+\end{equation}
+Regarding the triangle inequality, a proper solution is not that trivial. However, in \cite{fastmap12} Schnitzer et al. have shown that rescaling the symmetric Kullback-Leibler divergence with the square root leads the new distance function to fulfill the triangle inequality in more than 99\% of the cases. Therefore our original distance function $D()$ that we use in equation~\ref{eq:fastmapeq} is:
+\begin{equation}
+\label{eq:distance_func}
+D(x_1, x_2) = \sqrt{SKL(x_1, x_2)} = \sqrt{\frac{1}{2}KL(x_1, x_2) + \frac{1}{2}KL(x_2, x_1)}
+\end{equation}
 
-\subsection*{The filter-and-refine method}
+This procedure can be further improved by a little modification in the strategy for choosing pivots: once the pivot $x_i^1$ is randomly picked, we choose to pick as $x_i^2$ the object lying at the distance media, i.e. the object at the index j=$ \lfloor \frac{N}{2} \rfloor$ once all the distances from point $x_i^1$ are sorted. We've decided to use $k=20$ (therefore having 20 pairs of pivots and a final 20-dimensional space) as this has allowed us to find a good balance between computational times and quality of the output the similarity computation.\\
+The accuracy and performance of this procedure are well-documented in \cite{fastmap12}. This technique constitutes the basis on which our system will perform the real-time similarity computation allowing excellent performance, with some additional tweak that will see in the Chapter~\ref{Chapter6}. \\
+The computed data is stored on a JSON file: for each point (corresponding to an excerpt), we store its coordinates in the new 20-dimensional space plus some additional descriptors that allow us to do a faster filtering in the real-time application, as we won't need to lookup to the original JSON descriptor file for each song just for retrieving the values of these descriptors. The list of features stored in the map for each point is shown in table~\ref{table:fastmap}, while we propose also an illustrative figure in Figure~\ref{figure:fastmapfigure}.
 
-Unfortunately, this has shown bad performance
+
+\newpage
+\begin{center}
+\begin{longtable}{| p{.25\textwidth} | p{.75\textwidth} |} 
+\hline
+\textbf{Name} &  \textbf{Motivation} \\ \hline
+Year, Artist, Title & Speed up access to information\\ \hline
+BPM, Key & Be faster when filtering out music with very different BPM or key\\ \hline
+Acousticness, Loudness, Dissonance, Bark Bands, OR & Perform a fast filtering of database of excerpt when the user interacts with the GUI for controlling the musical output\\ \hline
+\caption[Features stored in the map]{Features stored in the map for each point.}
+\label{table:fastmap}
+\end{longtable}
+\end{center}
