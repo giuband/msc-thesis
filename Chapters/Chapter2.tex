@@ -176,6 +176,13 @@ MIRtoolbox\footnote{\url{https://www.jyu.fi/hum/laitokset/musiikki/en/research/c
 \section{Computing Music Similarity with Audio Content Descriptors}
 \label{sec:audiocontentsimilarity}
 
+\subsection{Notable studies on large databases}
+When large music collections are used, performance of similarity computation algorithms become critic. Although the collection to be used by the system during its public use can't be considered large, the necessary decomposition of it into hundred of thousands excerpt to be analyzed just in few seconds makes performance a critical factor when designing and implementing an algorithm. Therefore, a deep look into studies where large collections were used was needed.\\
+The first content-based music recommendation system working on large collections (over 200,000 songs) was published by Cano et al. in \cite{cano05}, 2005. The system presented on this work relies on rhythmic and timbre features, combined to form a music similarity feature vector. No special indexing technique was used. \\
+The first music recommendation system for large databases using Gaussian timbre features was proposed some months later by Roy et al. in \cite{roy05}. In this work, they propose to use a Monte-Carlo approximation of the Kullback-Leibler (KL) divergence to measure music similarity. The method proposed is, in principle, similar to the one proposed by Schnitzer et al. in \cite{fastmap12}, which has been used on the development of this thesis work (see \ref{sec:fastmap}). To pre-filter their results, Roy et al. increase the sampling rate of the Monte-Carlo approximation. As the divergence values converge, they are able to reduce the number of possible nearest neighbors. This method has shown good performance, both in query time and results.\\
+A different attempt of improving performance was proposed by Levy and Sandler in \cite{levy06} where they use only diagonal covariance matrix instead of a full one to compute music similarity. While this has shown a ten-fold speedup compared to the full Kullback Leibler divergence, the quality of this simpler similarity measure results in worse genre classification rates. 
+
+
 \section{Conceptual Differences Between Metadata and Audio Content Information}
 The performance of content-based approaches is considerably lower \cite{slaney2011}.
 It is challenging to try to make the so-called \textit{semantic gap} smaller \cite{aucou2009}

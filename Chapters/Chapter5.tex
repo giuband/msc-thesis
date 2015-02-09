@@ -60,6 +60,21 @@ Key & Essentia & Beat-Level & Use them to discard the possibility of having two 
 \end{center}
 
 
-\section{Fast map computation}
-The procedure just described for computing descriptors give us a 410 size vector. In order to achieve good real-time performance when comparing excerpt, a dimensionality reduction of these vectors is required. Furthermore, as seen in \ref{sec:audiocontentsimilarity}, the computation of Kullback-Leibler divergence, although showing good results in capturing the timbre similarity, is a very intensive computational operation, and therefore a simpler distance measure with comparable results is preferred. \\
-These requirements were faced also in \cite{fastmap11}  
+\section{FastMap computation}
+\label{sec:fastmap}
+The procedure just described for computing descriptors give us a 410 size vector for each excerpt, and a total number of 159239 excerpts.\\
+In order to achieve good real-time performance when comparing these excerpt, a dimensionality reduction of these vectors is required. Furthermore, as seen in \ref{sec:audiocontentsimilarity} the computation of Kullback-Leibler divergence, although showing very good results in capturing the timbre similarity, is a very intensive computational operation and therefore a simpler distance measure with comparable results is preferred. \\
+These requirements were faced also in \cite{fastmap12}, in which Schnitzer et al. present a filter-and-refine method to speed up nearest neighbor searches with the Kullback-Leibler divergence for multivariate Gaussians, yielding high recall values of 95-99\% compared to a standard linear search. The original FastMap was proposed in 1995 by Faloutsos and Lin \cite{falo95} for indexing and data-mining multimedia datasets. It was used for the first time for computationally heavy, non-metric measures and nearest neighbor retrieval in \cite{athi04}, for speeding up classification of handwritten digits. FastMap was used for the first time in MIR by Cano et al. in \cite{cano02} in the attempt of reduing high dimensional music timbre similarity space into a 2-dimensional space. This was done not for speeding up classification, but rather for visualization purposes. \\
+The idea behind the use of a FastMap for classification or computing similarities is to compute with the original distance measure $D()$ (computationally intensive) just a subset of all the distances, specifically the distances between each point and a subset of $2k$ points (the \textit{``pivots''}); then, on the basis of these distances computed, each feature vector is mapped with a non-linear trasformation into a point of a $k$-dimension space, where a simpler distance measure can be applied, with a little loss of accuracy.
+
+\subsection*{Original FastMap}
+For choosing the $2k$ pivot elements, the original FastMap \cite{falo95} follows this strategy:
+\begin{itemize}
+\item $k$ element $x_1^1, x_2^1, ..., x_k^1$ are randomly selected from the collection of feature vectors
+\item for each $x_i^1$, its corresponding most distant object $x_i^2$ according the original distance measure $D()$ is picked
+\end{itemize}
+
+
+\subsection*{The filter-and-refine method}
+
+Unfortunately, this has shown bad performance
