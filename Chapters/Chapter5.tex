@@ -97,18 +97,42 @@ D(x_1, x_2) = \sqrt{SKL(x_1, x_2)} = \sqrt{\frac{1}{2}KL(x_1, x_2) + \frac{1}{2}
 
 This procedure can be further improved by a little modification in the strategy for choosing pivots: once the pivot $x_i^1$ is randomly picked, we choose to pick as $x_i^2$ the object lying at the distance media, i.e. the object at the index j=$ \lfloor \frac{N}{2} \rfloor$ once all the distances from point $x_i^1$ are sorted. We've decided to use $k=20$ (therefore having 20 pairs of pivots and a final 20-dimensional space) as this has allowed us to find a good balance between computational times and quality of the output the similarity computation.\\
 The accuracy and performance of this procedure are well-documented in \cite{fastmap12}. This technique constitutes the basis on which our system will perform the real-time similarity computation allowing excellent performance, with some additional tweak that will see in the Chapter~\ref{Chapter6}. \\
-The computed data is stored on a JSON file: for each point (corresponding to an excerpt), we store its coordinates in the new 20-dimensional space plus some additional descriptors that allow us to do a faster filtering in the real-time application, as we won't need to lookup to the original JSON descriptor file for each song just for retrieving the values of these descriptors. The list of features stored in the map for each point is shown in table~\ref{table:fastmap}, while we propose also an illustrative figure in Figure~\ref{figure:fastmapfigure}.
+The computed data is stored on a JSON file: for each point (corresponding to an excerpt), we store its coordinates in the new 20-dimensional space plus some additional descriptors that allow us to do a faster filtering in the real-time application, as we won't need to lookup to the original JSON descriptor file for each song just for retrieving the values of these descriptors. The list of features stored in the map for each point is shown in table~\ref{table:fastmap}, while we propose also an illustrative figure in Figure~\ref{figure:fastmapfigure}. During this stage, we additionaly save lists that associate each segment to the decade the song it has been extracted from has been produced. This will allow very fast filtering techniques on the real-time application when the user interacts with the sliders for selecting music according to the year of release. \\The computational times of this stage are shown in table~\ref{table:benchmarkoffline} and the configuration of the computer used in table~\ref{table:hardwareoffline}.
 
 
 \newpage
 \begin{center}
-\begin{longtable}{| p{.25\textwidth} | p{.75\textwidth} |} 
+\begin{longtable}{| p{.35\textwidth} | p{.65\textwidth} |} 
 \hline
 \textbf{Name} &  \textbf{Motivation} \\ \hline
 Year, Artist, Title & Speed up access to information\\ \hline
+Starting and ending point inside the track & Allows fast extraction of the excerpt from the entire audio signal \\ \hline
 BPM, Key & Be faster when filtering out music with very different BPM or key\\ \hline
 Acousticness, Loudness, Dissonance, Bark Bands, OR & Perform a fast filtering of database of excerpt when the user interacts with the GUI for controlling the musical output\\ \hline
 \caption[Features stored in the map]{Features stored in the map for each point.}
 \label{table:fastmap}
 \end{longtable}
 \end{center}
+
+\begin{center}
+\begin{longtable}{| p{.25\textwidth} | p{.45\textwidth} |} 
+\hline
+\textbf{Laptop Model} & Packard Bell EasyNote TS-11HR \\ \hline
+\textbf{CPU}         & Intel\textregistered  Core\texttrademark i5-2410M @ 2.50GHz \\ \hline
+\textbf{RAM}        & 4GB DDR3 @ 1066MHz \\ \hline
+\textbf{Hard Disk Drive} & 5400rpm \\ \hline
+\caption[Hardware configuration of computer used during off-line descriptors computation]{Hardware configuration of computer used during off-line descriptors computation.}
+\label{table:hardwareoffline}
+\end{longtable}
+\end{center}
+
+\begin{center}
+\begin{longtable}{| p{.35\textwidth} | p{.3\textwidth} |} 
+\hline
+\textbf{Descriptor computation} & TIME \\ \hline
+\textbf{FastMap computation} & TIME \\ \hline
+\caption[Computational times for descriptors computation]{Computational times for descriptors computation (the time for uploading tracks to Echo Nest is not considered in these results).}
+\label{table:benchmarkoffline}
+\end{longtable}
+\end{center}
+

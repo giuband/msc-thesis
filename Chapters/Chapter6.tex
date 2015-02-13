@@ -1,9 +1,81 @@
-\chapter{The Real-Time Application} % Main chapter title
+\chapter{The real-time application} 
 
-\label{Chapter6} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{Chapter6} 
 
-\lhead{Chapter 6. \emph{The Real-Time Application}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\lhead{Chapter 6. \emph{The real-time application}} 
 
-\section{Implementation (python server + html client), Gstreamer}
-\section{Functioning}
-Descriptors of first bar, similarity computation (both as an Euclidean Distance and as SKL)
+The real-time application is based on a two-tier architecture, organized as follows:
+\begin{itemize}
+\item the server machine runs a Python Flask application, and it's responsible for generating playlist and audio
+\item the client displays an HTML web-page that collects user interactions and sends them to the server machine for realtime editing of playlist. Additionally, it receives audio streaming from the server.
+\end{itemize}
+
+Therefore, the realtime computation of music similarity happens on the server machine.
+
+\section{The server application}
+\label{sec:rtserver}
+As already stated above, the server application is in charge of offering several features: it generates the playlist, sending audio and additional information to the client (such as \textit{artist} and \textit{title} of current playing piece, so that the client can display them for the user on the GUI). Additionally it has to generate audio, that will be streamed to the client in order for the user to listen to it through its own device. For generating the playlist, a realtime music similarity algorithm with very good performance must run on the server. \\ Many Python web frameworks are available; the most used ones are Django\footnote{\url{https://www.djangoproject.com/}}, Flask\footnote{\url{http://flask.pocoo.org/}} and Pyramid\footnote{\url{http://www.pylonsproject.org/}}. This realtime server application has been based upon Flask framework, that is a lightweight web application framework written in Python and based on the WSGI toolkit\footnote{A specification for universal communication between web servers and web applications or frameworks for Python programming language. Published on December 2003 by its author Phillip J. Eby, it has become a standard for Python web application development.} and Jinja2 template engine\footnote{\url{http://jinja.pocoo.org/docs/dev/}}. It's provided with a BSD license and, contrarily to Django and Pyramid, is aimed at small applications with simple requirements. Its first version was released in 2010 and it comes with a great usability, where a simple \textit{``Hello World''} web-app can be written with only 7 lines of source code\footnote{\url{http://flask.pocoo.org/docs/0.10/quickstart/#a-minimal-application}}. Web application framework are usually thought to be separated into several conceptual units called ``apps'', each one providing different functionalities to the system. Flask is intended to make really simple the development of a single app; many others may be added, but in this latter case Django and Pyramid may provide a better ease of use. \\ All of these factors have lead to the choice of this framework for our system: the web platform to develop is actually intended to be quite simple, displaying just the main GUI and a few more details and options for the user. Given that the application is meant to be offered just to one client at time, we decided to use the builtin server of Flask also on production; indeed, we considered a full deployment option (such as Apache or CGI) to be a waste of resources for this simple use case. The server application executes two parallel tasks: the generation of the playlist, based on realtime computation of music similarity, and the generation and streaming to the client of the audio of this playlist. It furthermore provides several methods that are handled by Flask routing techniques and invoked at specific interaction of the user with the client application; these methods have deep impact on the generation of the playlist and allow the user real-time control over this process. 
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.75]{Figures/flask.png}
+    \rule{25em}{0.5pt}
+  \caption[Flask]{Flask Logo.}
+  \label{fig:Flask}
+\end{center}
+\end{figure}
+
+\subsection{Realtime computation of music similarity and playlist generation}
+As we mentioned, this computation is performed on the server machine, for the hardware configuration of the interactive kiosk has been unknown until the beginning of the exhibition, and may have been not able to achieve good performance with the software developed. The hardware configuration of the server machine is shown in table~\ref{table:serverhardware}. 
+
+\begin{center}
+\begin{longtable}{| p{.25\textwidth} | p{.45\textwidth} |} 
+\hline
+\textbf{CPU}   & Intel\textregistered  Core\texttrademark 2 Quad Processor Q6600 @ 2.40GHz \\ \hline
+\textbf{RAM}   & 2GB DDR2 @ 800MHz  \\ \hline
+\textbf{Hard Disk Drive} & 5400rpm \\ \hline
+\caption[Hardware configuration of the server machine]{Hardware configuration of the server machine.}
+\label{table:serverhardware}
+\end{longtable}
+\end{center}
+
+The task for generating the playlist follows a well-defined schema.
+\\At first, the FastMap computed as described in section~\ref{sec:fastmap} is loaded into memory; this process usually takes just few seconds. A random point of this map is pick, and will be used as the first excerpt of the playlist. This excerpt in then put inside the playlist, a Python dictionary whose keys are the position of the elements inside the playlist and the corresponding values are tuples containing several important aspects for the playback; the details of these tuples are shown in table~\ref{table:playlistelements}.
+
+\begin{center}
+\begin{longtable}{| p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |} 
+\hline
+URI of file & Song title & Song artist & Song Year & Starting time & Ending Time \\ \hline
+\caption[Element of playlist]{Information stored for each element of the playlist.}
+\label{table:playlistelements}
+\end{longtable}
+\end{center}
+
+Once the first segment is picked, the application enters in a loop in which each iteration ends in adding a new excerpt to the playlist. The comparison of music similarity is always performed between all the candidate elements of the FastMap and the last element of the playlist. The procedure invoked in this loop can be summarized as follows:
+\begin{enumerate}
+\item If any user interaction with sliders or knobs has happened since the last iteration, delete the content of playlist. This allows the user to immediately hear musical differences in the playlist as soon as he interacts with the client application. 
+\item Delete already played elements from the playlist in order to avoid memory leaks
+\item If we already have enough elements in the playlist, let the task \textit{``sleep''} for one second and then go back to step one. This prevents the cpu from always working at full load, a behaviour that could cause serious overheating problems in a server machine running this application for several consecutive hours at the museum.
+\item At this point, we get into the procedure for actually choosing the next excerpt to be inserted into the playlist. At first, a weighted queue according to the sliders for filtering by decades is created.
+\item The entire map of excerpts is now filtered according to the current positions of sliders regarding decades in the client application. If the amount of excerpts available after this filtering is over 500, a MonteCarlo sampling of them is performed, to bring the total number of candidates to 500. We experienced unsatisfying performance of the application during successive steps of the procedure (also due to a not particularly powerful configuration hardware of the server machine) with less aggressive sampling, and we noticed that with 500 candidate excerpts good results were still achieved. This value may be increased in more powerful devices.
+\item Additional filtering is performed, based on the values of BPM and loudness of the candidates. Candidates who greatly differ on these values from the last element of the playlist are discarded. For judging similarity in terms of BPM, the formula~\ref{eq:perfebpm} (with $\alpha = 1$) has been used, with a maximum distance allowed of 3. The maximum discrepancy allowed in loudness is of 5dB. If no candidate excerpt fulfill this stage, the list of candidates before this filtering is restored. 
+\item At this point we finally choose the number of candidates in which we'll perform deeper analysis. This number, that we call $N_{Neighbors}$, is computed according to the following formula:
+\begin{equation}
+N_{Neighbors} = filter\_size * \abs{FastMap}
+\end{equation} 
+where $\abs{FastMap}$ is the number of excerpt in the FastMap (i.e., the total number of excerpts in the catalogue), and $filter\_size$ is a value in $[0, 1]$. We empirically noted that a $filter\_size$ value of $0.1$ already gives good results, while allowing to achieve excellent performance. We then select the $N_{Neighbors}$ nearest neighbor to the current element through an Euclidean distance on the $20$-dimensional space. 
+\item We now compute the symmetric Kullback-Leibler distance between the last element of the playlist and all its neighbors. We do this specifically only if:
+\begin{itemize}
+\item We have a margin of at least 5 seconds of playback in the current playlist after the current playing excerpt
+\item The user has not interacted with the controllers of the client-application since the last iteration of the loop
+\end{itemize}
+If any of this two condition is not met, we don't compute the symmetric Kullback-Leibler distances but rather we choose the next element of the playlist on the basis of the euclidean distance on the $20$-dimensional space. We do this because this stage could require several seconds (around 3 to 6 seconds on the server machine) and the conditions for performing such a slow computation could not be met, resulting in a perception of a high-latency system. The second condition is used because, even if the playlist is emptied as soon as the user interacts with the controllers (but there still may be more than 5 seconds to play, if the current excerpt is very long), it doesn't make sense for us to perform computational intensive task for computing similarity when the user's will is actually to change the flow of the music by interacting with the controllers. \\ Once all the distances are computed, we keep only the segments whose SKL distance from last element in the playlist is less than 20, a threshold that we empirically noticed to be quite selective while still usually allowing many excerpts to be usually inside this distance. An excerpt from this list is finally randomly picked and put in the playlist. If the list is empty (or the computation of symmetric Kullback-Leibler couldn't be performed), the next excerpt of the playlist is randomly picked among the 10 nearest neighbors by the mean of the Euclidean distance. 
+\end{enumerate}
+
+The procedure described allows to choose the next element of the playlist with great performance (as shown in table~\ref{table:rtperformance}), although this may greatly vary with the condition; specifically, computational times become much longer when all the symmetric Kullback-Leibler distances are computed, but this generally leads to better musical results. 
+Furthermore, it worths mentioning that the software provides options for managing the playlist generation in regards to repetition of songs or excerpts: specifically, the user can force the application of never picking two excerpts belonging to the same song unless a specific amount of different excerpt in the playlist has already put between them. We noticed that disabling this feature may greatly improve the quality of the musical flow (some loops between excerpts of the same song may generate, creating a strong cohesion of the musical output; this behaviour is the same one proposed by \textit{The Infinite Jukebox}) but may annoy some users if they want to explore the collection of music and would possibly like to avoid repetitions.
+
+\subsection{Audio generation and streaming: Gstreamer}
+
+\section{The client application}
+\label{sec:rtclient}
