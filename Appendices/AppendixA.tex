@@ -6,80 +6,80 @@
 As of November 2014, the features provided by Essentia 2.0.1 are:
 
 \begin{center}
-\begin{longtable}{| p{.20\textwidth} | p{.80\textwidth} |} 
-\hline
-\textbf{Category} & \textbf{Name} \\ \hline
-lowLevel & average loudness \\ \hline
-rhythm & bpm \\ \hline
-rhythm & onset rate \\ \hline
-sfx & pitch after max to before max energy ratio \\ \hline
-sfx & pitch centroid \\ \hline
-sfx & pitch max to total \\ \hline
-sfx & pitch min to total \\ \hline
-tonal & chords changes rate \\ \hline
-tonal & chords number rate \\ \hline
-tonal & key strength \\ \hline
-tonal & tuning diatonic strength \\ \hline
-tonal & tuning equal tempered deviation \\ \hline
-tonal & tuning frequency \\ \hline
-tonal & tuning nontempered energy ratio \\ \hline
-lowLevel & barkbands kurtosis \\ \hline
-lowLevel & barkbands skewness \\ \hline
-lowLevel & barkbands spread \\ \hline
-lowLevel & dissonance \\ \hline
-lowLevel & hfc \\ \hline
-lowLevel & pitch \\ \hline
-lowLevel & pitch instantaneous confidence \\ \hline
-lowLevel & pitch salience \\ \hline
-lowLevel & silence rate 20dB \\ \hline
-lowLevel & silence rate 30dB \\ \hline
-lowLevel & silence rate 60dB \\ \hline
-lowLevel & spectral centroid \\ \hline
-lowLevel & spectral complexity \\ \hline
-lowLevel & spectral crest \\ \hline
-lowLevel & spectral decrease \\ \hline
-lowLevel & spectral energy \\ \hline
-lowLevel & spectral energyband high \\ \hline
-lowLevel & spectral energyband low \\ \hline
-lowLevel & spectral energyband middle high \\ \hline
-lowLevel & spectral energyband middle low \\ \hline
-lowLevel & spectral flatness db \\ \hline
-lowLevel & spectral flux \\ \hline
-lowLevel & spectral kurtosis \\ \hline
-lowLevel & spectral rms \\ \hline
-lowLevel & spectral rolloff \\ \hline
-lowLevel & spectral skewness \\ \hline
-lowLevel & spectral spread \\ \hline
-lowLevel & spectral strongpeak \\ \hline
-lowLevel & zerocrossingrate \\ \hline
-rhythm & beats loudness \\ \hline
-rhythm & first peak bpm \\ \hline
-rhythm & first peak spread \\ \hline
-rhythm & first peak weight \\ \hline
-rhythm & second peak bpm \\ \hline
-rhythm & second peak spread \\ \hline
-rhythm & second peak weight \\ \hline
-sfx & inharmonicity \\ \hline
-sfx & oddtoevenharmonicenergyratio \\ \hline
-tonal & chords strength \\ \hline
-rhythm & beats position \\ \hline
-rhythm & bpm estimates \\ \hline
-rhythm & bpm intervals \\ \hline
-rhythm & onset times \\ \hline
-tonal & chords histogram \\ \hline
-tonal & thpcp \\ \hline
-lowLevel & barkbands \\ \hline
-lowLevel & mfcc \\ \hline
-lowLevel & sccoeffs \\ \hline
-lowLevel & scvalleys \\ \hline
-rhythm & beats loudness band ratio \\ \hline
-sfx & tristimulus \\ \hline
-tonal & hpcp \\ \hline
-tonal & chords key \\ \hline
-tonal & chords scale \\ \hline
-tonal & key key \\ \hline
-tonal & key scale \\ \hline
-tonal & chords progression \\ \hline
+\begin{longtable}{ p{.15\textwidth} p{.25\textwidth} p{.45\textwidth} } 
+
+\textbf{Category} & \textbf{Subcategory} & \textbf{Name} \\ \toprule
+\textbf{Low-level} & & Average loudness \\ \cmidrule(r){2-3}
+& Barkbands & Values\\ \cmidrule(r){3-3}
+&  & Kurtosis \\ \cmidrule(r){3-3} 
+&  & Skewness \\ \cmidrule(r){3-3}
+&  & Spread \\ \cmidrule(r){2-3}
+& & Dissonance \\ \cmidrule(r){2-3}
+& & Hfc \\ \cmidrule(r){2-3}
+& & Mfcc \\ \cmidrule(r){2-3}
+& Pitch & Value\\ \cmidrule(r){3-3}
+& & Instantaneous confidence \\ \cmidrule(r){3-3}
+& & Salience \\ \cmidrule(r){2-3}
+& & Sccoeffs \\ \cmidrule(r){2-3}
+& & Scvalleys \\ \cmidrule(r){2-3}
+& & Silence rate 20dB \\ \cmidrule(r){2-3}
+& & Silence rate 30dB \\ \cmidrule(r){2-3}
+& & Silence rate 60dB \\ \cmidrule(r){2-3}
+& Spectral & Centroid \\ \cmidrule(r){3-3}
+& & Complexity \\ \cmidrule(r){3-3}
+& & Crest \\ \cmidrule(r){3-3}
+& & Decrease \\ \cmidrule(r){3-3}
+& & Energy \\ \cmidrule(r){3-3}
+& & Energyband high \\ \cmidrule(r){3-3}
+& & Energyband low \\ \cmidrule(r){3-3}
+& & Energyband middle high \\ \cmidrule(r){3-3}
+& & Energyband middle low \\ \cmidrule(r){3-3}
+& & Flatness db \\ \cmidrule(r){3-3}
+& & Flux \\ \cmidrule(r){3-3}
+& & Kurtosis \\ \cmidrule(r){3-3}
+& & Rms \\ \cmidrule(r){3-3}
+& & Rolloff \\ \cmidrule(r){3-3}
+& & Skewness \\ \cmidrule(r){3-3}
+& & Spread \\ \cmidrule(r){3-3}
+& & Strongpeak \\ \cmidrule(r){2-3}
+& & Zerocrossingrate \\ \midrule
+Rhythm & Beats & Position \\ \cmidrule(r){3-3}
+& & Loudness \\ \cmidrule(r){3-3}
+& & Loudness band ratio \\ \cmidrule(r){2-3}
+& BPM & Value \\ \cmidrule(r){3-3}
+& & Estimates \\ \cmidrule(r){3-3}
+& & Intervals \\ \cmidrule(r){2-3}
+& First peak & BPM \\ \cmidrule(r){3-3}
+& & Spread \\ \cmidrule(r){3-3}
+& & Weight \\ \cmidrule(r){2-3}
+& Onset & Onset Rate \\ \cmidrule(r){3-3}
+& & Onset Times \\ \cmidrule(r){2-3}
+& Second peak & BPM \\ \cmidrule(r){3-3}
+& & Spread \\ \cmidrule(r){3-3}
+& & Weight \\ \midrule
+Sfx & & Inharmonicity \\ \cmidrule(r){2-3}
+& & Oddtoeven harmonic energy ratio \\ \cmidrule(r){2-3}
+& Pitch & After max to before max energy ratio \\ \cmidrule(r){3-3}
+& & Centroid \\ \cmidrule(r){3-3}
+& & Max to total \\ \cmidrule(r){3-3}
+& & Min to total \\ \cmidrule(r){2-3}
+& & Tristimulus \\ \midrule
+Tonal & Chords & Changes rate \\ \cmidrule(r){3-3}
+& & Histogram \\ \cmidrule(r){3-3}
+& & Key \\ \cmidrule(r){3-3}
+& & Number rate \\ \cmidrule(r){3-3}
+& & Progression \\ \cmidrule(r){3-3}
+& & Scale \\ \cmidrule(r){3-3}
+& & Strength \\ \cmidrule(r){3-3}
+& & HPCP \\ \cmidrule(r){2-3}
+& Key & Value \\ \cmidrule(r){3-3}
+& & Scale \\ \cmidrule(r){3-3}
+& & Strength \\ \cmidrule(r){3-3}
+& & Thpcp \\ \cmidrule(r){2-3}
+& Tuning & Diatonic strength \\ \cmidrule(r){3-3}
+& & Equal tempered deviation \\ \cmidrule(r){3-3}
+& & Frequency \\ \cmidrule(r){3-3}
+& & Nontempered energy ratio \\ \bottomrule
 
 \caption[List of features computable with Essentia]{List of features computable with Essentia.}
 \label{table:essentiaFeatures}

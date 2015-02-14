@@ -69,13 +69,87 @@ where $\abs{FastMap}$ is the number of excerpt in the FastMap (i.e., the total n
 \item We have a margin of at least 5 seconds of playback in the current playlist after the current playing excerpt
 \item The user has not interacted with the controllers of the client-application since the last iteration of the loop
 \end{itemize}
-If any of this two condition is not met, we don't compute the symmetric Kullback-Leibler distances but rather we choose the next element of the playlist on the basis of the euclidean distance on the $20$-dimensional space. We do this because this stage could require several seconds (around 3 to 6 seconds on the server machine) and the conditions for performing such a slow computation could not be met, resulting in a perception of a high-latency system. The second condition is used because, even if the playlist is emptied as soon as the user interacts with the controllers (but there still may be more than 5 seconds to play, if the current excerpt is very long), it doesn't make sense for us to perform computational intensive task for computing similarity when the user's will is actually to change the flow of the music by interacting with the controllers. \\ Once all the distances are computed, we keep only the segments whose SKL distance from last element in the playlist is less than 20, a threshold that we empirically noticed to be quite selective while still usually allowing many excerpts to be usually inside this distance. An excerpt from this list is finally randomly picked and put in the playlist. If the list is empty (or the computation of symmetric Kullback-Leibler couldn't be performed), the next excerpt of the playlist is randomly picked among the 10 nearest neighbors by the mean of the Euclidean distance. 
+If any of this two condition is not met, we don't compute the symmetric Kullback-Leibler distances but rather we choose the next element of the playlist on the basis of the euclidean distance on the $20$-dimensional space. We do this because this stage could require several seconds (around 4 to 9 seconds on the server machine\footnote{This considerable amount of time is due not only to the complexity of the formula for computing the symmetric Kullback-Leibler distance, but also to the necessary access to JSON files, where the needed MFCC values are kept.}) and the conditions for performing such a slow computation could not be met, resulting in a perception of a high-latency system. The second condition is used because, even if the playlist is emptied as soon as the user interacts with the controllers (but there still may be more than 5 seconds to play, if the current excerpt is very long), it doesn't make sense for us to perform computational intensive task for computing similarity when the user's will is actually to change the flow of the music by interacting with the controllers. \\ Once all the distances are computed, we keep only the segments whose SKL distance from last element in the playlist is less than 20, a threshold that we empirically noticed to be quite selective while still usually allowing many excerpts to be usually inside this distance. An excerpt from this list is finally randomly picked and put in the playlist. If the list is empty (or the computation of symmetric Kullback-Leibler couldn't be performed), the next excerpt of the playlist is randomly picked among the 10 nearest neighbors by the mean of the Euclidean distance. 
 \end{enumerate}
 
-The procedure described allows to choose the next element of the playlist with great performance (as shown in table~\ref{table:rtperformance}), although this may greatly vary with the condition; specifically, computational times become much longer when all the symmetric Kullback-Leibler distances are computed, but this generally leads to better musical results. 
-Furthermore, it worths mentioning that the software provides options for managing the playlist generation in regards to repetition of songs or excerpts: specifically, the user can force the application of never picking two excerpts belonging to the same song unless a specific amount of different excerpt in the playlist has already put between them. We noticed that disabling this feature may greatly improve the quality of the musical flow (some loops between excerpts of the same song may generate, creating a strong cohesion of the musical output; this behaviour is the same one proposed by \textit{The Infinite Jukebox}) but may annoy some users if they want to explore the collection of music and would possibly like to avoid repetitions.
+The procedure described allows to choose the next element of the playlist with great performance (as shown in table~\ref{table:rtperformance}), although this may greatly vary with the condition; specifically, computational times become much longer when all the symmetric Kullback-Leibler distances are computed, but this generally leads to better musical results. \\
+It may be useful to mention two further features of the application:
+\begin{itemize}
+\item When the user interacts with the slider for changing the length of the excerpt to be played, the procedure for computing similarity doesn't change. Longer segments are obtained by playing consecutive excerpts of the same song, and the procedure for computing similarity will look for similar excerpts to the last one in this queue of consecutive excerpts of the same song.
+\item The software provides options for managing the playlist generation in regards to repetition of songs or excerpts: specifically, the user can force the application of never picking two excerpts belonging to the same song unless a specific amount of different excerpt in the playlist has already put between them. We noticed that disabling this feature may greatly improve the quality of the musical flow (some loops between excerpts of the same song may generate, creating a strong cohesion of the musical output; this behaviour is the same one proposed by \textit{The Infinite Jukebox}) but may annoy some users if they want to explore the collection of music and would possibly like to avoid repetitions.
+\end{itemize}
 
-\subsection{Audio generation and streaming: Gstreamer}
+\begin{center}
+\begin{longtable}{ p{.4\textwidth}  p{.4\textwidth} } 
+\textbf{Stage} & \textbf{Total time} \\\toprule
+Filtering by sliders & 04h 32m 25s \\ \cmidrule(lr){2-2}
+& Maximum time for track: 00m 52s &  \\ \cmidrule(lr){2-2}
+& Average time for track: 00m 28s &  \\ \hline
+\multirow{2}{80pt}{\textbf{FastMap computation}} & Choosing pivots: 16m 43s & 47m 12s \\ 
+& Computing points coords: 30m 29s & \\ \bottomrule
+\caption[Computational times for descriptors computation]{Computational times for descriptors computation (the time for uploading tracks to Echo Nest is not considered in these results).}
+\label{table:rtperformance}
+\end{longtable}
+\end{center}
+
+\subsection{Audio generation and streaming}
+Everything we have seen so far allows to dinamically generate a content-aware playlist of excerpts. To allow the user to actually listen to this playlist we need to read the corrisponding slices of the audio files and implement a streaming over the network of this audio content.
+  
+\begin{figure}[h]
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+	\draw
+	% Drawing the blocks
+	node at (1.5,0) [block] (uridecodebin) {\Large URIdecodebin}
+	node at (4.8,0) [block] (volume) {\Large Volume}
+    node at (8,0) [block] (audioconvert) {\Large Audioconvert}
+    node at (12,0) [block] (audioresample) {\Large Audioresample}
+    node at (16,0) [output] (binoutput){};
+
+    % Joining blocks. 
+ 	\draw[->](uridecodebin) -- node {} (volume);
+	\draw[->](volume) -- node {} (audioconvert);
+	\draw[->](audioconvert) -- node{} (audioresample);
+	\draw[->] (audioresample) -- node {$Audio$}(binoutput);
+
+	% Boxing and labelling
+	\draw [color=gray,thick](-0.5,-1) rectangle (14,1);
+	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{Custom Bin}};
+\end{tikzpicture}
+\caption[Custom audio bin]{Custom audio bin, that corresponds to a partial single audio player.}
+\label{fig:systemdesign}
+\end{figure}
+
+
+\begin{figure}[h]
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+	\draw
+	% Drawing the blocks
+	node at (1.3,0) [block] (custombin1) {\Large CustomBin1}
+	node at (1.3,-2) [block] (custombin2) {\Large CustomBin2}
+	node at (3.8,-1) [sum, name=suma2] {\suma}
+	node at (5.8,-1) [block] (volume) {\Large Volume}
+	node at (9.3,-1) [block] (mp3enc) {\Large MP3Encoder}
+	node at (13,-1) [block] (tcpsink) {\Large TCP Sink}
+	node at (16.6, -1) [output] (output) {}
+	;
+    % Joining blocks. 
+	\draw[->](custombin1) -| node {}(suma2);
+	\draw[->](custombin2) -| node {}(suma2);
+ 	\draw[->](suma2) -- node {} (volume);
+ 	\draw[->](suma2) -- node {} (volume);
+ 	\draw[->](volume) -- node {} (mp3enc);
+ 	\draw[->](mp3enc) -- node {} (tcpsink);
+ 	\draw[->](tcpsink) -- node[align=center] {$Audio$\\$Streaming$} (output);
+
+	% Boxing and labelling
+	\draw [color=gray,thick](-0.5,-3) rectangle (14.5,1);
+	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{Global Audio Player}};
+\end{tikzpicture}
+\caption[Test]{Block diagram test.}
+\label{fig:systemdesign}
+\end{figure}
+
 
 \section{The client application}
 \label{sec:rtclient}
+
