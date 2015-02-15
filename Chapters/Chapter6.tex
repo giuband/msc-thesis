@@ -20,20 +20,22 @@ As already stated above, the server application is in charge of offering several
 \begin{center}
 \includegraphics[scale=0.75]{Figures/flask.png}
     \rule{25em}{0.5pt}
-  \caption[Flask]{Flask Logo.}
+  \caption[Flask]{Flask logo.}
   \label{fig:Flask}
 \end{center}
 \end{figure}
 
 \subsection{Realtime computation of music similarity and playlist generation}
+\label{subsec:rtalgorithm}
 As we mentioned, this computation is performed on the server machine, for the hardware configuration of the interactive kiosk has been unknown until the beginning of the exhibition, and may have been not able to achieve good performance with the software developed. The hardware configuration of the server machine is shown in table~\ref{table:serverhardware}. 
 
 \begin{center}
-\begin{longtable}{| p{.25\textwidth} | p{.45\textwidth} |} 
-\hline
-\textbf{CPU}   & Intel\textregistered  Core\texttrademark 2 Quad Processor Q6600 @ 2.40GHz \\ \hline
-\textbf{RAM}   & 2GB DDR2 @ 800MHz  \\ \hline
-\textbf{Hard Disk Drive} & 5400rpm \\ \hline
+\begin{longtable}{ p{.25\textwidth}  p{.45\textwidth} } 
+\toprule
+\textbf{CPU}   & Intel\textregistered  Core\texttrademark 2 Quad Processor Q6600 @ 2.40GHz \\ \midrule
+\textbf{RAM}   & 2GB DDR2 @ 800MHz  \\ \midrule
+\textbf{Hard Disk Drive} & 5400rpm \\ \midrule
+\textbf{OS} & Linux Mint 17.1 ``Rebecca'' (32bit) \\ \bottomrule
 \caption[Hardware configuration of the server machine]{Hardware configuration of the server machine.}
 \label{table:serverhardware}
 \end{longtable}
@@ -57,79 +59,128 @@ Once the first segment is picked, the application enters in a loop in which each
 \item Delete already played elements from the playlist in order to avoid memory leaks
 \item If we already have enough elements in the playlist, let the task \textit{``sleep''} for one second and then go back to step one. This prevents the cpu from always working at full load, a behaviour that could cause serious overheating problems in a server machine running this application for several consecutive hours at the museum.
 \item At this point, we get into the procedure for actually choosing the next excerpt to be inserted into the playlist. At first, a weighted queue according to the sliders for filtering by decades is created.
-\item The entire map of excerpts is now filtered according to the current positions of sliders regarding decades in the client application. If the amount of excerpts available after this filtering is over 500, a MonteCarlo sampling of them is performed, to bring the total number of candidates to 500. We experienced unsatisfying performance of the application during successive steps of the procedure (also due to a not particularly powerful configuration hardware of the server machine) with less aggressive sampling, and we noticed that with 500 candidate excerpts good results were still achieved. This value may be increased in more powerful devices.
+\item The entire map of excerpts is now filtered according to the current positions of sliders in the client application. If there is no excerpt fulfilling all the constrainst imposed by the sliders, we only take the segments whose descriptors values fulfill less strict thresholds based on actual sliders values. If instead the amount of excerpts available after this filtering is over 500, a MonteCarlo sampling of them is performed, to bring the total number of candidates to 500. We experienced unsatisfying performance of the application during successive steps of the procedure (also due to a not particularly powerful configuration hardware of the server machine) with less aggressive sampling, and we noticed that with 500 candidate excerpts good results were still achieved. This value may be increased in more powerful devices. \
 \item Additional filtering is performed, based on the values of BPM and loudness of the candidates. Candidates who greatly differ on these values from the last element of the playlist are discarded. For judging similarity in terms of BPM, the formula~\ref{eq:perfebpm} (with $\alpha = 1$) has been used, with a maximum distance allowed of 3. The maximum discrepancy allowed in loudness is of 5dB. If no candidate excerpt fulfill this stage, the list of candidates before this filtering is restored. 
 \item At this point we finally choose the number of candidates in which we'll perform deeper analysis. This number, that we call $N_{Neighbors}$, is computed according to the following formula:
 \begin{equation}
 N_{Neighbors} = filter\_size * \abs{FastMap}
 \end{equation} 
-where $\abs{FastMap}$ is the number of excerpt in the FastMap (i.e., the total number of excerpts in the catalogue), and $filter\_size$ is a value in $[0, 1]$. We empirically noted that a $filter\_size$ value of $0.1$ already gives good results, while allowing to achieve excellent performance. We then select the $N_{Neighbors}$ nearest neighbor to the current element through an Euclidean distance on the $20$-dimensional space. 
+where $\abs{FastMap}$ is the number of excerpts in the FastMap (i.e., the total number of excerpts in the catalogue), and $filter\_size$ is a value in $[0, 1]$. We empirically noted that a value of $0.1$ for $filter\_size$ already gives good results, while allowing to achieve highly satisfactory computational times. We then select the $N_{Neighbors}$ nearest neighbor to the current element through an Euclidean distance on the $20$-dimensional space. 
 \item We now compute the symmetric Kullback-Leibler distance between the last element of the playlist and all its neighbors. We do this specifically only if:
 \begin{itemize}
 \item We have a margin of at least 5 seconds of playback in the current playlist after the current playing excerpt
 \item The user has not interacted with the controllers of the client-application since the last iteration of the loop
 \end{itemize}
-If any of this two condition is not met, we don't compute the symmetric Kullback-Leibler distances but rather we choose the next element of the playlist on the basis of the euclidean distance on the $20$-dimensional space. We do this because this stage could require several seconds (around 4 to 9 seconds on the server machine\footnote{This considerable amount of time is due not only to the complexity of the formula for computing the symmetric Kullback-Leibler distance, but also to the necessary access to JSON files, where the needed MFCC values are kept.}) and the conditions for performing such a slow computation could not be met, resulting in a perception of a high-latency system. The second condition is used because, even if the playlist is emptied as soon as the user interacts with the controllers (but there still may be more than 5 seconds to play, if the current excerpt is very long), it doesn't make sense for us to perform computational intensive task for computing similarity when the user's will is actually to change the flow of the music by interacting with the controllers. \\ Once all the distances are computed, we keep only the segments whose SKL distance from last element in the playlist is less than 20, a threshold that we empirically noticed to be quite selective while still usually allowing many excerpts to be usually inside this distance. An excerpt from this list is finally randomly picked and put in the playlist. If the list is empty (or the computation of symmetric Kullback-Leibler couldn't be performed), the next excerpt of the playlist is randomly picked among the 10 nearest neighbors by the mean of the Euclidean distance. 
+If any of this two condition is not met, we don't compute the symmetric Kullback-Leibler distances but we rather choose the next element of the playlist on the basis of the euclidean distance on the $20$-dimensional space. We do this because this stage could require several seconds (around 4 to 9 seconds on the server machine\footnote{This considerable amount of time is due not only to the complexity of the formula for computing the symmetric Kullback-Leibler distance, but also to the necessary access to JSON files, where the needed MFCC values are kept.}) and the conditions for performing such a slow computation could not be met, resulting in a perception of a high-latency system. The second condition is used because, even if the playlist is emptied as soon as the user interacts with the controllers (but there still may be more than 5 seconds to play, if the current excerpt is very long), it doesn't make sense for us to perform computational intensive task for computing similarity when the user's will is actually to change the flow of the music by interacting with the controllers. \\ Once all the distances are computed, we keep only the segments whose SKL distance from last element in the playlist is less than 20, a threshold that we empirically noticed to be quite selective in the quality of the output despite not being extremely selective in the amount of results. An excerpt from this list is finally randomly picked and put in the playlist. If the list is empty (or the computation of symmetric Kullback-Leibler couldn't be performed), the next excerpt of the playlist is randomly picked among the 10 nearest neighbors by the mean of the Euclidean distance. 
 \end{enumerate}
 
-The procedure described allows to choose the next element of the playlist with great performance (as shown in table~\ref{table:rtperformance}), although this may greatly vary with the condition; specifically, computational times become much longer when all the symmetric Kullback-Leibler distances are computed, but this generally leads to better musical results. \\
+The procedure described allows to choose the next element of the playlist with satisfying performance (see Chapter~\ref{Chapter7}), although this may greatly vary with the condition; specifically, computational times become much longer when all the symmetric Kullback-Leibler distances are computed, but this generally leads to better musical results. \\
 It may be useful to mention two further features of the application:
 \begin{itemize}
 \item When the user interacts with the slider for changing the length of the excerpt to be played, the procedure for computing similarity doesn't change. Longer segments are obtained by playing consecutive excerpts of the same song, and the procedure for computing similarity will look for similar excerpts to the last one in this queue of consecutive excerpts of the same song.
 \item The software provides options for managing the playlist generation in regards to repetition of songs or excerpts: specifically, the user can force the application of never picking two excerpts belonging to the same song unless a specific amount of different excerpt in the playlist has already put between them. We noticed that disabling this feature may greatly improve the quality of the musical flow (some loops between excerpts of the same song may generate, creating a strong cohesion of the musical output; this behaviour is the same one proposed by \textit{The Infinite Jukebox}) but may annoy some users if they want to explore the collection of music and would possibly like to avoid repetitions.
 \end{itemize}
 
-\begin{center}
-\begin{longtable}{ p{.4\textwidth}  p{.4\textwidth} } 
-\textbf{Stage} & \textbf{Total time} \\\toprule
-Filtering by sliders & 04h 32m 25s \\ \cmidrule(lr){2-2}
-& Maximum time for track: 00m 52s &  \\ \cmidrule(lr){2-2}
-& Average time for track: 00m 28s &  \\ \hline
-\multirow{2}{80pt}{\textbf{FastMap computation}} & Choosing pivots: 16m 43s & 47m 12s \\ 
-& Computing points coords: 30m 29s & \\ \bottomrule
-\caption[Computational times for descriptors computation]{Computational times for descriptors computation (the time for uploading tracks to Echo Nest is not considered in these results).}
-\label{table:rtperformance}
-\end{longtable}
-\end{center}
 
 \subsection{Audio generation and streaming}
-Everything we have seen so far allows to dinamically generate a content-aware playlist of excerpts. To allow the user to actually listen to this playlist we need to read the corrisponding slices of the audio files and implement a streaming over the network of this audio content.
+\label{sec:audio}
+Everything we have seen so far allows to dinamically generate a content-aware playlist of excerpts. To allow the user to actually listen to this playlist we need to read the corrisponding slices of the audio files and implement a streaming over the network of this audio content. \\ 
+\begin{center}
+\begin{longtable}{ p{.3\textwidth}  p{.55\textwidth} } 
+\textbf{Feature} & \textbf{Motivation} \\
+\toprule
+\textbf{Seek by millisecond}   & Perform very accurate extraction of excerpts from audio tracks, in order to perform beat synchronized track mixing \\ \midrule
+\textbf{Audio Crossfade}   & Improve the audio ``flow'', making the transition between consecutive excerpts less abrupt \\ \midrule
+\textbf{Programmable} & Facilitate communication with the code for computing music similarity. Python preferred.  \\ \midrule
+\textbf{Streaming} & Streaming over the network is required for the user to listen to the playlist.  \\ \bottomrule
+\caption[Requirements of the audio player]{Requirements of the audio player.}
+\label{table:playerfeatures}
+\end{longtable}
+\end{center}
+This is not a trivial task, for not many audio players on Linux provide the needed flexibility by the application. Specifically, it has been found no audio player on this platform that simultaneously provides all the needs reported on Table~\ref{table:playerfeatures}. Therefore, we decided to build our custom audio player, exploiting the very popular multimedia framework \textit{GStreamer}.
+
+
+
+\subsubsection*{GStreamer}
+\label{subsec:gstreamer}
+
+GStreamer\footnote{\url{http://gstreamer.freedesktop.org/}} is a free and open-source multimedia framework written in the C programming language, subject to the GNU Lesser General Public License (LGPL). It allows developer to modularly build multimedia applications with the use of \textit{pipelines}, where lower-level units are connected; each unit has a specific purpose. It fully supports Linux, Android, iOS, Mac OS X and Windows, and offers bindings in several programming languages, Python included. The list of popular applications built upon this framework includes \textit{Amarok}\footnote{\url{https://amarok.kde.org/}}, \textit{Banshee}\footnote{\url{http://banshee.fm/}}, \textit{Flumotion}\footnote{\url{http://www.fluendo.com/}}, \textit{Pitivi}\footnote{\url{http://www.pitivi.org/}}, \textit{QuodLibet}\footnote{\url{https://code.google.com/p/quodlibet/}} and \textit{RhythmBox}\footnote{\url{https://wiki.gnome.org/Apps/Rhythmbox}}. \\
+The main advantage in the use of this framework lies in its modularity: it offers many units (also called \textit{plugins}) with media-handling features, including audio and video playback, recording, streaming and editing. The pipeline design serves as a base to create many different types of multimedia applications, for instance media players, video editors, and streaming media broadcasters. \\ It fulfills all the requirements of Table~\ref{table:playerfeatures} and therefore we decided to use it for developing our custom audio player.
 
 \begin{figure}[h]
-\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+\begin{center}
+\includegraphics[scale=0.5]{Figures/gstreamer.png}
+    \rule{20em}{0.5pt}
+  \caption[GStreamer]{GStreamer logo.}
+  \label{fig:GStreamer}
+\end{center}
+\end{figure}
+
+\subsubsection*{Audio player developed}
+\label{subsec:audioplayer}
+For we want to smooth the transition between two consecutive excerpts, the use of a crossfade is preferred. This implies that two different audio players should be playing simultaneously when the crossfade is being performed. We solved this by creating a simple audio player (the custom bin shown in Figure~\ref{fig:custombin}) for each track that is then connected in a global pipeline (Figure~\ref{fig:pipeline}) responsible for the audio synchronization of different custom bins and of the streaming over the network of the audio content. \\ The units used in the custom bin are explained in Table~\ref{table:custombin}, while the ones used in the global pipeline are explained in Table~\ref{table:pipeline}. \\
+
+\begin{figure}[h]
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45] \hskip -1cm
 	\draw
 	% Drawing the blocks
 	node at (1.5,0) [block] (uridecodebin) {\Large URIdecodebin}
 	node at (4.8,0) [block] (volume) {\Large Volume}
     node at (8,0) [block] (audioconvert) {\Large Audioconvert}
     node at (12,0) [block] (audioresample) {\Large Audioresample}
-    node at (16,0) [output] (binoutput){};
+    node at (16.6,0) [output] (binoutput){};
 
     % Joining blocks. 
  	\draw[->](uridecodebin) -- node {} (volume);
 	\draw[->](volume) -- node {} (audioconvert);
 	\draw[->](audioconvert) -- node{} (audioresample);
-	\draw[->] (audioresample) -- node {$Audio$}(binoutput);
+	\draw[->] (audioresample) -- node[below, align=center] {$audio/x$-$raw$\\$S16LE$\\$44100Hz$\\$2Ch$}(binoutput);
 
 	% Boxing and labelling
 	\draw [color=gray,thick](-0.5,-1) rectangle (14,1);
 	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{Custom Bin}};
 \end{tikzpicture}
-\caption[Custom audio bin]{Custom audio bin, that corresponds to a partial single audio player.}
-\label{fig:systemdesign}
+\caption[Custom audio bin]{Custom audio bin, that corresponds to an audio player only responsible for the playback of a single excerpt.}
+\label{fig:custombin}
 \end{figure}
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+
+\begin{center}
+\begin{longtable}{ p{.2\textwidth} p{.15\textwidth} p{.15\textwidth} p{.45\textwidth} } 
+\textbf{Unit} & \textbf{Input}\footnote{\label{note1}Values shown here are related to particular files of the Phonos catalogue of music used by the system, and they have been inserted just as examples. Their values may vary with different types of files.} & \textbf{Output}\footnoteref{note1} & \textbf{Motivation}\\
+\toprule
+\textbf{URIdecodebin} & $mp3$ file & \textit{audio/x-raw} & Loads the raw audio content of a file by \\ 
+& & $S32LE$, $2Ch$ & its location (URI) \\ 
+& & $44100Hz$ & \\ \midrule
+\textbf{Volume} & \textit{audio/x-raw} & \textit{audio/x-raw} & Used in crossfades, allows fade in and \\ 
+& $S32LE$, $2Ch$ & $S32LE$, $2Ch$ & fade out on single audio tracks\\ 
+& $44100Hz$ & $44100Hz$ & \\ \midrule
+\textbf{Audioconvert} & \textit{audio/x-raw} & \textit{audio/x-raw} & Negotiates a raw audio format  \\ 
+& $S32LE$, $2Ch$ & $S16LE$, $2Ch$ & according to formats supported by its\\ 
+& $44100Hz$ & $44100Hz$ & end and the format of the input \\ \midrule 
+\textbf{Audioresample} & \textit{audio/x-raw} & \textit{audio/x-raw} & Needed by the adder to ensure that \\ 
+& $S16LE$, $2Ch$ & $S16LE$, $2Ch$ & its input files will always be of the\\ 
+& $44100Hz$ & $44100Hz$ & same type\\ \bottomrule
+\caption[Elements of the custom bin]{Elements of the custom bin.}
+\label{table:custombin}
+\end{longtable}
+\end{center}
+
 
 
 \begin{figure}[h]
-\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45] \hskip -1cm
 	\draw
 	% Drawing the blocks
 	node at (1.3,0) [block] (custombin1) {\Large CustomBin1}
 	node at (1.3,-2) [block] (custombin2) {\Large CustomBin2}
 	node at (3.8,-1) [sum, name=suma2] {\suma}
-	node at (5.8,-1) [block] (volume) {\Large Volume}
-	node at (9.3,-1) [block] (mp3enc) {\Large MP3Encoder}
-	node at (13,-1) [block] (tcpsink) {\Large TCP Sink}
+	node at (5.7,-1) [block] (volume) {\Large Volume}
+	node at (9.1,-1) [block] (mp3enc) {\Large MP3Encoder}
+	node at (12.7,-1) [block] (tcpsink) {\Large TCP Sink}
 	node at (16.6, -1) [output] (output) {}
 	;
     % Joining blocks. 
@@ -139,17 +190,80 @@ Everything we have seen so far allows to dinamically generate a content-aware pl
  	\draw[->](suma2) -- node {} (volume);
  	\draw[->](volume) -- node {} (mp3enc);
  	\draw[->](mp3enc) -- node {} (tcpsink);
- 	\draw[->](tcpsink) -- node[align=center] {$Audio$\\$Streaming$} (output);
+ 	\draw[->](tcpsink) -- node[below, align=center] {$audio/mpeg$\\$layer:3$\\$44100Hz$\\$2Ch$} (output);
 
 	% Boxing and labelling
-	\draw [color=gray,thick](-0.5,-3) rectangle (14.5,1);
+	\draw [color=gray,thick](-0.5,-3) rectangle (14.2,1);
 	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{Global Audio Player}};
 \end{tikzpicture}
-\caption[Test]{Block diagram test.}
-\label{fig:systemdesign}
+\caption[Audio player implemented]{Schema for the audio player implemented.}
+\label{fig:pipeline}
 \end{figure}
 
 
+\begin{center}
+\begin{longtable}{ p{.2\textwidth} p{.15\textwidth} p{.15\textwidth} p{.45\textwidth} } 
+\textbf{Unit} & \textbf{Input}\footnoteref{note1} & \textbf{Output}\footnoteref{note1} & \textbf{Motivation}\\
+\toprule
+\textbf{Adder} & \textit{audio/x-raw} & \textit{audio/x-raw} & Mixes together samples coming from \\ 
+& $S16LE$, $2Ch$ & $S16LE$, $2Ch$ & multiple audio streams, producing a \\ 
+& $44100Hz$ & $44100Hz$ & single audio stream\\ \midrule
+\textbf{Volume} & \textit{audio/x-raw} & \textit{audio/x-raw} & Gives control over the global volume.\\ 
+& $S16LE$, $2Ch$ & $S16LE$, $2Ch$ & This will be settable by the user on\\ 
+& $44100Hz$ & $44100Hz$ & the client application GUI\\ \midrule
+\textbf{MP3Encoder} & \textit{audio/x-raw} & \textit{audio/mpeg} & Converts the raw audio stream into an \\ 
+& $S32LE$, $2Ch$ & $layer3$, $2Ch$ & mpeg layer 3 stream\\ 
+& $44100Hz$ & $44100Hz$ & \\ \midrule 
+\textbf{TCPSink} & \textit{audio/x-raw} & & Provides streaming over the network of\\ 
+& $layer3$, $2Ch$ & & the mpeg audio content\\ 
+& $44100Hz$ & & \\ \bottomrule
+\caption[Elements of the pipeline]{Elements of the pipeline.}
+\label{table:pipeline}
+\end{longtable}
+\end{center}
+
+The class responsible for handling the global audio player has access to the playlist generated by the algorithm explained in Section~\ref{subsec:rtalgorithm}. It extracts the first element on this queue, creates a custom bin for it, performs the seeking\footnote{Seeking is actually performed on the URIdecodebin element.} and plays it with an initial fade in, whose length is \texttt{CROSSFADE}\footnote{The default value is 0.8s, enough for creating a sense of music ``flow''. The user can edit this value through the client graphical user interface.}. \texttt{CROSSFADE} seconds before the end of the current excerpt, the algorithm extracts the next element on the playlist. If this is empty, we keep playing the current track until a new excerpt is inserted into the playlist. The algorithm then creates a new custom bin for this new excerpt, adds it to global pipeline, performs the seeking and starts the playback of this custom bin with a fade in. The seek sets the inpoint of the playback to the point \texttt{(start\_point\footnote{By \texttt{start\_point} we mean the starting point of the excerpt inside the track it belongs to.} - CROSSFADE)}, so to have a beat-level synchronization of music (see Figure~\ref{fig:crossfade}): when the old excerpt reaches the end of its length (i.e. at the end of the crossfade, that also corresponds to the first beat of the next bar), the new one reaches the first beat of its corresponding bar\footnote{We recall that each excerpt corresponds to a bar.}. These two beats are then played together. This aspect greatly improved the musicality of the output with the music collection used during development, while not being particularly relevant for the arhythmic Phonos collection of music.\\
+In order to prevent memory leaks, the old excerpt and its corresponding custom bin are both removed respectively from the playlist and from the global pipeline.\\
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=1]{Figures/crossfade.pdf}
+    \rule{27em}{0.5pt}
+  \caption[Crossfade handling]{Handling of crossfades. The red rectangles indicated the content of the excerpt, and dashed lines indicate crossfades. Note that the playback involves more than just the excerpts' content: we use the portion of audio before it during the fade-in to achieve a beat-level synchronization. The indices indicate the number of the beats inside the excerpts.}
+  \label{fig:crossfade}
+\end{center}
+\end{figure}
+\\The audio of the global pipeline is collected by the TCP sink, that is in charge of streaming this content over the TCP port 8070. This stream will be collected by the client application.
+
 \section{The client application}
 \label{sec:rtclient}
+The client application consists of a web-application hosted by the Flask application running on the server. To access it, the client needs to connect to the address \texttt{http://server\_address:5000} on a browser. We entirely designed the graphical user interface of this application; this is shown in Figure~\ref{fig:gui1}.
 
+\begin{figure}[h]
+\hskip -0.8cm
+\includegraphics[scale=0.34]{Figures/gui1.png}
+    \rule{27em}{0.5pt}
+  \caption[Client application user interface]{Client application GUI.}
+  \label{fig:gui1}
+
+\end{figure}
+
+This interface provides several ways for the user to control the music flow. Each time the user interacts with one of them, an HTTP post request is done from the client machine to the server, resulting in a change of the candidates for the playlist. \\
+There are ten sliders: five of them are related to the year of release of the musical pieces, the other five are instead related to intrinsic characteristics of the music. In this way, the user has control both over the decade, and both over the type of music he wants to listen to. The motivation of this design choice is that we want to make the process of discovering music interactive while preserving ease of use. Furthermore, the suddivision of music into decades may be particularly useful in the use at the exhibition, since visitors could be particularly interested in hearing the differences between the works belonging to just a particular era over the entire 40 years life of Phonos. \\The five sliders for music features are:
+\begin{itemize}
+\item Loudness
+\item Noisiness: related to the dissonance of the signal
+\item Rhythm: higher values of the slider lead to excerpts with high Onset Rates on high frequency content
+\item Density: higher values of the slider lead to excerpts where many Barkbands have a considerable amount of energy
+\item Acousticness: sets the ratio Acoustic/Electronic. Lower values of the slider mostly lead to electronic music.
+\end{itemize}
+The ranges of the sliders are dinamically generated during the computation of the fast-map: once the corresponding values for all the excerpts have been collected, these are sorted and we then pick the minimum, the maximum, and the first, second and third quartile for the values related to each descriptors. Therefore keeping the slider of the loudness at maximum will for instance lead to all the excerpts whose loudness value is between the third quartile and the maximum value of loudness of all excerpts. Step values for these five descriptors are calculated after the computation of the fastmap and kept in a separate JSON file. \\
+The GUI additionally provides a set of presets for the values of these five sliders, a monitor for displaying information about the currently playing track, a slider for selecting the length of the audible segments (from 1 to 5 bars), and a knob for the volume (which controls the volume element of the global pipeline explained in Table~\ref{table:pipeline}). \\ By clicking on the button with a star on it, the user has the possibility of marking a track as favorite. The list of \textit{``starred tracks''} is accessible on the second page of the GUI (shown in Figure~\ref{fig:gui2}), together with the list of the five last played track. The motivation behind this choice is to give the user the chance to keep track of the songs he has been finding interesting. At the exhibition, visitors may be particularly interesting in looking for more information about a track they like. \\ 
+Furthermore, this interface is offered in three different languages: English, Spanish and Catalan. This has been done to increase the usability of the software at the exhibition, taking into account possible cultural differences. \\
+The interface fully supports touch screen environments and is based on HTML5, CSS3 and Javascript. Many features of the jQuery library for Javascript are also used. The range sliders are based on \textit{noUiSlider\footnote{\url{http://refreshless.com/nouislider/}}}, while the volume knob is based on \textit{jQuery Knob\footnote{\url{http://anthonyterrien.com/knob/}}}.
+\begin{figure}
+\hskip -0.8cm
+\includegraphics[scale=0.34]{Figures/gui2.png}
+    \rule{27em}{0.5pt}
+  \caption[The second page of the user interface]{The second page of the client application GUI, providing information about favorite and last played tracks.}
+  \label{fig:gui2}
+\end{figure}

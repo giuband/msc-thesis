@@ -25,7 +25,20 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass[11pt, oneside]{Thesis} % The default font size and one-sided printing (no margin offsets)
+\documentclass[11pt, oneside, openright]{Thesis} % The default font size and one-sided printing (no margin offsets)
+\makeatletter
+\def\cleardoublepage{\clearpage\thispagestyle{plain}\ifodd\c@page\else
+    \hbox{}\newpage\if@twocolumn\hbox{}\newpage\fi\fi}
+\makeatother
+\makeatletter
+
+% \renewcommand*{\cleardoublepage}{\clearpage\if@twoside \ifodd\c@page\else
+% \hbox{}%
+% \thispagestyle{empty}%
+% \newpage%
+% \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+% \makeatother
+
 
 \graphicspath{{Pictures/}} % Specifies the directory where pictures are stored
 
@@ -220,22 +233,13 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 
 \input{Chapters/Introduction}
 \part{Background}
-\newpage
-\thispagestyle{plain}
-\mbox{}
 \input{Chapters/Chapter2} 
 \input{Chapters/Chapter3}
 \part{Methodology}
-\newpage
-\thispagestyle{plain}
-\mbox{}
 \input{Chapters/Chapter4} 
 \input{Chapters/Chapter5} 
 \input{Chapters/Chapter6} 
 \part{Results and Discussion}
-\newpage
-\thispagestyle{plain}
-\mbox{}
 \input{Chapters/Chapter7} 
 \input{Chapters/Chapter8} 
 

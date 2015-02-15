@@ -13,7 +13,25 @@ Third, the computation of descriptors should be as fast as possible, given that 
 Last but not least, the tool must provide descriptors whose usefulness for this specific case study has been empirically verified during the development of the system.\\
 All of these requirements lead to the choice of performing the audio analysis with Essentia and Echo Nest: the first for its speed, flexibility and reliability. Echo Nest has been used for some of its descriptors are not present or not as accurate in Essentia, and have shown a great usefulness during the development. \\ Furthermore, both of the two libraries are offered in Python, allowing the entire analysis task to be written in a single programming language, therefore improving the code consistency and readability. \\
 The schema for the extraction of the audio features is illustrated in figure \ref{fig:extraction}. \\ 
-\begin{figure}[h]
+\begin{figure}[h]\hskip -1cm
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+	\draw
+	% Drawing the blocks
+	node at (0.5,-0.8) [block] (track) {\Large Track}
+	node at (4.8,-0.8)[align=center] [block] (enanalysis) {\Large Echo Nest\\Analysis}
+	node at (10.7,-0.8)[align=center][block] (bar) {\Large Bar Analysis\\(Essentia)}
+	node at (15.2, -1.5) [draw, cylinder, shape border rotate=90, aspect=0.75, %
+      minimum height=40, minimum width=60] (output) {Output File};
+	;
+    % Joining blocks. 
+	\draw[->](track) -- node[align=center]{$get$ $E.N.$\\$analysis$}(enanalysis);
+ 	\draw[->](enanalysis) -- node[align=center] {$for$ $each$ $bar$\\$found$ $by$ $E.N.$} (bar);
+ 	\draw[->](bar.east) -- node[align=center] {$store$\\$analysis$} (output.west|-bar.east);
+
+	% Boxing and labelling
+	\draw [color=gray,thick](-0.5,-3) rectangle (16.5,1);
+	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{Analysis of one track}};
+\end{tikzpicture}
 \caption{Schema for the extraction of audio features.}
 \label{fig:extraction}
 \end{figure}
@@ -39,21 +57,19 @@ OR_{excerpt} = \frac{Onsets_{excerpt}}{Length_{excerpt}}
 This procedure is repeated for each excerpt, in order to get a deep description for all of them and perform more precise similarity computation in the real-time application. In addition, we store some additional level-song descriptors, specifically artist, title and year of release, and acousticness (computed with Echo Nest). Finally, for each song we create a corresponding JSON file in which we store all the descriptors computed. \\
 The list of descriptors computed during this task is summarized in table~\ref{table:offlinedescriptors}.
 
-\newpage
-\begin{center}
-\begin{longtable}{| p{.15\textwidth} | p{.15\textwidth} | p{.15\textwidth} | p{.55\textwidth} |} 
-\hline
-\textbf{Name} & \textbf{Source} & \textbf{Level} & \textbf{Reason} \\ \hline
-Title, Artist, Year & Provided & Song-Level & Display more information about the current playing track in the GUI \\ \hline
-Acousticness & Echo Nest & Song-Level & Give the user the chance to filter music in regards to its nature (acoustic or electronic music) \\ \hline
-MFCC & Essentia & Bar-Level & Timbre similarity computation \\ \hline
-BPM & Echo Nest & Bar-Level & Avoid consecutive excerpts with very different BPM \\ \hline
-Onset Rate & Essentia & Bar-Level & Give the user the chance to filter music in regards to the presence of percussive elements \\ \hline
-Dissonance & Essentia & Bar-Level & Give the user the chance to filter music in regards to the dissonance\footnote{During development, it has been empirically noticed that dissonance has a significant correlation to the perception of noise: the more dissonant an excerpt is, the more it is perceived as noisy.} of excerpts \\ \hline
-Loudness & Echo Nest & Bar-Level & Give the user the chance to filter music in regards to its loudness \\ \hline
-Bark Bands & Essentia & Bar-Level & Give the user the chance to filter music in regards to its ``sparseness'', i.e. the amount of mel bands with significant energy level \\ \hline
-HPCP & Echo Nest & Beat-Level & Use them to compute key \\ \hline
-Key & Essentia & Beat-Level & Use them to discard the possibility of having two consecutive dissonant excerpts in the playlist \\ \hline
+\begin{center} 
+\begin{longtable}{ p{.15\textwidth}  p{.15\textwidth}  p{.15\textwidth}  p{.55\textwidth} } 
+\textbf{Features} & \textbf{Source} & \textbf{Level} & \textbf{Motivation} \\ \toprule
+Title, Artist, Year & Provided & Song-Level & Display more information about the current playing track in the GUI \\ \midrule
+Acousticness & Echo Nest & Song-Level & Give the user the chance to filter music in regards to its nature (acoustic or electronic music) \\ \midrule
+MFCC & Essentia & Bar-Level & Timbre similarity computation \\ \midrule
+BPM & Echo Nest & Bar-Level & Avoid consecutive excerpts with very different BPM \\ \midrule
+Onset Rate & Essentia & Bar-Level & Give the user the chance to filter music in regards to the presence of percussive elements \\ \midrule
+Dissonance & Essentia & Bar-Level & Give the user the chance to filter music in regards to the dissonance\footnote{During development, it has been empirically noticed that dissonance has a significant correlation to the perception of noise: the more dissonant an excerpt is, the more it is perceived as noisy.} of excerpts \\ \midrule
+Loudness & Echo Nest & Bar-Level & Give the user the chance to filter music in regards to its loudness \\ \midrule
+Bark Bands & Essentia & Bar-Level & Give the user the chance to filter music in regards to its ``sparseness'', i.e. the amount of mel bands with significant energy level \\ \midrule
+HPCP & Echo Nest & Beat-Level & Use them to compute key \\ \midrule
+Key & Essentia & Beat-Level & Use them to discard the possibility of having two consecutive dissonant excerpts in the playlist \\ \bottomrule
 \caption[List of descriptors computed offline]{Descriptors computed by the offline application.}
 \label{table:offlinedescriptors}
 \end{longtable}
@@ -100,40 +116,41 @@ The accuracy and performance of this procedure are well-documented in \cite{fast
 The computed data is stored on a JSON file: for each point (corresponding to an excerpt), we store its coordinates in the new 20-dimensional space plus some additional descriptors that allow us to do a faster filtering in the real-time application, as we won't need to lookup to the original JSON descriptor file for each song just for retrieving the values of these descriptors. The list of features stored in the map for each point is shown in table~\ref{table:fastmap}, while we propose also an illustrative figure in Figure~\ref{figure:fastmapfigure}. During this stage, we additionaly save lists that associate each segment to the decade the song it has been extracted from has been produced. This will allow very fast filtering techniques on the real-time application when the user interacts with the sliders for selecting music according to the year of release. \\The computational times of this stage are shown in table~\ref{table:benchmarkoffline} and the configuration of the computer used in table~\ref{table:hardwareoffline}.
 
 
-\newpage
 \begin{center}
-\begin{longtable}{| p{.35\textwidth} | p{.65\textwidth} |} 
-\hline
-\textbf{Name} &  \textbf{Motivation} \\ \hline
-Year, Artist, Title & Speed up access to information\\ \hline
-Starting and ending point inside the track & Allows fast extraction of the excerpt from the entire audio signal \\ \hline
-BPM, Key & Be faster when filtering out music with very different BPM or key\\ \hline
-Acousticness, Loudness, Dissonance, Bark Bands, OR & Perform a fast filtering of database of excerpt when the user interacts with the GUI for controlling the musical output\\ \hline
+\begin{longtable}{ p{.35\textwidth}  p{.65\textwidth} } 
+\textbf{Features} &  \textbf{Motivation} \\ \toprule
+Year, Artist, Title & Speed up access to information\\ \midrule
+Starting and ending point inside the track & Allows fast extraction of the excerpt from the entire audio signal \\ \midrule
+BPM, Key & Be faster when filtering out music with very different BPM or key\\ \midrule
+Acousticness, Loudness, Dissonance, Bark Bands, OR & Perform a fast filtering of database of excerpt when the user interacts with the GUI for controlling the musical output\\ \bottomrule
 \caption[Features stored in the map]{Features stored in the map for each point.}
 \label{table:fastmap}
 \end{longtable}
 \end{center}
 
 \begin{center}
-\begin{longtable}{| p{.25\textwidth} | p{.45\textwidth} |} 
-\hline
-\textbf{Laptop Model} & Packard Bell EasyNote TS-11HR \\ \hline
-\textbf{CPU}         & Intel\textregistered  Core\texttrademark i5-2410M @ 2.50GHz \\ \hline
-\textbf{RAM}        & 4GB DDR3 @ 1066MHz \\ \hline
-\textbf{Hard Disk Drive} & 5400rpm \\ \hline
+\begin{longtable}{ p{.25\textwidth}  p{.45\textwidth} } 
+\toprule
+\textbf{Laptop Model} & Packard Bell EasyNote TS-11HR \\ \midrule
+\textbf{CPU}         & Intel\textregistered  Core\texttrademark i5-2410M @ 2.50GHz \\ \midrule
+\textbf{RAM}        & 4GB DDR3 @ 1066MHz \\ \midrule
+\textbf{Hard Disk Drive} & 5400rpm \\ \midrule
+\textbf{OS}        & Linux Mint 17.1 ``Rebecca'' (64 bit) \\ \bottomrule
 \caption[Hardware configuration of computer used during off-line descriptors computation]{Hardware configuration of computer used during off-line descriptors computation.}
 \label{table:hardwareoffline}
 \end{longtable}
 \end{center}
 
+\newpage
 \begin{center}
-\begin{longtable}{ p{.2\textwidth}  p{.4\textwidth}  p{.3\textwidth} } 
-\textbf{Stage} & \textbf{Stats} & \textbf{Total time} \\\toprule
-\multirow{2}{80pt}{\textbf{Descriptors computation}} & Minimum time for track: 00m 15s & \multirow{0}{80pt}{04h 32m 25s} \\ \cmidrule(lr){2-2}
-& Maximum time for track: 00m 52s &  \\ \cmidrule(lr){2-2}
-& Average time for track: 00m 28s &  \\ \midrule
-\multirow{2}{80pt}{\textbf{FastMap computation}} & Choosing pivots: 16m 43s & 47m 12s \\ \cmidrule(lr){2-2}
-& Computing points coords: 30m 29s & \\ \bottomrule
+\begin{longtable}{ p{.2\textwidth}  p{.25\textwidth}  p{.4\textwidth} } 
+\textbf{Stage} & \textbf{Time required} & \textbf{Stats} \\\toprule
+\multirow{2}{80pt}{\textbf{Descriptors computation}} & \multirow{0}{80pt}{04h 32m 25s} & Minimum time for track: 00m 15s  \\ \cmidrule(lr){3-3}
+& & Maximum time for track: 00m 52s \\ \cmidrule(lr){3-3}
+& & Average time for track: 00m 28s \\ \midrule
+\multirow{2}{80pt}{\textbf{FastMap computation}} & 00h 47m 12s & Choosing pivots: 16m 43s \\ \cmidrule(lr){3-3}
+& & Computing points coords: 30m 29s \\ \midrule
+\textbf{Total} & 05h 19m 37s & \\ \bottomrule
 \caption[Computational times for descriptors computation]{Computational times for descriptors computation of a collection of 584 tracks (the time for uploading these tracks to Echo Nest is not considered in these results).}
 \label{table:benchmarkoffline}
 \end{longtable}
