@@ -5,7 +5,20 @@
 \lhead{Chapter 7. \emph{Results}}
 
 \section{Performance}
+Performance has been the main concern in the development of the system. As already seen in previous chapters, many efforts have been made in order to achieve a good responsiveness to user input in the real time application. We made the clear choice of preferring low times in the offline computation of descriptors (reported in Table~\ref{table:benchmarkoffline}) for this has helped us in achieving good response times in the real time application. The latter ones, in general, greatly vary with the use of the application. For instance, the user interaction with sliders has the effect of emptying the playlist queue (which will result in temporary shorter computational times, due to the use of the least precise but fastest music similarity computation algorithm in order to get some new element into the playlist as soon as possible), while choosing to use longer segments or not interacting with the sliders may increase the computational time (for the system realizes that it has more time available for computing music similarity and then uses the most accurate algorithm\footnote{We recall that the only difference between the two algorithms lies in the choice of the similarity function, as shown at the point 8 of Section~\ref{subsec:rtalgorithm}}). \\
+For us, this instability of performance is not intended as a flaw: it could rather be seen as good flexibility of the system to many different computational situations.\\
+We decided to collect data about computational times of the real time application for the choice of 1000 consecutive excerpts, with occasional interaction of the user. This is a reasonable analysis case, for it may be very similar to the real use of the system and also provides a good perspective on the computational times while using the most demanding algorithm of the system for computing music similarity. The results are shown for each main point of the procedure explained in Section~\ref{subsec:rtalgorithm}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.5]{Figures/figure_1.pgf}
+    \rule{20em}{0.5pt}
+  \caption[GStreamer]{GStreamer logo.}
+  \label{fig:GStreamer}
+\end{center}
+\end{figure}
+
+
 \section{Evaluation}
 \section{Use at exhibition} 
-
-Also some words on the Kiosk
+\section{Results obtained by the study}

@@ -20,7 +20,7 @@ The schema for the extraction of the audio features is illustrated in figure \re
 	node at (0.5,-0.8) [block] (track) {\Large Track}
 	node at (4.8,-0.8)[align=center] [block] (enanalysis) {\Large Echo Nest\\Analysis}
 	node at (10.7,-0.8)[align=center][block] (bar) {\Large Bar Analysis\\(Essentia)}
-	node at (15.2, -1.5) [draw, cylinder, shape border rotate=90, aspect=0.75, %
+	node at (15.2, -1.2) [draw, cylinder, shape border rotate=90, aspect=0.35, %
       minimum height=40, minimum width=60] (output) {Output File};
 	;
     % Joining blocks. 
@@ -58,7 +58,7 @@ This procedure is repeated for each excerpt, in order to get a deep description 
 The list of descriptors computed during this task is summarized in table~\ref{table:offlinedescriptors}.
 
 \begin{center} 
-\begin{longtable}{ p{.15\textwidth}  p{.15\textwidth}  p{.15\textwidth}  p{.55\textwidth} } 
+\begin{longtable}{ p{.15\textwidth}  p{.13\textwidth}  p{.15\textwidth}  p{.55\textwidth} } 
 \textbf{Features} & \textbf{Source} & \textbf{Level} & \textbf{Motivation} \\ \toprule
 Title, Artist, Year & Provided & Song-Level & Display more information about the current playing track in the GUI \\ \midrule
 Acousticness & Echo Nest & Song-Level & Give the user the chance to filter music in regards to its nature (acoustic or electronic music) \\ \midrule
@@ -155,4 +155,3 @@ Acousticness, Loudness, Dissonance, Bark Bands, OR & Perform a fast filtering of
 \label{table:benchmarkoffline}
 \end{longtable}
 \end{center}
-
