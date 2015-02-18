@@ -9,14 +9,83 @@ Performance has been the main concern in the development of the system. As alrea
 For us, this instability of performance is not intended as a flaw: it could rather be seen as good flexibility of the system to many different computational situations.\\
 We decided to collect data about computational times of the real time application for the choice of 1000 consecutive excerpts, with occasional interaction of the user. This is a reasonable analysis case, for it may be very similar to the real use of the system and also provides a good perspective on the computational times while using the most demanding algorithm of the system for computing music similarity. The results are shown for each main point of the procedure explained in Section~\ref{subsec:rtalgorithm}.
 
+
+
 \begin{figure}[h]
 \begin{center}
-\includegraphics[scale=0.5]{Figures/figure_1.pgf}
-    \rule{20em}{0.5pt}
-  \caption[GStreamer]{GStreamer logo.}
-  \label{fig:GStreamer}
+\includegraphics[scale=0.7]{Figures/bench_sliders.pdf}
+    \rule{10em}{0.5pt}
+  \caption[Time for filtering music in regards to sliders' positions]{Time for performing the first step of the procedure: filtering of excerpts based on the current positions of sliders.}
+  \label{fig:step1}
 \end{center}
 \end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.7]{Figures/bench_subsampling.pdf}
+    \rule{10em}{0.5pt}
+  \caption[Time for performing Monte Carlo subsampling]{Time for performing Monte Carlo subsampling.}
+  \label{fig:step2}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.7]{Figures/bench_bpm_filters.pdf}
+    \rule{10em}{0.5pt}
+  \caption[Time for filtering music according to musicality with current excerpt]{Time for filtering music according to musicality with current excerpt (in regards of BPM and key).}
+  \label{fig:step3}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.7]{Figures/bench_euclidean.pdf}
+    \rule{10em}{0.5pt}
+  \caption[Time for computing euclidean distance]{Time for computing euclidean distance between two 20D points.}
+  \label{fig:step4}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.7]{Figures/bench_skl.pdf}
+    \rule{10em}{0.5pt}
+  \caption[Time for computing symmetric Kullback-Leibler distance]{Time for computing symmetric Kullback-Leibler distance between two excerpts.}
+  \label{fig:step5}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.7]{Figures/bench_get_suitsegm.pdf}
+    \rule{10em}{0.5pt}
+  \caption[Time for computing distances from all filtered segments]{Time for computing distances from all filtered segments.}
+  \label{fig:step6}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.7]{Figures/bench_procedure.pdf}
+    \rule{10em}{0.5pt}
+  \caption[Global time for selecting next segment]{Global time for selecting next segment.}
+  \label{fig:step7}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.7]{Figures/bench_json_single.pdf}
+    \rule{10em}{0.5pt}
+  \caption[Time for accessing and parsing a JSON file]{Time for accessing and parsing a JSON file.}
+  \label{fig:step8}
+\end{center}
+\end{figure}
+
+
+
+
 
 
 \section{Evaluation}

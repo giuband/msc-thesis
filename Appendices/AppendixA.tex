@@ -1,3 +1,14 @@
+\begin{appendices}
+\makeatletter
+\renewcommand*\FormatBlockHeading[1]{%
+  \leftskip\@titleindent
+  #1{\noindent
+  \ifHeadingNumbered
+    \@chapapp\ \mw@seccntformat\HeadingNumber
+  \fi
+  \ignorespaces\HeadingText\@@par}
+  }
+\makeatother
 \chapter{List of Essentia descriptors} 
 
 \label{AppendixA}
