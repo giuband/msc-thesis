@@ -5,6 +5,7 @@
 \lhead{Chapter 7. \emph{Results}}
 
 \section{Performance}
+\label{sec:performanceanalysis}
 Performance has been the main concern in the development of the system. As already seen in previous chapters, many efforts have been made in order to achieve a good responsiveness to user input in the real time application. We made the clear choice of preferring low times in the offline computation of descriptors (reported in Table~\ref{table:benchmarkoffline}) for this has helped us in achieving good response times in the real time application. The latter ones, in general, greatly vary with the use of the application. For instance, the user interaction with sliders has the effect of emptying the playlist queue (which will result in temporary shorter computational times, due to the use of the least precise but fastest music similarity computation algorithm in order to get some new element into the playlist as soon as possible), while choosing to use longer segments or not interacting with the sliders may increase the computational time (for the system realizes that it has more time available for computing music similarity and then uses the most accurate algorithm\footnote{We recall that the only difference between the two algorithms lies in the choice of the similarity function, as shown at the point 8 of Section~\ref{subsec:rtalgorithm}}). \\
 For us, this instability of performance is not intended as a flaw: it could rather be seen as good flexibility of the system to many different computational conditions.\\
 We decided to collect data about computational times of the real time application for the choice of 1000 consecutive excerpts, with occasional interaction of the user. This is a reasonable analysis case, for it may be very similar to the real use of the system and also provides a good perspective on the computational times while using the most demanding algorithm of the system for computing music similarity. The results are shown for each main point of the procedure explained in Section~\ref{subsec:rtalgorithm}.\\
@@ -19,7 +20,7 @@ We decided to collect data about computational times of the real time applicatio
 \end{figure}
 
 It can be seen that most of the times, the algorithm for choosing the next excerpt requires between 1.5 seconds and 3 seconds. The presence of some outliers above 5 seconds is due to particular conditions of the environment or of the operative system (such as some other process starting running in the background) and should not be considered meaningful for judging the performance of the algorithm itself. \\
-We consider particurly appreciable that the system is capable of adapting its responsiveness to the environment, while still getting good response times also with most intensive computations. As already stated, during this  experiment user interaction were occasional, leading the system to use the most intensive variant of the algorithm 732 out of 1000 times.\\ \\ \vspace{5cm}
+We consider particurly appreciable that the system is capable of adapting its responsiveness to the environment, while still getting good response times also with most intensive computations. As already stated, during this  experiment user interactions were occasional, leading the system to use the most intensive variant of the algorithm 732 out of 1000 times.\\ \\ \vspace{5cm}
 
 \begin{figure}[htbp]
 \begin{center}
@@ -82,6 +83,7 @@ Looking at these graphs, several details emerge:
 \end{itemize}
 
 \section{Evaluation}
+\label{sec:eval_results}
 As explained in Section~\ref{sec:evaluation_idea}, we have decided to perform the evaluation of the system with specific experiments, followed by the compilation of a survey.
 Specifically, the experiments are organized as follows:
 \begin{itemize}
@@ -91,8 +93,26 @@ Specifically, the experiments are organized as follows:
 \item The subject compiles a survey with specific questions about ease of useness, enjoyment of musical output, familiarity with the music and with this kind of software, and any problems. 
 \end{itemize}
 
-NUM subjects took part to this evaluation, with the following global results:
-
+NUM subjects took part to this evaluation, with the following global results: \\
+GRAPHS AND DISCUSSION
 
 \section{Use at exhibition} 
+The inauguration of the exhibition has been on December 18th 2014, at Museu de la Musica, Barcelona. Many people have interacted with the system in order to explore the Phonos catalogue of music. The system hasn't incurred in any problem. At the time of the writing (February 2015), it's still daily used by several visitors at the Museum. The interactive kiosk will be dismissed at the end of the exhibition, on late September 2015.\\
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=0.1]{Figures/kiosk1.jpg}
+
+\vspace{1cm}
+
+\includegraphics[scale=0.1]{Figures/kiosk2.jpg}
+    \rule{20em}{0.5pt}
+  \caption[Interactive kiosk at the exhibition]{Use of the interactive kiosk at the exhibition.}
+  \label{fig:kiosk}
+\end{center}
+\end{figure}
+
 \section{Results obtained by the study}
+The main result achieved by the study was the exploitation of latest MIR findings for the development of a system that could easily be used by people not related to the research field and, more in general, not accustomed to the use of software. \\
+This is a further proof that MIR technologies may be extremely useful in a wide range of applications, the most of which linked to common daily life situations. \\
+Another contribute of this study lies in the integration of different researches into a single system: a study of of latest findings has been conducted in order to find what results have been achieved and could have been useful for our purposes. Despite being influenced by other solutions, ours constitutes an original way of solving the problem, for the algorithm we developed offer several new ideas; these are mainly due to the requirement of developing a low-latency system. Furthermore, the requirement of mixing together tracks (instead of just building a playlist of songs to be played one after another) has lead to the choice of implementing some personal musical knowledge in order to discard mixes that would have been perceived highly contrasting. This knowledge is especially related to the field of music composition and perception.\\

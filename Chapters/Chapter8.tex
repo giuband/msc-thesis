@@ -1,5 +1,15 @@
-\chapter{Future Work} \
+\chapter{Future Work} 
 
-\label{Chapter8} \
+\label{Chapter8} 
 
-\lhead{Chapter 8. \emph{Future Work}}\
+\lhead{Chapter 8. \emph{Future Work}}
+
+Despite having successfully reached its main goals, there is a lot of room for improving the system. \\
+At first, the use of JSON files should be discarded in favour of much faster database tables, for instance PostgreSQL or MySQL. As seen in \ref{sec:performanceanalysis}, accessing and parsing JSON files is one of the longest operations of the algorithm (almost 100 times longer than computing the symmetric Kullback-Leibler distance). Implementing a database should allow to be able to use the more computationally intensive variant of the algorithm more frequently and to make the subsampling less aggressive, therefore leading to generally better results. \\
+The computation of music similarity could also be improved and use more sophisticated techniques, such as Fluctuation Patterns, that have shown very good results in similar systems \cite{pohle09}. \\
+Furthermore, the development of a web application imposes several limitations (such as general low performances and high latency on audio streaming) that could easily be solved in a native mobile application for tablets or smartphones. \\
+The source code for the application is entirely available at \url{https://github.com/giuband/Phonos-Music-Explorer}, so that many users can contribute in making it better.\\
+Once the above cited aspects are refined, the development of the system could follow two different paths.
+
+The system could be improved in its use for music discovery. For instance, the user interface could implement some way of letting the user discover his position inside the map of excerpts, in order to give a more clear idea about the music of the catalogue. New descriptors could be used, and some of them could also be inherited from metadata or machine learning processes. \\ \vspace{2cm}
+Otherwise, the system could additionaly be integrated into a more creative environment for creating music. It could be use for the automatic generation of recommendations while in the process of composing music. For instance, it could suggests to the user of using a particular excerpt at some point of his composition to improve the quality of the work. It could also be used as the only source to compose music, providing the ability of automatically composing music made of excerpts while the user gives a direction to this flow, according to his creative intent. Such an application perfectly fits the vision embraced by the GiantSteps project and would provide a totally revolutionary system of producing music, making this amazing creative task accessible at anyone, indipendently from the skill. The process of making music could therefore overthrow its innate boundaries, leading to a world where the creation of art arises from the purest intent of contributing to the world cultural heritage, in spite of lack of limited technical knowledge, economic unavailability and physical impediments.
