@@ -31,21 +31,45 @@ The requirements cited above have lead to the following choices for the design o
   output/.style   = {coordinate} % Output
 }
 
-\begin{figure}
-\centering
-\begin{tikzpicture}
-    % Place nodes
-    \node [draw, cylinder, shape border rotate=90, aspect=0.75, %
-      minimum height=40, minimum width=60] (data) {Data};
-    \node [block, right=2cm of data.south,anchor=south west] (A) {A};
-    \node [block, right= of A] (B) {B};
-    \node [block, right=of B] (C) {C};
-    \node [block, right=of C] (D) {D};
-    \path [line] (data.east|-A.west) -- (A.west);
-    \path [line] (A) -- (B);
-    \path [line] (B) -- (C);
-    \path [line] (C) -- (D);
+\newcommand{\suma}{\Large$+$}
+
+\begin{figure}[h]\hskip -1cm
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+\node at (1, 0)[rectangle split, rectangle split parts=6,
+draw, rectangle split vertical,text height=0cm,text depth=0.5cm,on chain, inner xsep=20pt, inner ysep=4.5pt] (wa) {};
+\fill[white] ([xshift=-1pt,yshift=1pt]wa.north west) rectangle ([xshift=25pt,yshift=90pt]wa.south);
+  \draw
+  % Drawing the blocks
+  node at (7.5,-1.8)[align=center] [block] (enanalysis) {Similar \\ Candidates}
+  node at (3,0.5)[align=center] [block] (enanalysis) {Similar \\ Candidates}
+  node at (7.5, 0.5) [draw, cylinder, shape border rotate=90, aspect=0.35, %
+      minimum height=40, minimum width=60] (output) {Output File}
+  node at (14.7,-1.8)[align=center][block] (bar) {Choice \\ of segment}
+  ;
+  \node[align=center,below] at (wa.south) {Playlist};
+    % Joining blocks. 
+  \draw[->](enanalysis) -- node[align=center] {$for$ $each$ $bar$\\$found$ $by$ $E.N.$} (bar);
+  \draw[->](bar.east) -- node[align=center] {$store$\\$analysis$} (output.west|-bar.east);
+
+  % First box and labelling
+  \draw [color=gray,thick](-0.5,-3) rectangle (16.5,2.5);
+  \node at (-0.5,2.5) [above=5mm, right=0mm] {\textsc{Server machine}};
+
+  % Blocks in second box
+  \draw
+  node at (3,-6) [align=center] [block] (track) {Audio \\ Playback}
+  node at (12,-6)[align=center] [block] (enanalysis) {Controlling \\ Music Flow}
+  ; 
+
+  \draw
+  node at (7.5,-9)[align=center][block] (bar) {\Large User};
+
+  % Second box and labelling
+  \draw [color=gray,thick](1.5,-5) rectangle (14,-7);
+  \node at (1.5,-5) [above=5mm, right=0mm] {\textsc{Client machine}};
 \end{tikzpicture}
+\caption{The implementation of the system.}
+\label{fig:extraction}
 \end{figure}
 
 \section{Evaluation}
