@@ -6,13 +6,13 @@
 
 \section{Catalogue of music}
 \label{sec:catalogue}
-The catalogue of music provided features 584 songs, for a total length of 91 hours, 43 minutes and 35 seconds. The average length of each song is 9 minutes and 25 seconds circa. This catalogue has been provided with metadata indicating only artist, year of release and title of each song. Furthermore, all of these work can be labelled as belonging to the electro-acoustic genre, which usually indicates very abstract and arrhythmic, for which is difficult to provide semantic descriptors or tags. Given this latter feature of the music and the length of the entire catalogue, the possibility of manually annotating it with proper metadata has been soon disregarded. This collection of music has therefore represented a great chance for developing a system based on the latest findings on audio content analysis.
+The catalogue of music provided features 584 songs, for a total length of 91 hours, 43 minutes and 35 seconds. The average length of each song is 9 minutes and 25 seconds circa. This catalogue has been provided with metadata indicating only artist, year of release and title of each song. Furthermore, all of these work can be labelled as belonging to the electro-acoustic genre, which usually indicates very abstract and arrhythmic, for which is difficult to provide semantic descriptors or tags. Given this latter feature of the music and the length of the entire catalogue, the possibility of manually annotating it with proper metadata has been soon disregarded. This collection of music has therefore represented a great chance for developing a system based on the latest findings on audio content analysis. \\The catalogue features songs recorded over 40 years and coming from different sources (mainly tape, DAT and vynil). These recordings were provided transcoded by us to CD-quality format and then transcoded into mp3 format at 192kbps, with a sample rate of 44100Hz.
 
 \section{Requirements}
 \label{sec:requirements}
 Despite its intended use as part of the exhibition \textit{``Phonos, 40 anys de música electrònica a Barcelona''}, the software developed should feature good flexibility to different catalogues of music, in order to be exploited as a part of the research for the GiantSteps project. This has represented a strong requirement during the development, and has induced the adoption of several descriptors that may not be particularly meaningful for the Phonos catalogue of songs, but that extend the range of possible music catalogues in which the system performance could be satisfactory. Furthermore, as a part of a research project, the system developed should be easily extendable in other research activities, hence a modular, coherent and well-document code is preferred. \\
-The software is intended to be used at the exhibition through an interactive kiosk: it will be available to users as a link inside a more general \textit{webpage} containing several information regarding Phonos history and instrumentation. In addition, it must fully support touch devices, provided that this will be the only way users will be able to interact with the application. \\ 
-All of these requirements have lead to the choice of developing a \textit{web-application}. \\
+The software is intended to be used at the exhibition through an interactive kiosk: it will be available to users as a link inside a more general \textit{webpage} containing several information regarding Phonos history and instrumentation. In addition, it must fully support touch devices, provided that this will be the only way users will be able to interact with the application, specifically with some sliders that allow them to control the flow of music in regards to the year of release of recordings or some relevant and perceivable audio features. \\ 
+All of these requirements have lead to the choice of developing a \textit{web-application}. 
 Anyways, the interactive kiosk to be used at the exhibition was not available during the development; furthermore, its technical specification was unknown. For these reasons, it was therefore decided to develop a \textit{two-layers system} made of the interactive kiosk machine connected (by an Ethernet cable) to a server machine. The latter one is in charge of providing and executing all the complex functions required during the functioning of the system. \\
 Furthermore, the system must react to the real-time interaction of users with the user interface. Computation times must hence be as low as possible, in order to avoid a notable and inconvenient delay between the user interaction and the effective perception of changes in the flow of audio. \\
 Finally, given the substantial average length of the songs, the system should segment the songs into very short excerpts (from 2 seconds to around 30; the choice of this length should be available to users in a real-time fashion), in order to allow users to listen to as many works as possible during the visit at the exhibition and to more easily find tracks that fulfill their taste. It must then be found a way to properly segment the audio pieces and computing descriptors for each slice obtained. In order to achieve a better sense of \textit{``flow of music''}, the computation of similarities should therefore be carried out between these short excerpts, instead of exploiting descriptors for the entire songs.
@@ -33,39 +33,51 @@ The requirements cited above have lead to the following choices for the design o
 
 \newcommand{\suma}{\Large$+$}
 
-\begin{figure}[h]\hskip -1cm
+\begin{figure}[bt]\hskip -2cm
 \begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
 \node at (1, 0)[rectangle split, rectangle split parts=6,
 draw, rectangle split vertical,text height=0cm,text depth=0.5cm,on chain, inner xsep=20pt, inner ysep=4.5pt] (wa) {};
 \fill[white] ([xshift=-1pt,yshift=1pt]wa.north west) rectangle ([xshift=25pt,yshift=90pt]wa.south);
   \draw
   % Drawing the blocks
-  node at (7.5,-1.8)[align=center] [block] (enanalysis) {Similar \\ Candidates}
-  node at (3,0.5)[align=center] [block] (enanalysis) {Similar \\ Candidates}
+  node at (2,1) (lqueue) {}
+  node at (7.5,-1.8)[align=center] [block] (similarcands) {Similar \\ Candidates}
   node at (7.5, 0.5) [draw, cylinder, shape border rotate=90, aspect=0.35, %
-      minimum height=40, minimum width=60] (output) {Output File}
-  node at (14.7,-1.8)[align=center][block] (bar) {Choice \\ of segment}
+      minimum height=40, minimum width=60, align=center] (excerpts) {Excerpts \\ descriptors}
+  node at (14.7,-1.8)[align=center][block] (similarity_comp) {Choice \\ of segment}
+  node at (14.7, 2.5) (northeast) {}
+  node at (1, 2.5) (northwest) {}
+  node at (1,1.3) (north) {}
   ;
   \node[align=center,below] at (wa.south) {Playlist};
     % Joining blocks. 
-  \draw[->](enanalysis) -- node[align=center] {$for$ $each$ $bar$\\$found$ $by$ $E.N.$} (bar);
-  \draw[->](bar.east) -- node[align=center] {$store$\\$analysis$} (output.west|-bar.east);
+  \draw[->](lqueue) -- node[align=center, below] {$last$ $element$ \\ $of$ $playlist$} (similarcands.west);
+  \draw[->](excerpts.south) -- node[align=center] {$reduce$\\$problem$ $size$} (similarcands.north);
+  \draw[->](similarcands.east) -- node[align=center, below] {$compute$ $music$\\$similarity$} (similarity_comp.west);
+  \draw[--](similarity_comp.north) -- node[align=center] {} (northeast.north);
+  \draw[--](northeast.north) -- node[align=center, top] {$add$ $new$ $excerpt$ $to$ $playlist$} (northwest.north);
+  \draw[->](northwest.north) -- node[align=center] {} (north);
 
   % First box and labelling
-  \draw [color=gray,thick](-0.5,-3) rectangle (16.5,2.5);
-  \node at (-0.5,2.5) [above=5mm, right=0mm] {\textsc{Server machine}};
+  \draw [color=gray,thick](-0.5,-3) rectangle (16,3);
+  \node at (-0.5,3) [above=5mm, right=0mm] {\textsc{Server machine}};
 
   % Blocks in second box
   \draw
-  node at (3,-6) [align=center] [block] (track) {Audio \\ Playback}
-  node at (12,-6)[align=center] [block] (enanalysis) {Controlling \\ Music Flow}
+  node at(1, -6.1) (centereast) {}
+  node at (3,-6) [align=center] [block] (playback) {Audio \\ Playback}
+  node at (10,-6)[align=center] [block] (filters) {Controlling \\ Music Flow}
+  node at (6.5,-9)[align=center][block] (user) {\Large User}
   ; 
+  \draw[--](wa.south) -- node[align=center, left] {$first$ $element$ \\ $of$ $playlist$} (centereast.north);
+  \draw[->](centereast.north) -- node[align=center] {} (playback.west);
+  \draw[->](playback.south) -- node[align=center, left] {$Excerpt$ $playback$} (user.west);
+  \draw[->](user.east) -- node[align=center, right] {$Interaction$ \\ $with$ $sliders$} (filters.south);
+  \draw[->](filters.north) -- node[align=center, right] {$Filtering$ $for$ \\ $sliders$ $values$} (similarcands.south);
 
-  \draw
-  node at (7.5,-9)[align=center][block] (bar) {\Large User};
 
   % Second box and labelling
-  \draw [color=gray,thick](1.5,-5) rectangle (14,-7);
+  \draw [color=gray,thick](1.5,-5) rectangle (12,-7);
   \node at (1.5,-5) [above=5mm, right=0mm] {\textsc{Client machine}};
 \end{tikzpicture}
 \caption{The implementation of the system.}

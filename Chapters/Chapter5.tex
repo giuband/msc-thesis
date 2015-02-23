@@ -3,15 +3,19 @@
 \label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 \lhead{Chapter 5. \emph{Off-line computation of audio features}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
-In order to achieve good performance, two very computationally intensive tasks of the system are performed off-line, and their output is then going to be used by the real-time application. These tasks consist of the computation of the audio content descriptors and of the building of a \textit{fast-map}, a high dimensionality space in which each point correspond to an excerpt. This space is built in a fashion that guarantees that nearby points of this space correspond to very similar excerpts.
+In order to achieve good performance, two very computationally intensive tasks of the system are performed off-line, and their output is then going to be used by the real-time application. These tasks consist of the computation of the audio content descriptors and of the building of a \textit{fast-map}, a high dimensionality space in which each point correspond to an audio musical excerpt. This space is built in a fashion that guarantees that nearby points of this space correspond to very similar excerpts.
 
 
 \section{Audio content features extraction}
-Solving this problem has involved two very important choices: what audio content descriptors to use and what library or tool to use for computing them. \\Many factors have been taken into account for solving both of these problems.\\ Among the features of the tools, flexibility has constituted the strictest requirement: an easy way to compute descriptors for each excerpt of every track is required, while many tools provide only ways of computing descriptors for the entire file. In this latter case, the file should manually split into \textit{subfiles} (one for each segment), therefore implying a huge waste of memory. This has soon lead to the exclusion of \textit{jMir}, for it doesn't fulfill this requirement. \\ 
-Second, the tool should easily be callable by source code or bash scripts, and results of the analysis must be stored in output files. \\
-Third, the computation of descriptors should be as fast as possible, given that the excerpts to be analyzed are in the order of tens of thousands. \\
-Last but not least, the tool must provide descriptors whose usefulness for this specific case study has been empirically verified during the development of the system.\\
-All of these requirements lead to the choice of performing the audio analysis with Essentia and Echo Nest: the first for its speed, flexibility and reliability. Echo Nest has been used for some of its descriptors are not present or not as accurate in Essentia, and have shown a great usefulness during the development. \\ Furthermore, both of the two libraries are offered in Python, allowing the entire analysis task to be written in a single programming language, therefore improving the code consistency and readability. \\
+Solving this problem has involved two very important choices: what audio content descriptors to use and what library or tool to use for computing them. Many factors have been taken into account for solving both of these problems.\\ 
+\begin{itemize}
+\item Among the features of the tools, flexibility has constituted the strictest requirement: an easy way to compute descriptors for each excerpt of every track is required, while many tools provide only ways of computing descriptors for the entire file. In this latter case, the file should manually split into \textit{subfiles} (one for each segment), therefore implying a huge waste of memory. This has soon lead to the exclusion of \textit{jMir}, for it doesn't fulfill this requirement.
+\item The tool should easily be callable by source code or bash scripts, and results of the analysis must be stored in output files.
+\item The computation of descriptors should be as fast as possible, given that the excerpts to be analyzed are in the order of tens of thousands.
+\item Last but not least, the tool must provide descriptors whose usefulness for this specific case study has been empirically verified during the development of the system.
+\end{itemize}
+
+All of these requirements lead to the choice of performing the audio analysis with Essentia and Echo Nest: the first for its speed, flexibility and reliability. Echo Nest has been used for some of its descriptors are not present or not as accurate in Essentia, and have shown a great usefulness during the development or granted by existing previous research. \\ Furthermore, both of the two libraries are offered in Python, allowing the entire analysis task to be written in a single programming language, therefore improving the code consistency and readability. \\
 The schema for the extraction of the audio features is illustrated in figure \ref{fig:extraction}. \\ 
 \begin{figure}[h]\hskip -1cm
 \begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
@@ -35,7 +39,8 @@ The schema for the extraction of the audio features is illustrated in figure \re
 \caption{Schema for the extraction of audio features.}
 \label{fig:extraction}
 \end{figure}
-At first, the user is required to give the path of the folder in which the audio files are stored. The collection is entirely stored as .mp3 files with a sample rate of 44100Hz and a bitrate of 192kbps. The application then collects the path to all the .mp3 files in this folder, and mark them as to be analyzed if no previous analysis has be performed. An analysis of these files with Echo Nest (through Pyechonest) is performed, and we specifically use the following fields of the output of this analysis: \textit{bars}, \textit{BPM}, \textit{loudness}, \textit{HPCP} and \textit{acousticness}. \textit{Bars} give the starting and ending point of each bar detected and, although not particularly meaningful for the arhythmic Phonos catalogue of music, have shown to perform well on the additional and more generic personal catalogue used during development testing; therefore, it was decided to use them in order to improve the flexibility of the system. \\ Segmentation of songs into excerpts is then performed, based on starting and ending point of each bar. Then, we compute more specific descriptors with Essentia for these excerpts, with the following strategy:
+At first, the user is required to give the path of the folder in which the audio files are stored. The collection is entirely stored as .mp3 files with a sample rate of 44100Hz and a bitrate of 192kbps. The application then collects the path to all the .mp3 files in this folder, and mark them as to be analyzed if no previous analysis has be performed. An analysis of these files with Echo Nest (through Pyechonest) is performed, and we specifically use the following fields of the output of this analysis: \textit{bars}, \textit{BPM}, \textit{loudness}, \textit{HPCP} and \textit{acousticness}. \textit{Bars} give the starting and ending point of each bar detected and, although not particularly meaningful for the arrhythmic
+ Phonos catalogue of music, have shown to perform well on the additional and more generic personal catalogue used during first stages of development; therefore, it was decided to use them in order to improve the flexibility of the system. \\ Segmentation of songs into excerpts is then performed, based on starting and ending point of each bar. Then, we compute more specific descriptors with Essentia for these excerpts, with the following strategy:
 \begin{itemize}
 \item each excerpt is divided into frames, with a size of 2048 samples and a hop of 1024 samples. For each of these frames:
 \begin{itemize}
@@ -65,7 +70,7 @@ Acousticness & Echo Nest & Song-Level & Give the user the chance to filter music
 MFCC & Essentia & Bar-Level & Timbre similarity computation \\ \midrule
 BPM & Echo Nest & Bar-Level & Avoid consecutive excerpts with very different BPM \\ \midrule
 Onset Rate & Essentia & Bar-Level & Give the user the chance to filter music in regards to the presence of percussive elements \\ \midrule
-Dissonance & Essentia & Bar-Level & Give the user the chance to filter music in regards to the dissonance\footnote{During development, it has been empirically noticed that dissonance has a significant correlation to the perception of noise: the more dissonant an excerpt is, the more it is perceived as noisy.} of excerpts \\ \midrule
+Dissonance & Essentia & Bar-Level & Give the user the chance to filter music in regards to the dissonance\footnote{During development, it has been empirically noticed that dissonance has a significant correlation to the perception of noise: the more an excerpt is perceived as noisy, the more it is dissonant.} of excerpts \\ \midrule
 Loudness & Echo Nest & Bar-Level & Give the user the chance to filter music in regards to its loudness \\ \midrule
 Bark Bands & Essentia & Bar-Level & Give the user the chance to filter music in regards to its ``sparseness'', i.e. the amount of mel bands with significant energy level \\ \midrule
 HPCP & Echo Nest & Beat-Level & Use them to compute key \\ \midrule
@@ -79,9 +84,9 @@ Key & Essentia & Beat-Level & Use them to discard the possibility of having two 
 \section{FastMap computation}
 \label{sec:fastmap}
 The procedure just described for computing descriptors give us a 410 size vector for each excerpt, and a total number of 159239 excerpts.\\
-In order to achieve good real-time performance when comparing these excerpt, a dimensionality reduction of these vectors is required. Furthermore, as seen in \ref{sec:audiocontentsimilarity} the computation of Kullback-Leibler divergence, although showing very good results in capturing the timbre similarity, is a very intensive computational operation and therefore a simpler distance measure with comparable results is preferred. \\
-These requirements were faced also in \cite{fastmap12}, in which Schnitzer et al. present a filter-and-refine method to speed up nearest neighbor searches with the Kullback-Leibler divergence for multivariate Gaussians, yielding high recall values of 95-99\% compared to a standard linear search. The original FastMap was proposed in 1995 by Faloutsos and Lin \cite{falo95} for indexing and data-mining multimedia datasets. It was used for the first time for computationally heavy, non-metric measures and nearest neighbor retrieval in \cite{athi04}, for speeding up classification of handwritten digits. FastMap was used for the first time in MIR by Cano et al. in \cite{cano02} in the attempt of reduing high dimensional music timbre similarity space into a 2-dimensional space. This was done not for speeding up classification, but rather for visualization purposes. \\
-The idea behind the use of a FastMap for classification or computing similarities is to compute with the original distance measure $D()$ (computationally intensive) just a subset of all the distances, specifically the distances between each point and a subset of $2k$ points (the \textit{``pivots''}); then, on the basis of these distances computed, each feature vector is mapped with a non-linear trasformation into a point of a $k$-dimension space, where a simpler distance measure can be applied, with a little loss of accuracy.
+In order to achieve good real-time performance when comparing these excerpts, a dimensionality reduction of these vectors is required. Furthermore, as seen in \ref{sec:audiocontentsimilarity}, the computation of Kullback-Leibler divergence, although showing very good results in capturing the timbre similarity, is a very intensive computational operation and therefore a simpler distance measure with comparable results is preferred. \\
+These requirements were also faced by Schnitzer et al. in \cite{fastmap12}, who presented a filter-and-refine method to speed up nearest neighbor searches with the Kullback-Leibler divergence for multivariate Gaussians, yielding high recall values of 95-99\% compared to a standard linear search. The original FastMap was proposed in 1995 by Faloutsos and Lin \cite{falo95} for indexing and data-mining multimedia datasets. It was used for the first time for computationally heavy, non-metric measures and nearest neighbor retrieval in \cite{athi04}, for speeding up classification of handwritten digits. FastMap was used for the first time in MIR by Cano et al. in \cite{cano02} in the attempt of reducing high dimensional music timbre similarity space into a 2-dimensional space. This was done not for speeding up classification, but rather for visualization purposes. \\
+The idea behind the use of a FastMap for classification or computing similarities is to compute with the original distance measure $D()$ (computationally intensive) just a subset of all the distances, specifically the distances between each point and a subset of $2k$ points (the \textit{``pivots''}); then, on the basis of these computed distances, each feature vector is mapped with a non-linear trasformation into a point of a $k$-dimension space, where a simpler distance measure can be applied, with a small decrement in accuracy.
 
 For choosing the $2k$ pivot elements, the original FastMap \cite{falo95} follows this strategy:
 \begin{itemize}
@@ -95,12 +100,12 @@ Each vector of features $x$ is then mapped into the point $(F_1(x), ..., F_k(x))
 F_j(x) = \frac{D(x, x_j^1)^2 + D(x_j^1, x_j^2)^2 - D(x, x_j^2)^2}{2D(x_j^1, x_j^2)}
 \end{equation}
 In other words, the coordinate in the $j-th$ dimension of each point is determined by the pair $(x_j^1, x_j^2)$, specifically by the original distance (computed with $D()$) of the point from both these pivots and the distance between the pivots themselves. \\
-For our work, we have decided to use the Kullback-Leibler as the original distance function, computed with the closed formula:
+For our work, we have decided to use the Kullback-Leibler as the original distance function, computed for the multivariate normal distributions $x_1$ and $x_2$ with the closed formula:
 \begin{equation}
 KL(x_1, x_2) = \frac{1}{2}\left(tr(\Sigma_2^{-1}\Sigma_1) + (\mu_2 - \mu_1)^T \Sigma_2^{-1}(\mu_2 - \mu_1) - k + ln\left(\frac{det\Sigma_2}{det\Sigma_1}\right)\right)
 \end{equation}
 where $tr$ is the $trace$ operation of a matrix (i.e., the sum of the elements in its main diagonal), $\mu_i$ the mean vector of the MFCC values of point $i$, $\Sigma_i$ is its the covariance matrix, $\Sigma_i^{-1}$ its inverse covariance matrix, and $k$ the size of $\mu_i$. \\
-This formula has been used in the state-of-the-art similarity computation system and its accuracy in measuring the timbre similarity between MFCC values is no longer questionable. Anyways, we must take into account several aspects. \\ 
+This formula has been used in the state-of-the-art similarity computation systems. As it has been used in \ref{mirage07} \ref{perfe11} \ref{fastmap12} we can be very confident on using it here too. Anyways, we must take into account several aspects. \\ 
 As already seen in \ref{sec:audiocontentsimilarity}, the Kullback-Leibler cannot be intended as a pure distance measure, for it fails to be symmetric and to fulfill the triangle inequality. It can simply be made symmetric by considering the distance $SKL$ (symmetric Kullback-Leibler) defined as:
 \begin{equation}
 SKL(x_1, x_2) = \frac{1}{2}KL(x_1, x_2) + \frac{1}{2}KL(x_2, x_1)
@@ -111,8 +116,8 @@ Regarding the triangle inequality, a proper solution is not that trivial. Howeve
 D(x_1, x_2) = \sqrt{SKL(x_1, x_2)} = \sqrt{\frac{1}{2}KL(x_1, x_2) + \frac{1}{2}KL(x_2, x_1)}
 \end{equation}
 
-This procedure can be further improved by a little modification in the strategy for choosing pivots: once the pivot $x_i^1$ is randomly picked, we choose to pick as $x_i^2$ the object lying at the distance media, i.e. the object at the index j=$ \lfloor \frac{N}{2} \rfloor$ once all the distances from point $x_i^1$ are sorted. We've decided to use $k=20$ (therefore having 20 pairs of pivots and a final 20-dimensional space) as this has allowed us to find a good balance between computational times and quality of the output the similarity computation.\\
-The accuracy and performance of this procedure are well-documented in \cite{fastmap12}. This technique constitutes the basis on which our system will perform the real-time similarity computation allowing excellent performance, with some additional tweak that will see in the Chapter~\ref{Chapter6}. \\
+This procedure can be further improved by a small modification in the strategy for choosing pivots: once the pivot $x_i^1$ is randomly picked, we choose to pick the object lying at the distance media as $x_i^2$, i.e. the object at the index j=$ \lfloor \frac{N}{2} \rfloor$ once all the distances from point $x_i^1$ are sorted. We have decided to use $k=20$ (therefore having 20 pairs of pivots and a final 20-dimensional space) as this has allowed us to find a good balance between computational times and quality of the output the similarity computation.\\
+The accuracy and performance of this procedure are well-documented in \cite{fastmap12}. This technique constitutes the basis on which our system will perform the real-time similarity computation, with some additional tweak that will see in the Chapter~\ref{Chapter6}. \\
 The computed data is stored on a JSON file: for each point (corresponding to an excerpt), we store its coordinates in the new 20-dimensional space plus some additional descriptors that allow us to do a faster filtering in the real-time application, as we won't need to lookup to the original JSON descriptor file for each song just for retrieving the values of these descriptors. The list of features stored in the map for each point is shown in table~\ref{table:fastmap}, while we propose also an illustrative figure in Figure~\ref{figure:fastmapfigure}. During this stage, we additionaly save lists that associate each segment to the decade the song it has been extracted from has been produced. This will allow very fast filtering techniques on the real-time application when the user interacts with the sliders for selecting music according to the year of release. \\The computational times of this stage are shown in table~\ref{table:benchmarkoffline} and the configuration of the computer used in table~\ref{table:hardwareoffline}.
 
 
@@ -122,7 +127,7 @@ The computed data is stored on a JSON file: for each point (corresponding to an 
 Year, Artist, Title & Speed up access to information\\ \midrule
 Starting and ending point inside the track & Allows fast extraction of the excerpt from the entire audio signal \\ \midrule
 BPM, Key & Be faster when filtering out music with very different BPM or key\\ \midrule
-Acousticness, Loudness, Dissonance, Bark Bands, OR & Perform a fast filtering of database of excerpt when the user interacts with the GUI for controlling the musical output\\ \bottomrule
+Acousticness, Loudness, Dissonance, Bark Bands, Onset Rate & Perform a fast filtering of database of excerpt when the user interacts with the GUI for controlling the musical output\\ \bottomrule
 \caption[Features stored in the map]{Features stored in the map for each point.}
 \label{table:fastmap}
 \end{longtable}
@@ -141,7 +146,6 @@ Acousticness, Loudness, Dissonance, Bark Bands, OR & Perform a fast filtering of
 \end{longtable}
 \end{center}
 
-\newpage
 \begin{center}
 \begin{longtable}{ p{.2\textwidth}  p{.25\textwidth}  p{.4\textwidth} } 
 \textbf{Stage} & \textbf{Time required} & \textbf{Stats} \\\toprule
@@ -151,7 +155,10 @@ Acousticness, Loudness, Dissonance, Bark Bands, OR & Perform a fast filtering of
 \multirow{2}{80pt}{\textbf{FastMap computation}} & 00h 47m 12s & Choosing pivots: 16m 43s \\ \cmidrule(lr){3-3}
 & & Computing points coords: 30m 29s \\ \midrule
 \textbf{Total} & 05h 19m 37s & \\ \bottomrule
-\caption[Computational times for descriptors computation]{Computational times for descriptors computation of a collection of 584 tracks (the time for uploading these tracks to Echo Nest is not considered in these results).}
+\caption[Computational times for descriptors computation]{Computational times for descriptors computation of a collection of 584 tracks, with a total length of 91 hours, 43 minutes and 35 seconds (the time for uploading these tracks to Echo Nest is not considered in these results).}
 \label{table:benchmarkoffline}
 \end{longtable}
 \end{center}
+
+
+The features collected and the FastMap computed over this stage will constitute the basis on which the real time computation of music similarity will be performed; this particular core of the system will be shown and discussed in next section.
