@@ -50,6 +50,34 @@ At first, the user is required to give the path of the folder in which the audio
 \item an HFC onset function is computed on the spectrum, that will be used afterwards to compute the onset times
 \item the MFCC bands and coefficients are computed with Essentia's algorithm \texttt{Mfcc}\footnote{Essentia uses the MFCC-FB40 implementation, which decomposes the signal into 40 bands from 0 to 11000Hz, takes the log value of the spectrum energy in each mel band and finally applies a Discrete Cosine Trasform of the 40 bands down to 13 mel coefficients.} 
 \item the energy in 27 Bark bands of the spectrum is computed 
+\begin{figure}[h]\hskip -1cm
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+	\draw
+	% Drawing the blocks
+	node at (0.5,-0.5) [block] (excerpt) {Excerpt}
+	node at (4.3,-0.5)[align=center] [block] (frame) {Frame}
+	node at (8.4,-0.5)[align=center][block] (spectrum) {Spectral Analysis}
+	node at (14.2,-0.5)[align=center][block] (peaks) {Dissonance}
+	node at (14.2,-3.4)[align=center][block] (onset) {Onsets}
+	node at (8,-3.8)[align=center][block] (mfcc) {MFCC}
+	node at (4.8,-3.8)[align=center][block] (barks) {Energy in \\ Bark bands}
+	
+	;
+    % Joining blocks. 
+	\draw[->](excerpt) -- node[align=center]{$frame$\\$generation$}(frame);
+ 	\draw[->](frame) -- node[align=center] {$FFT$} (spectrum);
+ 	\draw[->](spectrum.east) -- node[align=center] {$peaks$\\$analysis$} (peaks.west);
+ 	\draw[->](spectrum) -- node[align=center] {$HFC$ $onset$\\$detector$} (onset.west);
+ 	\draw[->](spectrum) -- node[align=center, right] {$MFCC$\\$computation$} (mfcc.north);
+ 	\draw[->](spectrum) -- node[align=center, left] {$analysis$ $of$\\$Bark bands$} (barks.north);
+
+	% Boxing and labelling
+	\draw [color=gray,thick](-0.5,-5) rectangle (16.5,1);
+	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{Low level features extraction}};
+\end{tikzpicture}
+\caption{Schema for the extraction of audio features.}
+\label{fig:extraction}
+\end{figure}
 \end{itemize}
 \item onset times in the excerpt are calculated, according to the onset function computed in each frame, and then onset rate is calculated with the formula:
 \begin{equation}
