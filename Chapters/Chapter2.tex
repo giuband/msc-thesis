@@ -44,7 +44,7 @@ The main idea behind co-occurence analysis is that two items that frequently co-
 \section{Audio Content Analysis}
 The main idea behind this kind of analysis is to directly extract useful information, through some algorithms (or library of algorithms), from the audio signal itself. The type of content information extracted may greatly vary in relation to the need of the research, but we can mainly distinguish four categories \cite{bogdanov13}:
 \begin{itemize}
-\item \textit{Timbral} information: related to the overall quality and color of the sound.
+\item \textit{Timbral} information: related to the overall quality and color of the sound. There is not a general definition for music timbre; in \cite{orio06}, Orio has defined it as \textit{``the acoustic feature that is neither pitch nor intensity''}. In other words, timbre embraces all the features that make a C4 played by a violin sound clearly different from the same note played by a piano.
 \item \textit{Temporal} information: related to rhythmic aspects of the composition, such as tempo or length of measures.
 \item \textit{Tonal} information: directly linked to the frequency analysis of the signal and to the pitch. It can describe \texit{what notes are being played} or the tonality of a given track.
 \item \textit{Inferred semantic} information: information inferred (usually through machine learning techniques) from the previous categories, in the attempt of giving a more defined and understable shape to the data collected. This kind of information may include descriptors such as genre, valence or arousal.
@@ -64,32 +64,104 @@ Many of the studies conducted on the computation of music similarity through aud
 \item Segmentation of the signal into frames, short segments (usually from 512 to 2048 audio samples). Consecutive frames are usually not disjoint: the so-called \textit{hop-size} determines the hop of samples between the beginning of a frame and the next one, and is normally half or a quarter as big as the \textit{frame size}.
 \item Computation of Fast Fourier Transform, with an appropriate prior windowing technique \footnote{Although this last step may not be strictly seen as a necessary operation, many descriptors rely on frequency analysis of the signal and therefore they require the computation of the Fourier Transform.}.
 \end{itemize}
-The computation of descriptors is then performed on each frame, and finally a single value for each descriptor is computed by the means of some statistical analysis. Mean, median, variance and covariance are the most used statistical tools for calculating representative global values out of the enormous \textit{pool} of values computed in each frame.\\
-Some more operations may sometimes be needed, such as de-noising \footnote{A set of operations which purpose is to reduce the amount of background noise in a signal, therefore incrementing the \texit{signal-to-noise ratio} (\textit{SNR} or sometimes \textit{S/N}).} of time-scaling of the signal. \\
-\\In the next sections, a more detailed look among most important descriptors will be given.
+
+% Definition of blocks:
+\tikzset{%
+  block/.style    = {draw, thick, rectangle, minimum height = 3em,
+    minimum width = 3em},
+  sum/.style      = {draw, circle, node distance = 2cm}, % Adder
+  input/.style    = {coordinate}, % Input
+  output/.style   = {coordinate} % Output
+}
+
+\begin{figure}\hskip -1cm
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+	\draw
+	% Drawing the blocks
+	node at (0.5,-0.8)[align=center][block] (stereotrack) {Stereo \\ Track}
+	node at (4.8,-0.8)[align=center] [block] (monotrack) {Mono \\ Track}
+	node at (10.4,-0.8)[align=center][block] (downsampled) {Downsampled\\ Signal}
+	node at (15.6,-0.8)[align=center][block] (frames) {Frames}	
+	;
+    % Joining blocks. 
+	\draw[->](stereotrack) -- node[align=center]{$conversion$ $to$\\$mono$ $signal$}(monotrack);
+ 	\draw[->](monotrack) -- node[align=center] {$downsampling$} (downsampled);
+ 	\draw[->](downsampled) -- node[align=center] {$decomposition$\\$into$ $frames$} (frames);
+
+	% Boxing and labelling
+	\draw [color=gray,thick](-0.5,-2.5) rectangle (16.6,1);
+	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{Preliminary steps}};
+\end{tikzpicture}
+\caption{Standard procedure preliminary to the extraction of audio features.}
+\label{fig:extraction}
+\end{figure}
+
+The computation of descriptors is then performed on each frame, and finally a single value for each descriptor is computed by the means of specific statistical analysis. Mean, median, variance and covariance are the most used statistical tools for calculating representative global values out of the enormous \textit{pool} of values computed in each frame.\\
+Some more operations may sometimes be needed, such as de-noising \footnote{A set of operations which purpose is to reduce the amount of background noise in a signal, therefore incrementing the \texit{signal-to-noise ratio} (\textit{SNR} or sometimes \textit{S/N}).} of time-scaling of the signal. In the next sections, a more detailed look among most important descriptors will be given.
 
 \subsection{Low-level Descriptors}
 \subsubsection{MFCC}
+Mel-Frequency Cepstral Coefficients (MFCCs) are a set of descriptors that have been widely used in MIR. They have been introduced in \cite{davis80} for speech recognition: since then, they are used in state of the art systems for speech recognition; furthermore, they have shown prominent results on music similarity systems when a single or multivariate Gaussian distribution is computed over their values. \\MFCCs are strongly related to human auditory system behaviour, which can be modeled by a set of critical bandpass filters (called \textit{``auditory filters''}) with overlapping bands, as already shown by Hermann von Helmholtz in 1863. The term \textit{critical band} was introduced by Harvey Fletcher in the 1940s, and indicates a range of frequencies around a specific one that may be not perceived in a totally independent way if played together to this reference frequency. This phenomenon is due to the inner behaviour of the cochlea, the sense organ of hearing within the inner ear. The mel bands are a set of bands that try to replicate auditory filters and therefore to somehow capture relevant features in the perception of music. Mel bands are based on the mel frequency scale, a perceptual scale of pitches judged by listeners to be equal in distance from one another. Mel frequency scale is linear at low frequencies (below 1000Hz) and logarithmic above. A popular formula from converting from $f$ Hertz to $m$ mels is:
 
+\begin{equation}
+m = 2595\log_{10}\left(1 + \frac{f}{1000} \right)
+\end{equation}
+
+Though a standard procedure for computing MFCCs values is not present, the following steps are generally performed:
+\begin{enumerate}
+\item Computation of Fourier Transform of the signal (of the frame)
+\item Mapping of the powers obtained in step 1 onto mel bands. We then compute the logarithm of each power for each mel band.
+\item Computation of the discrete cosine transform of these logarithm values.
+\item Extraction of the MFCCs as amplitudes of the resulting spectrum. 
+\end{enumerate}
+Differences in the procedure often involve the shape of the windows used for mapping the spectrum into these bands, the choice of pre-filtering of the signal after step 1 or even the total number of MFCCs to extract. 
+
+\subsubsection{Bark Bands}
+The Bark scale, proposed by Eberhard Zwicker in 1961, is a psychoacoustical scale that tries to improve the mel scale, where each ``Bark'' stands for one critical bandwidth. Bark bands are 24, and are described as bands over which masking phenomenon and the shape of cochlea filters are invariant, which is strictly not true. To convert a frequency from $f$ Hertz to $B$ Barks we can use the formula:
+\begin{equation}
+B = 13a\tan \left(\frac{f}{1315.8} \right) + 3.5a\tan \left( \frac{f}{7518} \right)
+\end{equation}
+
+The published Bark bands (given in Hertz) are\footnote{\url{https://ccrma.stanford.edu/~jos/bbt/Bark_Frequency_Scale.html}}:\\ \\
+\hfill\begin{minipage}{\dimexpr\textwidth-1.5cm}
+[0, 100, 200, 300, 400, 510, 630, 770, 920, 1080, 1270, 1480, 1720, 2000, 2320, 2700, 3150, 3700, 4400, 5300, 6400, 7700, 9500, 12000, 15500]
+\xdef\tpd{\the\prevdepth}
+\end{minipage}
+
+with corresponding band centers at:\\ \\
+\hfill\begin{minipage}{\dimexpr\textwidth-1.5cm}
+[50, 150, 250, 350, 450, 570, 700, 840, 1000, 1170, 1370, 1600, 1850, 2150, 2500, 2900, 3400, 4000, 4800, 5800, 7000, 8500, 10500, 13500]
+\xdef\tpd{\the\prevdepth}
+\end{minipage}
+\\ \\
+Again it can be seen that width of frequency bands grows slowly below 1000Hz, while showing the opposite behaviour at higher frequencies. 
 
 \subsection{Mid-level Descriptors}
 \subsubsection{Rhythm}
 In traditional music notation, there are several notations for tempo. It may be expressed in BPM (beats per minute), MPM (measures per minute; commonly used in ballroom dance music) or by semantic notations indicating a range of BPM; an example of this last category of notations may be the popular system of Italian markings, such as \textit{presto} (168-200 BPM), \textit{andante} (84-90 BPM) or \textit{allegro} (120-128 BPM). \\ In the field of MIR, accurate notations are needed, therefore semantic annotations are disregarded in favour of more precise notation such as BPM and Onset Rate (OR).
 \\ \\ 
 \textbf{Onset Rate} \\ 
-IDEAS: image of ADSR, some flowchart for a standard onset detection algorithm (look at figures folder)
-Onsets are generally defined as the beginning of a new musical note, and onset rate is therefore defined as the number of onsets in a time interval. This definition however hides several difficulties: in polyphonic music, nominally simultaneous notes may be spread over tens of seconds, making this definition more blurred \cite{dixon06}. Moreover, several instruments have a long attack time and this makes the task of defining an onset time even harder. \\Several ways of computing an onset detection function have been proposed, according to what aspects are taken into account for defining an onset. Actually, onset detection may be performed in time domain (when looking for significant changes in the overall energy), frequency domain (if looking for events regarding just a specific range of frequencies), phase domain or complex domain. 
+Onsets are generally defined as the beginning of a new musical note, and onset rate is therefore defined as the number of onsets in a time interval. This definition however hides several difficulties: several instruments might have a long attack time, therefore it is not trivial to determine the actual beginning of the note. Furthermore, in polyphonic music nominally simultaneous notes may be spread over tens of seconds, making this definition more blurred \cite{dixon06}. 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.75]{Figures/onsets.pdf}
+    \rule{20em}{0.5pt}
+  \caption[Onset and sound envelope]{Onset and sound envelope.}
+  \label{fig:GStreamer}
+\end{center}
+\end{figure} \\
+Several ways of computing an onset detection function have been proposed, according to what aspects are taken into account for defining an onset. Actually, onset detection may be performed in time domain (when looking for significant changes in the overall energy), frequency domain (if looking for events regarding just a specific range of frequencies), phase domain or complex domain. 
 Important algorithms for this task are:
 \begin{itemize}
 \item \textit{HFC}, the High Frequency Content detection function that looks for important changes on highest frequencies. It is very useful for detecting percussive events.
 \item Spectral Flux, that decomposes the entire audible range of frequencies (approxitamely the interval 20-20000 Hz) into bins, measures changes in magnitude in each bin, and then sums all the positive changes across all the bins.
 \item the Complex-Domain spectral difference function \cite{bello04} taking into account changes in magnitude and phase. It emphasizes note onsets either as a result of significant change in energy in the magnitude spectrum, and/or a deviation from the expected phase values in the phase spectrum, caused by a change in pitch.
 \end{itemize}  
-HFC was proposed by Masri in \cite{masri96}. Let us consider the short-time Fourier transform (STFT) of the signal $x(n)$:\\
+HFC was proposed by Masri in \cite{masri96}. Given the short-time Fourier transform (STFT) of the signal $x(n)$:\\
 \begin{equation}
 X_k(n) = \sum\limits_{m=-\frac{N}{2}}^{\frac{N}{2}-1} x(nh + m)w(m)e^{-\frac{2j\pi mk}{N}}
 \end{equation}
-where $w(m)$ is again an $N$-point window, and $h$ is the hop size, or time shift, between adjacent windows. The idea behind HFC is to give more weight to higher frequencies, by defining a onset function whose values are computed in the follwing way:
+(where $w(m)$ is again an $N$-point window, and $h$ is the hop size, or time shift, between adjacent windows), the idea behind HFC is to give more weight to higher frequencies, by defining a onset function whose values are computed in the follwing way:
 \begin{equation}
 HFC(n) = \frac{1}{N}\sum\limits_{k=-\frac{N}{2}}^{\frac{N}{2}-1} k\abs{X_k(n)}^{2}
 \end{equation}
