@@ -61,7 +61,6 @@ At first, the user is required to give the path of the folder in which the audio
 	node at (14.2,-3.4)[align=center][block] (onset) {Onsets}
 	node at (8,-3.8)[align=center][block] (mfcc) {MFCC}
 	node at (4.8,-3.8)[align=center][block] (barks) {Energy in \\ Bark bands}
-	
 	;
     % Joining blocks. 
 	\draw[->](excerpt) -- node[align=center]{$frame$\\$generation$}(frame);
@@ -75,7 +74,7 @@ At first, the user is required to give the path of the folder in which the audio
 	\draw [color=gray,thick](-0.5,-5) rectangle (16.5,1);
 	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{Low level features extraction}};
 \end{tikzpicture}
-\caption{Schema for the extraction of audio features.}
+\caption[Schema for the extraction of low level features from excerpts]{Schema for the extraction of low level audio features from excerpts.}
 \label{fig:extraction}
 \end{figure}
 \end{itemize}
@@ -133,7 +132,7 @@ For our work, we have decided to use the Kullback-Leibler as the original distan
 KL(x_1, x_2) = \frac{1}{2}\left(tr(\Sigma_2^{-1}\Sigma_1) + (\mu_2 - \mu_1)^T \Sigma_2^{-1}(\mu_2 - \mu_1) - k + ln\left(\frac{det\Sigma_2}{det\Sigma_1}\right)\right)
 \end{equation}
 where $tr$ is the $trace$ operation of a matrix (i.e., the sum of the elements in its main diagonal), $\mu_i$ the mean vector of the MFCC values of point $i$, $\Sigma_i$ is its the covariance matrix, $\Sigma_i^{-1}$ its inverse covariance matrix, and $k$ the size of $\mu_i$. \\
-This formula has been used in the state-of-the-art similarity computation systems. As it has been used in \ref{mirage07} \ref{perfe11} \ref{fastmap12} we can be very confident on using it here too. Anyways, we must take into account several aspects. \\ 
+This formula has been used in the state-of-the-art similarity computation systems. As it has been widely used (achieving good results in \cite{mirage07}, \cite{perfe11}, and \cite{fastmap12}), we can be very confident on using it here too. Anyways, we must take into account several aspects. \\ 
 As already seen in \ref{sec:audiocontentsimilarity}, the Kullback-Leibler cannot be intended as a pure distance measure, for it fails to be symmetric and to fulfill the triangle inequality. It can simply be made symmetric by considering the distance $SKL$ (symmetric Kullback-Leibler) defined as:
 \begin{equation}
 SKL(x_1, x_2) = \frac{1}{2}KL(x_1, x_2) + \frac{1}{2}KL(x_2, x_1)
@@ -146,7 +145,7 @@ D(x_1, x_2) = \sqrt{SKL(x_1, x_2)} = \sqrt{\frac{1}{2}KL(x_1, x_2) + \frac{1}{2}
 
 This procedure can be further improved by a small modification in the strategy for choosing pivots: once the pivot $x_i^1$ is randomly picked, we choose to pick the object lying at the distance media as $x_i^2$, i.e. the object at the index j=$ \lfloor \frac{N}{2} \rfloor$ once all the distances from point $x_i^1$ are sorted. We have decided to use $k=20$ (therefore having 20 pairs of pivots and a final 20-dimensional space) as this has allowed us to find a good balance between computational times and quality of the output the similarity computation.\\
 The accuracy and performance of this procedure are well-documented in \cite{fastmap12}. This technique constitutes the basis on which our system will perform the real-time similarity computation, with some additional tweak that will see in the Chapter~\ref{Chapter6}. \\
-The computed data is stored on a JSON file: for each point (corresponding to an excerpt), we store its coordinates in the new 20-dimensional space plus some additional descriptors that allow us to do a faster filtering in the real-time application, as we won't need to lookup to the original JSON descriptor file for each song just for retrieving the values of these descriptors. The list of features stored in the map for each point is shown in table~\ref{table:fastmap}, while we propose also an illustrative figure in Figure~\ref{figure:fastmapfigure}. During this stage, we additionaly save lists that associate each segment to the decade the song it has been extracted from has been produced. This will allow very fast filtering techniques on the real-time application when the user interacts with the sliders for selecting music according to the year of release. \\The computational times of this stage are shown in table~\ref{table:benchmarkoffline} and the configuration of the computer used in table~\ref{table:hardwareoffline}.
+The computed data is stored on a JSON file: for each point (corresponding to an excerpt), we store its coordinates in the new 20-dimensional space plus some additional descriptors that allow us to do a faster filtering in the real-time application, as we won't need to lookup to the original JSON descriptor file for each song just for retrieving the values of these descriptors. The list of features stored in the map for each point is shown in table~\ref{table:fastmap}.\\During this stage, we additionaly save lists that associate each segment to the decade the song it has been extracted from has been produced. This will allow very fast filtering techniques on the real-time application when the user interacts with the sliders for selecting music according to the year of release. \\The computational times of this stage are shown in table~\ref{table:benchmarkoffline} and the configuration of the computer used in table~\ref{table:hardwareoffline}.
 
 
 \begin{center}
