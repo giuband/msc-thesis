@@ -52,6 +52,7 @@
 \usepackage{longtable}
 \usepackage[titletoc]{appendix}
 \usepackage{csquotes}
+\usepackage[bottom]{footmisc}
 \usepackage{multirow}
 
 % block diagrams
@@ -59,6 +60,8 @@
 \usetikzlibrary{shapes,arrows}
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
 \setlength{\parindent}{0.5cm} % Default is 15pt.
 \hypersetup{
     colorlinks,
@@ -207,6 +210,9 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \textbf{BPM} & \textbf{R}ecommender \textbf{S}ystems \\
 \textbf{FFT} & \textbf{R}ecommender \textbf{S}ystems \\
 \textbf{OR} & \textbf{R}ecommender \textbf{S}ystems \\
+\textbf{EM} & \textbf{E}xpectation \textbf{M}aximization \\
+\textbf{EMD} & \textbf{E}arth \textbf{M}overs \textbf{D}istance \\
+\textbf{SVM} & \textbf{S}upport \textbf{V}ector \textbf{M}achine \\
 }
 
 
@@ -243,7 +249,6 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \input{Chapters/Chapter6} 
 \part{Results and Discussion}
 \input{Chapters/Chapter7} 
-\input{Chapters/Chapter8} 
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - APPENDICES
@@ -297,6 +302,11 @@ Foundations and Trends\textregistered in Information Retrieval, 8(2-3):127-261, 
 J.J. Aucouturier, and F. Pachet.
 \textit{Improving Timbre Similarity: How High is the Sky?}. 
 Journal of Negative Results in Speech and Audio Sciences, 1(1):1-13, 2004.
+
+\bibitem{aucou02} 
+J.J. Aucouturier, and F. Pachet.
+\textit{Music similarity measures: What's the use?}. 
+ISMIR, 2002.
 
 \bibitem{xavier2013} 
 X. Serra, M. Magas, E. Benetos, M. Chudy, S. Dixon, A. Flexer, E. Gómez, F. Gouyon, P. Herrera, S. Jorda, O. Paytuvi, G. Peeters, J. Schlüter, H. Vinet, and G. Widmer.
@@ -433,6 +443,11 @@ B. Logan.
 \textit{Music recommendation from song sets}.
 Proceedings of ISMIR, 425–428, 2004.
 
+\bibitem{logan00}
+B. Logan. 
+\textit{Mel frequency cepstral coefficients for music modeling}.
+Proceedings of ISMIR, 2000.
+
 \bibitem{vignoli05}
 F. Vignoli, and S. Pauws.
 \textit{A music retrieval system based on user driven similarity and its evaluation}.
@@ -481,7 +496,7 @@ Signal Processing Letters, IEEE, 11(6):553-556, 2004.
 \bibitem{masri96}
 P. Masri.
 \textit{Computer Modeling of Sound for Transformation and Synthesis of Musical Signal}.
-Ph.D. dissertation, Univ. of Bristol, 1996
+Ph.D. dissertation, Univ. of Bristol, 1996.
 
 \bibitem{bello05}
 J.P. Bello, L. Daudet, S. Abdallah, C. Duxbury, M. Davies, and M. B. Sandler.
@@ -566,7 +581,7 @@ ISMIR, p. 525-530, 2009.
 \bibitem{musicdatamining}
 T. Li, M. Ogihara, and G. Tzanetakis.
 \textit{Music Data Mining}.
-CRC Press, p. 95, 2011
+CRC Press, p. 95, 2011.
 
 \bibitem{schedl12}
 M. Schedl.
@@ -612,6 +627,40 @@ IEEE Transactions on Acoustics, Speech and Signal Processing, 28(4):357-366, 198
 M.E.P. Davies, and M.D. Plumbey.
 \textit{Context-dependent beat tracking of musical audio}.
 IEEE Transactions on Audio, Speech, and Language Processing, 15(3):1009-1020, 2007.
+
+\bibitem{foote00}
+\textit{Automatic audio segmentation using a measure of audio novelty}.
+IEEE International Conference on Multimedia and Expo, 1:452-455, 2000.
+
+\bibitem{dimi10}
+D. Bogdanov, J. Serrà, N. Wack, P. Herrera, and X. Serra. 
+\textit{Unifying low-level and high-level music similarity measures}.
+IEEE Transactions on Multimedia, 13(4):687-701, 2011.
+
+\bibitem{stober11}
+S. Stober.
+\textit{Adaptive methods for user-centered organization of music collections}.
+Doctoral dissertation, Magdeburg, Universität, Diss., 2011.
+
+\bibitem{emd}
+Y. Rubner, C. Tomasi, and L.J. Guibas.
+\textit{The earth mover's distance as a metric for image retrieval}.
+International journal of computer vision, 40(2):99-121, 2000.
+
+\bibitem{ling07}
+H. Ling, and K. Okada. 
+\textit{An efficient earth mover's distance algorithm for robust histogram comparison}.
+IEEE Transactions on Pattern Analysis and Machine Intelligence, 29(5):840-853, 2007.
+
+\bibitem{logan01}
+B. Logan, and A. Salomon. 
+\textit{A Music Similarity Function Based on Signal Analysis}.
+ICME, 2001.
+
+\bibitem{mandel05}
+M.I. Mandel, and D.P. Ellis.
+\textit{Song-level features and support vector machines for music classification}.
+ISMIR 2005: 6th International Conference on Music Information Retrieval: Proceedings: Variation 2: Queen Mary, University of London & Goldsmiths College, p. 594-599, 2005.
 
 \end{thebibliography}
 

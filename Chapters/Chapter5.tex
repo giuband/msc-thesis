@@ -21,9 +21,9 @@ The schema for the extraction of the audio features is illustrated in figure \re
 \begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
 	\draw
 	% Drawing the blocks
-	node at (0.5,-0.8) [block] (track) {\Large Track}
-	node at (4.8,-0.8)[align=center] [block] (enanalysis) {\Large Echo Nest\\Analysis}
-	node at (10.7,-0.8)[align=center][block] (bar) {\Large Bar Analysis\\(Essentia)}
+	node at (0.5,-0.8) [block] (track) {Track}
+	node at (4.8,-0.8)[align=center] [block] (enanalysis) {Echo Nest\\Analysis}
+	node at (10.7,-0.8)[align=center][block] (bar) {Bar Analysis\\(Essentia)}
 	node at (15.2, -1.2) [draw, cylinder, shape border rotate=90, aspect=0.35, %
       minimum height=40, minimum width=60] (output) {Output File};
 	;
@@ -127,17 +127,16 @@ Each vector of features $x$ is then mapped into the point $(F_1(x), ..., F_k(x))
 F_j(x) = \frac{D(x, x_j^1)^2 + D(x_j^1, x_j^2)^2 - D(x, x_j^2)^2}{2D(x_j^1, x_j^2)}
 \end{equation}
 In other words, the coordinate in the $j-th$ dimension of each point is determined by the pair $(x_j^1, x_j^2)$, specifically by the original distance (computed with $D()$) of the point from both these pivots and the distance between the pivots themselves. \\
-For our work, we have decided to use the Kullback-Leibler as the original distance function, computed for the multivariate normal distributions $x_1$ and $x_2$ with the closed formula:
+For our work, we have decided to use the Kullback-Leibler as the original distance function, computed for the multivariate normal distributions $x_1$ and $x_2$ with the Eq.~\ref{eq:kl_norm}, that for convenience we report again here:
 \begin{equation}
-KL(x_1, x_2) = \frac{1}{2}\left(tr(\Sigma_2^{-1}\Sigma_1) + (\mu_2 - \mu_1)^T \Sigma_2^{-1}(\mu_2 - \mu_1) - k + ln\left(\frac{det\Sigma_2}{det\Sigma_1}\right)\right)
+KL(x_1, x_2) = \frac{1}{2}\left(tr(\Sigma_{x_2}^{-1}\Sigma_{x_1}) + (\mu_{x_2} - \mu_{x_1})^T \Sigma_{x_2}^{-1}(\mu_{x_2} - \mu_{x_1}) - k + ln\left(\frac{det\Sigma_{x_2}}{det\Sigma_{x_1}}\right)\right)
 \end{equation}
-where $tr$ is the $trace$ operation of a matrix (i.e., the sum of the elements in its main diagonal), $\mu_i$ the mean vector of the MFCC values of point $i$, $\Sigma_i$ is its the covariance matrix, $\Sigma_i^{-1}$ its inverse covariance matrix, and $k$ the size of $\mu_i$. \\
-This formula has been used in the state-of-the-art similarity computation systems. As it has been widely used (achieving good results in \cite{mirage07}, \cite{perfe11}, and \cite{fastmap12}), we can be very confident on using it here too. Anyways, we must take into account several aspects. \\ 
+As it has been widely used (achieving good results in \cite{mirage07}, \cite{perfe11}, and \cite{fastmap12}), we can be very confident on using it here too. Anyways, we must take into account several aspects. \\ 
 As already seen in \ref{sec:audiocontentsimilarity}, the Kullback-Leibler cannot be intended as a pure distance measure, for it fails to be symmetric and to fulfill the triangle inequality. It can simply be made symmetric by considering the distance $SKL$ (symmetric Kullback-Leibler) defined as:
 \begin{equation}
 SKL(x_1, x_2) = \frac{1}{2}KL(x_1, x_2) + \frac{1}{2}KL(x_2, x_1)
 \end{equation}
-Regarding the triangle inequality, a proper solution is not that trivial. However, in \cite{fastmap12} Schnitzer et al. have shown that rescaling the symmetric Kullback-Leibler divergence with the square root leads the new distance function to fulfill the triangle inequality in more than 99\% of the cases. Therefore our original distance function $D()$ that we use in equation~\ref{eq:fastmapeq} is:
+Regarding the triangle inequality, a proper solution is not that trivial. However, in \cite{fastmap12} Schnitzer et al. have shown that rescaling the symmetric Kullback-Leibler divergence with the square root leads the new distance function to fulfill the triangle inequality in more than 99\% of the cases. Therefore our original distance function $D()$ that we use in Eq.~\ref{eq:fastmapeq} is:
 \begin{equation}
 \label{eq:distance_func}
 D(x_1, x_2) = \sqrt{SKL(x_1, x_2)} = \sqrt{\frac{1}{2}KL(x_1, x_2) + \frac{1}{2}KL(x_2, x_1)}

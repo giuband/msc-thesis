@@ -41,7 +41,7 @@ Vector Space Model has been used also with collaborative tags and games with a p
 \subsection{Co-Occurence Analysis}
 The main idea behind co-occurence analysis is that two items that frequently co-appear in some kind of music-related document are similar. Data sources on which this kind of analysis is performed are typically music playlists \cite{pachet01} (compilation discs, radio stations or even simply users' playlist), music collections shared on peer-to-peer networks \cite{whitman02}, as well as web-pages \cite{zadel04} \cite{cohen00} and microblogs \cite{schedlmicro} \cite{zangerle12}. On microblogs, hashtags such as \texttt{#nowplaying} or \texttt{#music} are used to identify the individual listening events of a user and therefore building a simple user model. Co-occurence analysis with music playlists is commonly used in music recommendation system, while the same kind of analysis with web-pages is not common as Vector Space Models have yielded better results on the same kind of data \cite{schedlpohle}.
 
-\section{Audio Content Analysis}
+\section{Audio content analysis}
 The main idea behind this kind of analysis is to directly extract useful information, through some algorithms (or library of algorithms), from the audio signal itself. The type of content information extracted may greatly vary in relation to the need of the research, but we can mainly distinguish four categories \cite{bogdanov13}:
 \begin{itemize}
 \item \textit{Timbral} information: related to the overall quality and color of the sound. There is not a general definition for music timbre; in \cite{orio06}, Orio has defined it as \textit{``the acoustic feature that is neither pitch nor intensity''}. In other words, timbre embraces all the features that make a C4 played by a violin sound clearly different from the same note played by a piano.
@@ -99,7 +99,7 @@ Many of the studies conducted on the computation of music similarity through aud
 The computation of descriptors is then performed on each frame, and finally a single value for each descriptor is computed by the means of specific statistical analysis. Mean, median, variance and covariance are the most used statistical tools for calculating representative global values out of the enormous \textit{pool} of values computed in each frame.\\
 Some more operations may sometimes be needed, such as de-noising \footnote{A set of operations which purpose is to reduce the amount of background noise in a signal, therefore incrementing the \texit{signal-to-noise ratio} (\textit{SNR} or sometimes \textit{S/N}).} of time-scaling of the signal. In the next sections, a more detailed look among most important descriptors will be given.
 
-\subsection{Low-level Descriptors}
+\subsection{Low-level descriptors}
 \subsubsection{MFCC}
 Mel-Frequency Cepstral Coefficients (MFCCs) are a set of descriptors that have been widely used in MIR. They have been introduced in \cite{davis80} for speech recognition: since then, they are used in state of the art systems for speech recognition; furthermore, they have shown prominent results on music similarity systems when a single or multivariate Gaussian distribution is computed over their values. \\MFCCs are strongly related to human auditory system behaviour, which can be modeled by a set of critical bandpass filters (called \textit{``auditory filters''}) with overlapping bands, as already shown by Hermann von Helmholtz in 1863. The term \textit{critical band} was introduced by Harvey Fletcher in the 1940s, and indicates a range of frequencies around a specific one that may be not perceived in a totally independent way if played together to this reference frequency. This phenomenon is due to the inner behaviour of the cochlea, the sense organ of hearing within the inner ear. The mel bands are a set of bands that try to replicate auditory filters and therefore to somehow capture relevant features in the perception of music. Mel bands are based on the mel frequency scale, a perceptual scale of pitches judged by listeners to be equal in distance from one another. Mel frequency scale is linear at low frequencies (below 1000Hz) and logarithmic above. A popular formula from converting from $f$ Hertz to $m$ mels is:
 
@@ -107,16 +107,16 @@ Mel-Frequency Cepstral Coefficients (MFCCs) are a set of descriptors that have b
 m = 2595\log_{10}\left(1 + \frac{f}{1000} \right)
 \end{equation}
 
-Though a standard procedure for computing MFCCs values is not present, the following steps are generally performed:
+Though a standard procedure for computing MFCCs values is not present, steps are generally motivated by perceptual or computational consideration, and follow approximately this procedure:
 \begin{enumerate}
 \item Computation of Fourier Transform of the signal (of the frame)
-\item Mapping of the powers obtained in step 1 onto mel bands. We then compute the logarithm of each power for each mel band.
-\item Computation of the discrete cosine transform of these logarithm values.
+\item Mapping of the powers obtained in step 1 onto mel bands. Then the logarithm of each power for each mel band is computed, to approximate the cochlea in the human ear more closely \cite{mirage07}.
+\item Computation of the discrete cosine transform of these logarithm values, in order to eliminate unnecessary redundancies.
 \item Extraction of the MFCCs as amplitudes of the resulting spectrum. 
 \end{enumerate}
 Differences in the procedure often involve the shape of the windows used for mapping the spectrum into these bands, the choice of pre-filtering of the signal after step 1 or even the total number of MFCCs to extract. 
 
-\subsubsection{Bark Bands}
+\subsubsection{Bark bands}
 The Bark scale, proposed by Eberhard Zwicker in 1961, is a psychoacoustical scale that tries to improve the mel scale, where each ``Bark'' stands for one critical bandwidth. Bark bands are 24, and are described as bands over which masking phenomenon and the shape of cochlea filters are invariant, which is strictly not true. To convert a frequency from $f$ Hertz to $B$ Barks we can use the formula:
 \begin{equation}
 B = 13a\tan \left(\frac{f}{1315.8} \right) + 3.5a\tan \left( \frac{f}{7518} \right)
@@ -136,12 +136,12 @@ with corresponding band centers at:\\ \\
 \\ \\
 Again it can be seen that width of frequency bands grows slowly below 1000Hz, while showing the opposite behaviour at higher frequencies. 
 
-\subsection{Mid-level Descriptors}
+\subsection{Mid-level descriptors}
 \subsubsection{Rhythm}
 In traditional music notation, there are several notations for tempo. It may be expressed in BPM (beats per minute), MPM (measures per minute; commonly used in ballroom dance music) or by semantic notations indicating a range of BPM; an example of this last category of notations may be the popular system of Italian markings, such as \textit{presto} (168-200 BPM), \textit{andante} (84-90 BPM) or \textit{allegro} (120-128 BPM). \\ In the field of MIR, accurate notations are needed, therefore semantic annotations are disregarded in favour of more precise notation such as BPM and Onset Rate (OR).
 \\ \\ 
-\textbf{Onset Rate} \\ 
-Onsets are generally defined as the beginning of a new musical note, and onset rate is therefore defined as the number of onsets in a time interval. This definition however hides several difficulties: several instruments might have a long attack time, therefore it is not trivial to determine the actual beginning of the note. Furthermore, in polyphonic music nominally simultaneous notes may be spread over tens of seconds, making this definition more blurred \cite{dixon06}. 
+\textbf{Onset rate} \\ 
+Onsets are generally defined as the beginning of a new musical event, and onset rate is therefore defined as the number of onsets in a time interval. This definition however hides several difficulties: several instruments might have a long attack time, therefore it is not trivial to determine the actual beginning of the note. Furthermore, in polyphonic music nominally simultaneous notes may be spread over tens of seconds, making this definition more blurred \cite{dixon06}. Onsets are generally considered to be different from notes: for instance, a glissando might involve many different notes but only one onset.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[scale=0.75]{Figures/onsets.pdf}
@@ -161,7 +161,7 @@ HFC was proposed by Masri in \cite{masri96}. Given the short-time Fourier transf
 \begin{equation}
 X_k(n) = \sum\limits_{m=-\frac{N}{2}}^{\frac{N}{2}-1} x(nh + m)w(m)e^{-\frac{2j\pi mk}{N}}
 \end{equation}
-(where $w(m)$ is again an $N$-point window, and $h$ is the hop size, or time shift, between adjacent windows), the idea behind HFC is to give more weight to higher frequencies, by defining a onset function whose values are computed in the follwing way:
+(where $w(m)$ is again an $N$-point window, and $h$ is the hop size, or time shift, between adjacent windows), the idea behind HFC is to give more weight to higher frequencies, by defining a onset function whose values are computed in the following way:
 \begin{equation}
 HFC(n) = \frac{1}{N}\sum\limits_{k=-\frac{N}{2}}^{\frac{N}{2}-1} k\abs{X_k(n)}^{2}
 \end{equation}
@@ -239,13 +239,16 @@ HPCP_{normalized}(n) = \frac{HPCP(n)}{Max_n(HPCP(n))}
 
 Once the \textit{HPCP} are computed, additional tonal features may be computed, such as tonality or chords. Regarding tonality estimation, this is generally computed through a correlation analysis between the \textit{HPCP} obtained and a matrix of \textit{HPCP} profiles corresponding to different keys. 
 
-\subsection{High-level Descriptors}
+\subsection{High-level descriptors}
+Though there is not an univocal definition for it, the term \textit{``high-level descriptor''} is generally used for indicating a descriptor that is the result of a machine learning process or of a statistical analysis of low and mid-level descriptors. The motivation behind them is to ``translate'' low-level features into descritors associated with a semantic explanation. A growing research attention in MIR has been targeted to some MIR classification problems, especially genre classification, artist identification and mood detection \cite{dimi10}. Music genre classification is usually performed on the basis of a machine learning process: a classification algorithm is trained on low-level data, such as timbre or rhythm descriptors. The quality of the system for predicting music genre highly depends not only on the quality of the low-level data employed, but also on the typology and variety of music in the training set. For instance a system trained on a dataset of pop-rock music would perform badly on a classical music dataset. In addition, the process of labelling songs hides further difficulties, as labels themself could be misunderstood: for example, with the term ``danceable'' we usually refer to electronic dance music, but the term might correctly be applied to \textit{waltz} music as well. The task of classification might be performed to detect also valence and arousal, and results are generally considered to be improved. In this regard, it is worth to mention the recent project \textit{AcousticBrainz\footnote{\url{http://acousticbrainz.org/}}}, that is aimed at building a huge open database of descriptors computed (through Essentia, see Section~\ref{subsubsec:essentia}) on the catalogue of songs of its users. One of its main purposes is to exploit this huge catalogue of music and data to explore the usefulness of current algorithms for low-level audio features extraction in music classification algorithms. \\
+Automatic segmentation of audio is another task targeted by the MIR community: it consists of the splitting of songs into its compositional main parts (such as intro, refrain or outro) or its main rhythmic patterns, such as bars. Regarding the segmentation into compositional main parts, approaches generally follow the one proposed in \cite{foote00}, in which Foote performs a local self-similarity analysis in order to locate points of significant change. Segmentation is then performed computing a self-similarity matrix for the entire track, in which the similarity between excerpts starting at points of significant change is measured on the basis of low-level descriptors regarding rhythm, melody or timbre. Similar excerpts are then considered to belong to the same structural pattern of the song. 
 
-\subsection{Main Tools For Extracting Audio Content}
+\subsection{Main tools for extracting audio content}
 Many tools are available for the extraction of audio content descriptors from an audio signal. Many of them have been developed by researchers following the research necessities of MIR. This great variety of tools offers support to several operative systems (mainly Linux, Mac OS X and Windows) and programming languages (Java, C++, C, Python, Matlab). Some of this tools may be offered as standalone software or as a Vamp plugin. Not all the tools for extracting audio content are open-source, therefore not being particularly useful for the research community. In the following paragraphs, we'll briefly show the features of the tools taken into account on the development of this work.
 
 
 \subsubsection*{Essentia}
+\label{subsubsec:essentia}
 \begin{figure}[h]
 \begin{center}
 \includegraphics[scale=0.95]{Figures/essentia.png}\\
@@ -254,8 +257,34 @@ Many tools are available for the extraction of audio content descriptors from an
   \label{fig:Essentia}
 \end{center}
 \end{figure} \\
+\begin{figure}[b]\hskip -1cm
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+	\draw
+	% Drawing the blocks
+	node at (-0.4,-0.8)(stereotrack)
+	node at (1.5,-0.8)[align=center] [block] (framecutter) {Frame \\ Cutter}
+	node at (4.6,-0.8)[align=center][block] (windowing) {Windowing}
+	node at (8,-0.8)[align=center][block] (spectrum) {Spectrum}	
+	node at (11.2,-0.8)[align=center][block] (spectralpeaks) {Spectral \\ Peaks}	
+	node at (14.6,-0.8)[align=center][block] (hpcp) {HPCP}	
+	;
+    % Joining blocks. 
+	\draw[->](stereotrack) -- node[align=center]{}(framecutter);
+ 	\draw[->](framecutter) -- node[align=center] {} (windowing);
+ 	\draw[->](windowing) -- node[align=center] {} (spectrum);
+ 	\draw[->](spectrum) -- node[align=center] {} (spectralpeaks);
+ 	\draw[->](spectralpeaks) -- node[align=center] {} (hpcp);
+
+	% Boxing and labelling
+	\draw [color=gray,thick](-0.5,-2.5) rectangle (16.4,1);
+	\node at (-0.5,1) [above=5mm, right=0mm] {\textsc{HPCP computation}};
+\end{tikzpicture}
+\caption[Computation of HPCP with Essentia]{Computation of HPCP with Essentia. Each block corresponds to a different algorithm of Essentia.}
+\label{fig:hpcpessentia}
+\end{figure}
 Essentia\footnote{\url{http://essentia.upf.edu/}} is an open-source C++ library of algorithms for audio analysis and audio-based music information retrieval. It has been developed at Music Technology Group\footnote{\url{http://mtg.upf.edu/}}, Universitat Pompeu Fabra, and has released under the Affero GPL license\footnote{\url{http://www.gnu.org/licenses/agpl.html}}. In its current version 2.0.1, it contains a large collection of spectral, temporal, tonal, and high-level music descriptors, algorithms for audio input/output functionality, standard digital signal processing blocks and statistical tools. The library can be complemented with Gaia \footnote{\url{https://github.com/MTG/gaia}}, a C++ library to apply similarity measures and classifications on the results of audio analysis. Both these libraries include Python 2.* bindings and support Linux, Mac OS X and Windows. Essentia has been in developed for over 7 years, incorporating the work of more than 20 researchers and developers through its history. \\
-It offers two different modes: standard and streaming, the first being imperative while the latter being declarative. Each processing block is offered as an algorithm, and has three different types of attributes: inputs, outputs and parameters. Different blocks may be linked in order to perform the required processing task. In figure INSERT FIGURE a block diagram of a processing task is shown, composed of several different algorithms linked together. See Appendix A for consulting the full list of descriptors provided by Essentia 2.0.1.
+It offers two different modes: standard and streaming, the first being imperative while the latter being declarative. Each processing block is offered as an algorithm, and has three different types of attributes: inputs, outputs and parameters. Different blocks may be linked in order to perform the required processing task. In Figure~\ref{fig:hpcpessentia} a block diagram of a processing task is shown, composed of several different algorithms linked together. See Appendix~\ref{AppendixA} for consulting the full list of descriptors provided by Essentia 2.0.1.
+
 
 
 \subsubsection*{The Echo Nest}
@@ -269,7 +298,7 @@ It offers two different modes: standard and streaming, the first being imperativ
 \end{figure} \\
 \textit{The Echo Nest}\footnote{\url{http://the.echonest.com/}} is a company that provides access, through Web API, to a collection of audio descriptors for a catalogue of over 36 million songs and almost 3 million artists. In order to access to this database, an API key is required, and some rate limits are imposed to the use of a free license (for instance, the maximum number of HTTP calls for minute is subject to a limit, generally 20). Users can decide to upload their collection into this database, so that descriptors will be computed for new songs and made available to other users. The performance of this library greatly depends on the chance that a song that is about to be analyzed has already been uploaded into this service. If this is not the case, the upload time has to be taken into account for performing the analysis task. \\ 
 \textit{The Echo Nest} provides a great amount of descriptors for each track (see appendix~\ref{AppendixB} for the entire list), ranging from very accurate audio content information to metadata, and has been used by several commercial solutions, developed by \textit{Spotify}, \textit{Rdio}, \textit{Warner Music Group} and many others. Many official and unofficial libraries provide access to \textit{The Echo Nest} service; among these, the most important one is probably the official Python library \textit{Pyechonest}\footnote{\url{http://echonest.github.io/pyechonest/}}, that provides full access to all of the Echo Nest methods including artist search, news, reviews, blogs, similar artists as well as methods for retrieving detailed analysis information about an uploaded track. Furthermore, the library \textit{Echo Nest Remix\footnote{\url{http://echonest.github.io/remix/}}} worths mentioning, as it is a library for audio manipulation and mixing and has been used by many \textit{web-applications}, including The Infinite Jukebox. \\
-However, the source code of \textit{The Echo Nest} API service is not provided, therefore it has little usefulness to the research community. \\ \textit{The Echo Nest} has been aquired by \textit{Spotify} on March 2014.
+However, the source code of \textit{The Echo Nest} API service is not provided, therefore it has little usefulness to the research community. \textit{The Echo Nest} has been aquired by \textit{Spotify} on March 2014.
 
 
 \subsubsection*{jMIR}
@@ -287,30 +316,140 @@ jMir\footnote{\url{http://jmir.sourceforge.net/}} is an open-source software sui
 MIRtoolbox\footnote{\url{https://www.jyu.fi/hum/laitokset/musiikki/en/research/coe/materials/mirtoolbox}} is a set of functions for Matlab, dedicated to the extraction of audio content features from audio files. The design is based on a modular framework: algorithms are decomposed into stages, formalized using a minimal set of elementary mechanisms, with the objective of offering an overview of computational approaches in the MIR research field. MIRtoolbox has been developed at the Jyväskylän Yliopisto (University of Jyväskylä, Finland), by Olivier Lartillot, Petri Toiviainen and Tuomas Eerola.
 
 
-\section{Computing Music Similarity with Audio Content Descriptors}
+\section{Computing music similarity with audio content descriptors}
 \label{sec:audiocontentsimilarity}
+Many sizable issues have to be taken into account when trying to compute the music similarity between two pieces. Main concerns are:
+\begin{itemize}
+\item Features whose values somehow reflect similarities between tracks must be discerned; this is especially important with audio content features, since many different descriptors can be extracted.
+\item Discerned features must be comparable by the means of proper distance functions;
+\item There is no definition of similarity; specifically it may vary according to the kind of music and to the users' background.
+\end{itemize}
 
-\subsection{Notable studies on large databases}
+Thus, computing music similarity is a difficult task, because its wideness involves not only the choice of the similarity functions but also the descriptors and the data on which the computation of similarity is performed. 
+Furthermore, music similarity cannot be thought as a static concept, as it highly depends on the context. For instance, in \cite{stober11} Stober reports some context factors that may come into play when analyzing music similarity:
+\begin{itemize}
+\item Users: their preferences and background highly affect their perception of music similarity. Factors that may come into play are instruments played, listening habits and history, musical preferences.
+\item Retrieval task: according to the particular retrieval task, the concept of music similarity may be greatly affected. For instance, comparing the task of cover song retrieval takes into account factors that wouldn't be considered when comparing a more general music similarity distance between two different tracks.
+\end{itemize}
+
+The lack of a static concept of music similarity makes the evaluation task of a music similarity computation system difficult. The problem of evaluation of such systems will be presented in Chapter~\ref{Chapter3}.  \\
+
+Approaches to music similarity based on audio content data are generally based on low-level timbre descriptors \cite{aucou04}, rhythm features and tonal information. 
+Before presenting important results in the field of music similarity, we will give a brief overview on similarity measures. 
+\subsection*{Similarity measures}
+A \textbf{similarity measure} (also called \textit{``similarity function''} or simply \textit{``similarity''}) on a set X is a function defined as:
+\begin{equation}
+s : X \times X \rightarrow R^+
+\end{equation}
+satisfying the following conditions for all x, y and z in X:
+\begin{itemize}
+\item Equal self-similarity: $s(x,x) = s(y,y)$
+\item Simmetry: $s(x,y) = s(y,x)$
+\item Minimality: $s(x,x) \geq s(x,y)$
+\end{itemize}
+
+On the other hand, a \textbf{distance metric} (also called \textit{``distance function''} or simply \textit{``distance''}) on a set X is defined as the function:
+\begin{equation}
+d : X \times X \rightarrow R^+
+\end{equation}
+satisfying the following conditions for all x, y and z in X:
+\begin{itemize}
+\item \textbf{Non-negativity}: $d(x,y) \geq 0$
+\item \textbf{Identity of indiscernibles}: $d(x,y) = 0$ if and only if $x=y$
+\item \textbf{Simmetry}: $d(x,y) = d(y,x)$
+\item \textbf{Triangle inequality}: $d(x,z) \leq d(x,y) + d(y,z)$
+\end{itemize}
+
+Non-negativity and identity of indiscernibles together produce \textbf{positive definiteness}.
+Some ``light'' distance metrics are also defined:
+\begin{itemize}
+\item pseudometric: allows violation of identity of indiscernibles
+\item quasimetric: allows violation of simmetry. If $d$ is quasimetric, the symmetric metric $d'$ can easily be formed as:
+\begin{equation}
+d'(x,y) = \frac{1}{2}(d(x,y) + d(y,x))
+\end{equation}
+\item semimetric: allows violation of triangle inequality.
+\end{itemize}
+A similarity measure $s$ and a distance measure $d$ in a set X are compatible if and only if the following condition holds for all $x$, $y$, $a$ and $b$ in X:
+\begin{equation}
+d(x,y) \geq d(a,b) \Leftrightarrow s(x,y) \leq s(a,b)
+\end{equation}
+A distance measure can be easily transformed into a similarity measure (or viceversa) by mapping $s=1$ to $d=0$ and $s=0$ to $d=MAX$, and then reversing the order of objects in between (for instance with the Shepard formula $s(x,y) = e^{-d(x,y)}$) \cite{stober11}. Therefore, we will use the two terms almost indistinctively.\\
+Distance measures may be vector-based, sequence-based, set-based or distribution-based. Important vector-based distance measures are Minkowski distance, Mahalanobis distance and cosine similarity. Minkowski distance between vectors $x$ and $y$ is defined as:
+\begin{equation}
+d_{minkowski}(x,y) \equiv \left( \sum\limits_{i=1}^{n} \abs{x_i - y_i}^p \right)^{\frac{1}{p}}
+\end{equation}
+
+Frequently used special cases of Minkowski distance are:
+\begin{itemize}
+\item Manhattan distance: $p=1$
+\item Euclidean distance: $p=2$
+\end{itemize}
+
+
+On the other hand, Mahalanobis distance between two n-dimensional vectors $x$ and $y$ is defined as:
+\begin{equation}
+d_{mahalanobis}(x,y) \equiv \sqrt{(x-t)^{T}W(x-y)}
+\end{equation}
+where $W$ is a $n \times n$ weight matrix that can be derived from covariances in the data. When $W = I$, the Mahalanobis distance corresponds to an Euclidean distance.
+The cosine distance is finally defined as:
+\begin{equation}
+\cos(x,y) = \frac{\sum\limits_{i=1}^{n} x_iy_i}{\norm{x}\norm{y}}
+\end{equation}
+and it corresponds to the angle between two n-dimensional vectors $x$ and $y$. It is commonly applied in text retrieval.\\
+Regarding sequence-based distance measures, a very important one is Hamming distance, which performs a character-by-character comparison of two sequences of equal length, returning the total number of indexes in which the two sequences differ. It is commonly applied in bioinformatics for DNA and RNA sequencing. \\
+
+Regarding distribution based, two distances measures commonly used in MIR are Kullback-Leibler divergence and earth mover distance (EMD). 
+Kullback-Leibler divergence between two discrete probability distributions $A$ and $B$ is defined as:
+\begin{equation}
+D_{KL}(A \lVert B) = \sum\limits_{i}^{} A(i) \ln \frac{A(i)}{B(i)}
+\end{equation} 
+However, there are some aspects that must be taken into account with this specific measure:
+\begin{itemize}
+\item It cannot be considered a real distance measures, as it fails to fulfill simmetry and triangle inequality
+\item When $A$ and $B$ are multivariate normal distributions, the formula can be rewritten as:
+\begin{equation}
+KL(A, B) = \frac{1}{2}\left(tr(\Sigma_{B}^{-1}\Sigma_{A}) + (\mu_{B} - \mu_{A})^T \Sigma_{B}^{-1}(\mu_{B} - \mu_{A}) - k + ln\left(\frac{det\Sigma_{B}}{det\Sigma_{A}}\right)\right)
+\label{eq:kl_norm}
+\end{equation}
+where $tr$ is the $trace$ operation of a matrix (i.e., the sum of the elements in its main diagonal), $\mu_i$ the mean vector of the MFCC values of point $i$, $\Sigma_i$ is its the covariance matrix, $\Sigma_i^{-1}$ its inverse covariance matrix, and $k$ the size of $\mu_i$. 
+\end{itemize}
+
+These specific problems will be addressed in Chapter~\ref{sec:fastmap}. Regarding earth mover distance, it is a \textit{cross-bin} distance function that addresses the problem of lack of alignment between bins domain.  EMD defines the distance between two distributions as the solution of the transportation problem that is a special case of linear programming \cite{ling07}. It is commonly used in image retrieval; its computation is not trivial and for further details we refer to \cite{emd}. 
+
+\subsection*{Computing music similarity}
+Most of the techniques for music similarity computation are based on frequency spectrum analysis, as this has shown very good results since the first MIREX context (a more detailed overview about MIREX will be given in Chapter~\ref{Chapter3}). Specifically, MFCC are frequently used, after their introduction to MIR by Beth Logan in \cite{logan00}. One of the first studies on music similarity function based on audio signal analysis was published by Logan and Salomon in \cite{logan01} (2001), where they propose to compare songs by the means of the EMD used on \textit{signature models}, which are the results of k-means clustering applied to the MFCC values of the songs themselves.\\ Another very important contribute to this field came from Aucouturier and Pachet in \cite{aucou02} (2004), where they propose to describe music pieces using multiple Gaussian mixture models (\textit{GMMs}) (computed by the means of an Expectation Maximization algorithm) that fit the MFCC vectors best. Similarity computation is then performed by computing the likelihood of samples from $GMM_{song_a}$ given $GMM_{song_b}$ and viceversa:
+\begin{equation}
+sim_{a,b} = \frac{p(a|b) + p(b|a)}{2}
+\end{equation}
+
+In 2005, Mandel and Ellis published a new fast method for computing similarity, based on the approach of Aucouturier and Pachet \cite{mandel05}. Instead of computing mixtures of three Gaussians to fit the MFCC vectors, they propose to use Support Vector Machines (SVM) to represent a song as a single Gaussian distribution. To build this single Gaussian distribution, they use the first 20 MFCCs of the song: specifically, they use the 20x20 covariance matrix and 20-dimensional mean vector of their values over the entire song. The comparison of two songs modeled as single Gaussian distribution is then done by computing the Kullback-Leibler divergence. A great advantage of using single Gaussians is that we can use the simple closed Eq.~\ref{eq:kl_norm} for computing the KL divergence: no closed form for the KL divergence of two mixtures would exist otherwise, and in that case we should compute very expensive approximations, including EMD or MonteCarlo sampling. This method has shown to be much several orders of magnitude faster to compute, with just a little decrease in accuracy. \\ Another interesting result comes from Pohle et al. in \cite{pohle09}, in which they present a high-accuracy system based on rhythm descriptors: specifically, they extend the descriptor of fluctuation patterns (that measure periodicities of the loudness in various frequency bands) into proposed extensions \textit{onset patterns} and \textit{onset coefficients}. Such descriptors differ are novel in the computation of onsets: the authors propose to: 
+\begin{itemize}
+\item Reduce the signal to the parts of increasing amplitude (i.e., likely onsets)
+\item Use semitone bands to detect onsets instead of fewer critical bands
+\item Use Hanning window and zero padding before detecting periodicities with FFT
+\item Represent periodicity in log scale instead of linear scale
+\end{itemize}
+This system ranked in the very first positions at MIREX from 2009 to 2014 in the audio music similarity task.  
+Interestingly enough, there haven't been many researches targeted toward combining low and high-level features; to this end, interesting results have been achieved by Bogdanov et al. in \cite{dimi10}, in which they combine timbral, rhythmic and semantic features, for this approach is more appropriate from the point of view of music cognition. Specifically, for measuring the BPM similarity of songs $X$ and $Y$ (with BPMs $X_{BPM}$ and $Y_{BPM}$) the authors propose the formula:
+\begin{equation}
+d_{BPM}(X,Y) = \min_{i \in \mathbb{N}} \left( \alpha_{BPM}^{i-1} \abs*{\frac{max(X_{BPM}, Y_{BPM})}{min(X_{BPM}, Y_{BPM})} - i} \right)
+\label{eq:bpmdistance}
+\end{equation}
+where $\alpha_{BPM} \geq 1$. Eq.~\ref{eq:bpmdistance} is based on the assumption that songs with the same BPMs or multiples of the BPM are more similar than songs with non-multiple BPMs; for instance, the songs $X$ and $Y$ with $X_{BPM}$ and $Y_{BPM}$ should have a closer distance than the songs $X$ and $Z$ with $Z_{BPM}$ = 100. Furthermore this formula is robust to the frequent problem of duplicating (or halfing) estimated tempo in tempo estimation algorithms. With regard to high-level descriptors, the authors apply SVMs to low-level descriptors to infer different groups of musical dimensions, such as genre and musical culture, moods and instruments, and rhythm and tempo. This hybrid system ranked in the first positions at MIREX 2009 in the audio music similarity task. 
+
+\subsection*{Notable studies on large datasets}
 When large music collections are used, performance of similarity computation algorithms become critic. Although the collection to be used by the system during its public use can't be considered large, the necessary decomposition of it into hundred of thousands excerpt to be analyzed just in few seconds makes performance a critical factor when designing and implementing an algorithm. Therefore, a deep look into studies where large collections were used was needed.\\
 The first content-based music recommendation system working on large collections (over 200,000 songs) was published by Cano et al. in \cite{cano05}, 2005. The system presented on this work relies on rhythmic and timbre features, combined to form a music similarity feature vector. No special indexing technique was used. \\
-The first music recommendation system for large databases using Gaussian timbre features was proposed some months later by Roy et al. in \cite{roy05}. In this work, they propose to use a Monte-Carlo approximation of the Kullback-Leibler (KL) divergence to measure music similarity. The method proposed is, in principle, similar to the one proposed by Schnitzer et al. in \cite{fastmap12}, which has been used on the development of this thesis work (see \ref{sec:fastmap}). To pre-filter their results, Roy et al. increase the sampling rate of the Monte-Carlo approximation. As the divergence values converge, they are able to reduce the number of possible nearest neighbors. This method has shown good performance, both in query time and results.\\
+The first music recommendation system for large datasets using Gaussian timbre features was proposed some months later by Roy et al. in \cite{roy05}. In this work, they propose to use a Monte-Carlo approximation of the Kullback-Leibler (KL) divergence to measure music similarity. The method proposed is, in principle, similar to the one proposed by Schnitzer et al. in \cite{fastmap12}, which has been used on the development of this thesis work (see \ref{sec:fastmap}). To pre-filter their results, Roy et al. increase the sampling rate of the Monte-Carlo approximation. As the divergence values converge, they are able to reduce the number of possible nearest neighbors. This method has shown good performance, both in query time and results.\\
 A different attempt of improving performance was proposed by Levy and Sandler in \cite{levy06} where they use only diagonal covariance matrix instead of a full one to compute music similarity. While this has shown a ten-fold speedup compared to the full Kullback Leibler divergence, the quality of this simpler similarity measure results in worse genre classification rates. 
 
 
-\section{Conceptual Differences Between Metadata and Audio Content Information}
-The performance of content-based approaches is considerably lower \cite{slaney2011}.
-It is challenging to try to make the so-called \textit{semantic gap} smaller \cite{aucou2009}
+\section{Conceptual differences between metadata and audio content information}
+The difference between metadata and audio content data concerns not only the way the data is extracted, but the nature of the data itself. Given that they are generally provided by humans, metadata are human readable, comprehensible and semantically highly related to music facets. On the other hand, audio content data is generally a collection of data, and sometimes it is really hard to give these number a musical meaning. For instance, despite their intensive use and good performance in similarity functions, MFCCs are still considered ``hard-to-read''. This gap between the content of audio content descriptors and their actual meaningfulness is called \textit{semantic gap}, and many efforts have been taken into the direction of making this gap smaller \cite{aucou2009}. This difficulty of translating them into relevant semantic descriptors implies the hidden difficulty of detecting how much room there is for improvement of content-based music similarity systems \cite{aucou04}, and generally leads to lower performance of content-based approaches \cite{slaney2011}. \\
+However, several problems are related to metadata as well, and they are different according to the type of metadata under consideration. Generally, main concerns about the use of metadata come from their questionable completeness and consistency: they are generally available only for a small subset of songs, leaving the long-tail almost totally unprovided of meaningful data \cite{celma2010}. In an automated process, data completeness and consistency are crucial, for the performance of the process may greatly decrease in presence of inconsistent or incomplete data. For instance, if metadata are used in an automatic playlist generator, lacking data about some songs will result in never playing those songs, while inconsistencies may lead to the preferred choice of certain songs, again with the result of always skipping the remaining part of the music catalogue. Moreover, if metadata are in the form of social annotation or collaborative filtering, this situation may lead to the situation where ``the rich gets richer'' \cite{bogdanov13}: the more a track is retrieved by a music information retrieval system, the more metadata may be generated by its usage and thus the easier it will be for this track to be retrieved again. Given that social tags are generally subjective and come from a very large users' base, they may greatly suffer from inconsistencies \cite{celma2010}; furthermore, the perception of music is again subjective and can even be influenced by the perception of other people \cite{mcdermott12}, making the quality of these data even more questionable. Problems of consistencies could be solved with the use of expert annotations, but the actual size of digital catalogue of music makes this choice clearly unfeasible. Regarding collaborative filtering, one significant problem lies in sparsity of negative feedback: negative ratings are uncommon and, more in general, not inserting a track into a playlist or simply not giving an opinion about it carries no useful information about the track itself. \\
+On the other hand, relying on the audio signal makes the process objective and easily extendable by automation. However, extracting the features can be computationally costly \cite{schma13}. Moreover, some features as popularity or release data may be useful for the playlist generation process, and they cannot be extracted from the audio signal \cite{celma08}.\\
+It is thus clear that, despite the average results show that metadata-based systems perform better, the choice of one kind of representation over the other should come from the context and from the purpose of the system to be developed. The two typologies should be seen as complementary rather than as mutually exclusive: recently, efforts have been taken in order to integrate the advantages of both in new music information retrieval systems, with encouraging results. 
 
-The advantage of relying on the audio signal over, say, expert annotations, is that
-the process is objective and can be automated to a large extent. However, extracting
-the features can be computationally costly \cite{schma13}. Another
-limitation is that there might be features like the release date, the “freshness,” or
-popularity of a track, which can be relevant in the playlist generation process but that
-cannot be extracted from the audio signal \cite{celma08}.
 
-When used in an automated process, data completeness and consistency are crucial.
-Another potential problem is that not all types of metadata are objective, and annotations regarding, for example, the mood or the genre of a track can be imprecise or inconsistent \cite{celma2010}.
-
-(speaking of tags) Although such annotations can be rich and diverse, the perception of music is again subjective and can even be influenced by the perception of other people \cite{mcdermott12}; tags only for popular songs \cite{celma2010}
-
-When dealing with track ratings: grabbed from a wall posting on Facebook \cite{germain13} or a tweet on twitter \cite{hauger13}, 1-to-5 rating scales like on iTunes. Challenges: problem of data sparsity (especially for the tracks from the long tail), a positivity bias (the phenomenon that most of the ratings are highly positive and negative feedback is rare \cite{celma2010}).
+In the next chapter we will introduce the problem of assessing the performance of a music similarity computation system. This problem is very relevant, as a good evaluation process can highlight advantages and defects of each system, therefore leading the research community into a well-defined path to improvement.
