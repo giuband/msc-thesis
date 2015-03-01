@@ -23,7 +23,7 @@ When it comes to choosing one method over the other, it becomes clear that both 
 
 \section{Phonos Project}
 Phonos project\footnote{\url{http://phonos.upf.edu/}} is an initiative of the \textbf{Music Technology Group} (Universitat Pompeu Fabra, Barcelona) in collaboration with \textbf{Phonos Foundation}. Phonos was founded in 1974 by J.M. Mestres Quadreny, Andres Lewin-Richter and Luis Callejo, and for many years it has been the only studio of electroacoustic music in Spain. Many of the electroacoustic musicians in Spain attended the courses of the composer Gabriel Brncic at Phonos. It became Phonos Foundation 1982 and in 1984 it was registered at the Generalitat de Catalunya. In 1994, an agreement of co-operation with Music Technology group was established, with the purpose of promoting cultural activities related to research in the music technology. 
-In 2014, an exhibition at Museum de la Musica has been planned, with the purpose of celebrating the 40th anniversary of Phonos and showing many of the instruments used in the studio, while allowing visitors to listen to the music works produced there during all these years. Given the songs' average length and their complexity, a way for the visitors to quickly and nicely explore a catalogue of songs produced in these 40 years was needed.
+In 2014, the exhibition \textit{``Phonos, 40 anys de música electrònica a Barcelona''}\footnote{\url{http://phonos.upf.edu/node/931}} has been planned at Museu de la Musica\footnote{\url{www.museumusica.bcn.es/}} (Barcelona) with the purpose of celebrating the 40th anniversary of Phonos and showing many of the instruments used in the studio, while allowing visitors to listen to the music works produced there during all these years. Given the songs' average length and their complexity, a way for the visitors to quickly and nicely explore a catalogue of songs produced in these 40 years was needed.
 
 \begin{figure}[htbp]
   \centering
@@ -31,6 +31,15 @@ In 2014, an exhibition at Museum de la Musica has been planned, with the purpose
     \rule{15em}{0.5pt}
   \caption[Phonos]{Phonos logo.}
   \label{fig:Phonos}
+\end{figure}
+
+
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[scale=0.6]{Figures/electronicmusicexhibition.jpg}
+    \rule{35em}{0.5pt}
+  \caption[Phonos, 40 anys de música electrònica a Barcelona]{\textit{Phonos, 40 anys de música electrònica a Barcelona}, Manifesto.}
+  \label{fig:phonosmanifesto}
 \end{figure}
 
 %----------------------------------------------------------------------------------------
@@ -66,14 +75,6 @@ Started on November 2013, GiantSteps will last 36 months and the institutions in
 
 \section{Purpose of this work}
 The purpose of this work is to develop a software to be used by visitors during the exhibition \textit{Phonos, 40 anys de música electrònica a Barcelona} and that allows users to easily explore a medium-sized collection of music. This software is intended to exploit latest MIR findings to create a flow of music, composed of short segments of each song, concatenated in a way that the listener can barely realize of the hops between different songs. The application must also allow users to interact with it in order to have some control over the generation of the playlist; specifically, the user should be able to give a general direction to this flow (through some sliders or others GUI elements) in regards to some relevant music features, in a way that the change in the musical output can be perceived. The application developed is meant to be part of the GiantSteps project and therefore should follow the three guidelines explained in the previous page. In addition to this, given its future use on a public place, the application is required to be easy to use also for non-musicians, as many of the visitors of the exhibition could be.
-
-\begin{figure}[htbp]
-  \centering
-    \includegraphics[scale=0.6]{Figures/electronicmusicexhibition.jpg}
-    \rule{35em}{0.5pt}
-  \caption[Phonos, 40 anys de música electrònica a Barcelona]{\textit{Phonos, 40 anys de música electrònica a Barcelona}, Manifesto.}
-  \label{fig:GiantSteps}
-\end{figure}
 
 \section{Introduction to the problem of Playlist Generation}
 The problem of playlist generation has already been addressed by many popular music platforms, such as \textit{Last.fm} \footnote{\url{http://last.fm}}, \textit{Pandora} \footnote{\url{http://www.pandora.com}} and \textit{Musicovery} \footnote{\url{http://musicovery.com}}. The main objective of such services is to help users find tracks or artists that are unknown to them and that they may like, providing \textit{personalized radio playlists}. However, a playlist may be defined, in a broad way, just as a sequence of tracks \cite{bonnin14} and therefore its use could be more general. For instance, a common use of the term plylist refers to the \texit{broadcasting radio playlists}, i.e. playlists made by DJs in a radio stations and often involving popular tracks. We can therefore define the problem of playlist generation as follows \cite{bonnin14}:
