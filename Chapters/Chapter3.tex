@@ -4,12 +4,41 @@
 
 \lhead{Chapter 3. \emph{Assessing the performance of a music similarity computation system}} 
 
-\section{Literature Review}
+\section{Evaluation conferences in MIR}
 
-See chap5 of emilia & schedl
+Evaluation of a retrieval system is a fundamental task in order to achieve continuous improvements of it on the basis of the results obtained. Evaluation of MIR systems in generally based on test collections \cite{sanderson10}, following the Cranfield paradigm that is traditionally employed in Text IR \cite{harman11} \cite{gomez14}. On the other hand, the Text IR has a long tradition of conferences devoted to the evalutation of information retrieval systems, such as Text REtrieval Conference (TREC) \cite{trec05} and Conferenceand Labs of Evaluation Forum (CLEF) \cite{clef00}, where research teams interested in participating in a specific task can use data published by organizers and submit the output data of their own information retrieval system. Results of submitted data are then compared and evaluated by organizers, and during the actual conference results are discussed with participants, thus encouraging sharing of new promising techniques and main concernings. \\
+No such evaluation conference exists in MIR \cite{gomez14}. In 2000, the International Conference of Music Information Retrieval (ISMIR) series of conferences started, as the premier forum for research on MIR. The first edition\footnote{\url{http://ismir2000.ismir.net/}} was held at Plymouth, Massachusetts (USA), covering the following topics: 
+\begin{itemize}
+\item Estimating similarity of melodies and polyphonic music
+\item Music representation and indexing
+\item Problems of recognizing music optically and/or via audio
+\item Routing and filtering for music
+\item Building up music databases
+\item Evaluation of music-IR systems
+\item Intellectual property rights issues
+\item User interfaces for music IR
+\item Issues related to musical styles and genres
+\item Language modeling for music
+\item User needs and expectations
+\end{itemize}
+However, until year 2004, MIR systems were evaluated with self-made test collections: each research group was using different documents, queries and measures \cite{orio06}. The first step toward a common evaluation framework has been carried out by Music Technology Group\footnote{\url{http://mtg.upf.edu/}} of Universitat Pompeu Fabra (Barcelona), which hosted ISMIR in that year. The evaluation framework was called \textit{Audio Description Contest} and divided into six indipendent tasks\footnote{\url{http://ismir2004.ismir.net/}}: 
+\begin{itemize}
+\item \textit{Genre Classification}: label an unknown song with one out of six possible music genres
+\item \textit{Artist Identification}: identify one artist given three of his songs, after training the system with seven more songs 
+\item \textit{Rhythm Classification}: label audio signals with one out of eight rhythm classes (Samba, Slow Waltz, Viennese Waltz, Tango, Cha Cha, Rumba, Jive, Quickstep)
+\item \textit{Tempo Induction}: induce the basic tempo (i.e. a scalar, in BPM) from audio signals
+\item \textit{Melody Extraction}: main melody detection from polyphonic audio signal
+\end{itemize}
+In the first edition, participants had to submit their own algorithms instead of the output data. These algorithms would have been compiled and run by organizers, who would have finally published the results. There was general agreement on the benefit of doing so, but it was also clear that data on which the systems were tested should have been published before, so that researchers could test their systems before submission and improve them between editions. 
+This has instead been possible thanks to the many efforts of Dr. J.S. Downie, who organized several workshops on MIR evaluation (with the purpose of collecting ideas and needs of researchers in MIR) and finally started the International Music Information Retrieval System Evaluation Laboratory (IMIRSEL) project\footnote{\url{http://www.music-ir.org/evaluation/}}. The aim of the project is to create an provide secure and easily accessible music collections for MIR evaluation. Furthermore, the role of participants was made more important, as they could propose a particular task, defining the final goal, providing the datasets for training and testing the results, and defining the measures by which the results would have been ranked. The first evaluation campaign based on IMIRSEL, called \textit{Music Information Retrieval Evaluation eXchange} (MIREX). was organized in the year 2005 in London, and the results were presented and discussed at the ISMIR of the same year. MIREX is still based on an algorithm-to-data paradigm: participants submite the code or binaries for their systems and IMIRSEL runs them with pertinent datasets. The ISMIR-MIREX is being held every year, with an increasing amount of retrieval tasks performed: since 2005, over 1500 different runs have been evaluated for 22 different tasks, making it the premier evaluation forum in MIR research. The next conference is scheduled at Malaga, 26-30 October 2015\footnote{\url{http://ismir2015.uma.es/}}. 
 
-pag.34 emilia: music similarity is still an ill-defined concept, often indirrectly evaluated in the context of artist classification, ...
+\section{Difficulties in the evaluation of MIR systems}
+Several hassles specific only to Music IR have arised since the birth of this research field. The most important difference with Text IR lies in the availability of data: while textual documents are readily available for example on Internet, music files are protected by copyrights, and the expenses related to the use of such files would make it pratically impossible to create publicly accessible collections \cite{gomez14}. The result has been that research teams acquired their private collections of audio files; they then test and evaluate their system on this specific private collection, hence reducing both the reproducibility and the validity of the research. \\
+Moreover, music is inherently more difficult than text, as it is composed of several facets (for instance timbre, rhythm, lyrics, etc.); the result is that a music piece is still perceived as the same one even after alteration of some facets, such as pitch or lyrics. \\ Finally, the size of music files is several order of magnitude larger than the one of text files, with the result of collections requiring large storage space.  \\
+For all these reasons, the option of providing an entire public collection of music files to be used during evaluation is generally disregarded. The only viable alternative in many cases is to just provide a set of features computed by third parties, such as in the Latin Music Database \cite{latin08} or the Million Song Dataset \cite{million11}. The problem of this approach is that, not being provided of a direct access to the multimedia files, research teams are constrained to the use of provided features, hence not giving any room for the exploration of new features extractable from signals. 
 
+\section{Evaluation of automatic playlist generators}
+Techniques for evaluating automatic playlist generators may be considered the same as the one used for automatic recommendation systems (as the purpose of these system is similar) for which many more researches have been performed. 
 The coherence of the tracks is a typical quality criterion for playlists \cite{logan04}. 
 Therefore, selecting and ordering tracks based on their similarities is an obvious strategy to generate playlists. The core of any similarity-based approach is its distance function, which characterizes the closeness of two tracks. How the distance function is actually designed depends on the available data, which could include the raw audio signal along with the features that can be derived from it, but also metadata, such as the artists, the genres, playcounts, or ratings [Slaney and White 2007]. In many cases, a signature or model of each track is determined first, in which the distance function is then applied. Typical examples for such functions applied on more abstract models of a track’s features are the earth-mover’s distance \cite{logan04}, the Kullback-Leibler (KL) divergence \cite{vignoli05}, or the Euclidean distance \cite{knees06}.
 
