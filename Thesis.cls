@@ -157,6 +157,7 @@
    \let\\\space
 }
 \newcommand*{\supervisor}[1]{\def\supname{#1}}
+\newcommand*{\internsupervisor}[1]{\def\internsupname{#1}}
 \newcommand*{\thesistitle}[1]{\def\ttitle{#1}}
 \newcommand*{\examiner}[1]{\def\examname{#1}}
 \newcommand*{\degree}[1]{\def\degreename{#1}}
@@ -183,13 +184,14 @@
 
 \thesistitle{A content-aware interactive explorer of digital music collections: The Phonos music explorer} % Your thesis title - this is used in the title and abstract
 %-------------------------------------------------  
-\supervisor{Dr. James \textsc{Smith}} % You supervisor's name - this is used in the title page
+\supervisor{Dr. Giovanni \textsc{De Poli}} % You supervisor's name - this is used in the title page
+\internsupervisor{Pr. Perfecto \textsc{Herrera}} % You supervisor's name - this is used in the title page
 %-------------------------------------------------   
 \examiner{} % Your examiner's name - this is not currently used anywhere in the template, cite it with \examname if you want it
 %-------------------------------------------------   
-\degree{Doctor of Philosophy} % Your degree name - this is currently used in the title page and abstract
+\degree{Master's Degree in Computer and Software Engineering} % Your degree name - this is currently used in the title page and abstract
 %-------------------------------------------------   
-\authors{John \textsc{Smith}} % Your name - this is used in the title page and abstract
+\authors{Giuseppe \textsc{Bandiera}} % Your name - this is used in the title page and abstract
 %-------------------------------------------------   
 \addresses{} % Your address - this is not currently used anywhere in the template, cite it with \addressnames if you want it
 %-------------------------------------------------   
@@ -288,27 +290,24 @@
 %----------------------------------------------------------------------------------------
 %	ABSTRACT PAGE DESIGN
 %----------------------------------------------------------------------------------------
-\newenvironment{abstract}
+\newenvironment{abstract}[1]
 {
   \btypeout{Abstract Page}
+  \addtotoc{Abstract}
   \thispagestyle{empty}
-  \null\vfil
-  \begin{center}
-    \setlength{\parskip}{0pt}
-    {\normalsize \UNIVNAME \par} % University name in capitals
-    \bigskip
-    {\huge{\textit{Abstract}} \par}
-    \bigskip
-    {\normalsize \facname \par} % Faculty name
-    {\normalsize \deptname \par} % Department name
-    \bigskip
-    {\normalsize \degreename\par} % Degree name
-    \bigskip
-    {\normalsize\bf \@title \par} % Thesis title
-    \medskip
-    {\normalsize by \authornames \par} % Author name
-    \bigskip
-  \end{center}
+  \begin{center}{\huge{\textit{Abstract}} \par}\end{center}
+  {\normalsize #1}
+  \vfil\vfil\null
+}
+
+\newenvironment{abstractita}[1]
+{
+  \btypeout{Abstract Italian Page}
+  \addtotoc{Abstract (Italian)}
+  \thispagestyle{empty}
+  \begin{center}{\huge{\textit{Abstract (Italian)}} \par}\end{center}
+  {\normalsize #1}
+  \vfil\vfil\null
 }
 %----------------------------------------------------------------------------------------
 {
@@ -413,6 +412,15 @@
 \addtotoc{Acknowledgements}
 \thispagestyle{plain}
 \begin{center}{\huge{\textit{Acknowledgements}} \par}\end{center}
+{\normalsize #1}
+\vfil\vfil\null
+
+}
+\newcommand\ringraziamenti[1]{
+\btypeout{Ringraziamenti}
+\addtotoc{Ringraziamenti}
+\thispagestyle{plain}
+\begin{center}{\huge{\textit{Ringraziamenti}} \par}\end{center}
 {\normalsize #1}
 \vfil\vfil\null
 

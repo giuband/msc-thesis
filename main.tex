@@ -100,31 +100,41 @@
 \begin{titlepage}
 \begin{center}
 
-\textsc{\LARGE \univname}\\[1.5cm] % University name
-\textsc{\Large Doctoral Thesis}\\[0.5cm] % Thesis type
+\tikz[remember picture,overlay] \node[opacity=0.05,inner sep=0pt] at (current page.center){\includegraphics[width=25cm,height=25cm]{Figures/unipd_logo.png}};
+
+\textsc{\LARGE University of Padova}\\[1.5cm] % University name
+\textsc{\Large Master's degree in Computer Engineering}\\[0.5cm] % Thesis type
+\textsc{Department of Information Engineering} \\[0.5cm]
 
 \HRule \\[0.4cm] % Horizontal line
-{\huge \bfseries \ttitle}\\[0.4cm] % Thesis title
+% {\huge \bfseries \ttitle}\\[0.4cm] % Thesis title
+{\huge \bfseries A Content-Aware Interactive Explorer \\ of Digital Music Collections: \\ [0.4cm] The Phonos Music Explorer}\\[0.4cm] % Thesis title
 \HRule \\[1.5cm] % Horizontal line
  
 \begin{minipage}{0.4\textwidth}
 \begin{flushleft} \large
+\vspace{-1.6cm}
 \emph{Author:}\\
-\href{http://www.johnsmith.com}{\authornames} % Author name - remove the \href bracket to remove the link
+{\authornames} % Author name - remove the \href bracket to remove the link
 \end{flushleft}
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
 \begin{flushright} \large
 \emph{Supervisor:} \\
-\href{http://www.jamessmith.com}{\supname} % Supervisor name - remove the \href bracket to remove the link  
+{\supname} % Supervisor name - remove the \href bracket to remove the link  
+\\
+\vspace{0.5cm}
+\\
+\emph{Internship supervisor:} \\
+{\internsupname} % Supervisor name - remove the \href bracket to remove the link  
 \end{flushright}
 \end{minipage}\\[3cm]
  
-\large \textit{A thesis submitted in fulfilment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
-\textit{in the}\\[0.4cm]
-\groupname\\\deptname\\[2cm] % Research group name and department name
+
+\tikz[remember picture,overlay] \node[opacity=1,inner sep=0pt] at (-5.57, -5.8){\includegraphics[scale=1]{Figures/mtg_logo.png}};
+\tikz[remember picture,overlay] \node[opacity=1,inner sep=0pt] at (5.6, -5.5){\includegraphics[scale=0.5]{Figures/dei-logo.png}};
  
-{\large \today}\\[4cm] % Date
+{\large March 10th, 2015}\\[4cm] % Date
 %\includegraphics{Logo} % University/department logo - uncomment to place it
  
 \vfill
@@ -141,10 +151,10 @@
 
 \null\vfill % Add some space to move the quote down the page a bit
 
-\textit{``Thanks to my solid academic training, today I can write hundreds of words on virtually any topic without possessing a shred of information, which is how I got a good job in journalism."}
+\textit{``If I were not a physicist, I would probably be a musician. I often think in music. I live my daydreams in music. I see my life in terms of music."}
 
 \begin{flushright}
-Dave Barry
+Albert Einstein
 \end{flushright}
 
 \vfill\vfill\vfill\vfill\vfill\vfill\null % Add some space at the bottom to position the quote just right
@@ -155,11 +165,16 @@ Dave Barry
 %	ABSTRACT PAGE
 %----------------------------------------------------------------------------------------
 
-\addtotoc{Abstract} % Add the "Abstract" page entry to the Contents
-
 \abstract{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
 
-The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
+The outstanding growth of the Web in recent years has changed many of our habits, including the way we access and enjoy artistic works. Without any doubt, music is one of most affected fields by this trend: some web services providing access to music content have several hundreds of million users, and this growth shows no sign of slowing down. We have easy access to much more music than we can listen to. Music information retrieval (MIR) is a research field whose goal is to explore techniques that may help music enthusiasts on finding relevant information more easily. The purpose of this work is to exploit latest MIR findings in order to develop a software for pleasantly and efficiently exploring a catalogue of music. The software developed is intended to be used at the exhibition ``Phonos, 40 anys de música electrònica a Barcelona'' at Museu de la Musica, Auditorium, Barcelona.
+}
+
+\clearpage % Start a new page
+
+\abstractita{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+
+La crescita straordinaria del Web negli ultimi anni ha radicalmente cambiato molte delle nostre abitudini, compreso il nostro modo di fruire dell’arte. Senza dubbi, la musica è uno dei campi più colpiti da questo fenomeno: alcuni servizi web di accesso a contenuti musicali vantano diverse centinaia di milioni di utenti, e questa crescita non accenna a rallentare. Abbiamo facile accesso a molta più musica di quanta ne possiamo ascoltare. Il Music Information Retrieval (MIR) è un campo di ricerca che si pone l’obiettivo di esplorare nuove tecniche che possano facilitare l’accesso ai contenuti desiderati all'interno di questi vasti cataloghi di musica. L’obiettivo di questo elaborato è di sfruttare i più recenti risultati del MIR per sviluppare un software che permetta una facile e piacevole esplorazione di un collezione musicale. Il software sviluppato verrà utilizzato alla mostra ``Phonos, 40 anys de música electrònica a Barcelona'' al Museu de la Musica, Auditorium, Barcelona.
 }
 
 \clearpage % Start a new page
@@ -171,8 +186,16 @@ The Thesis Abstract is written here (and usually kept to just this page). The pa
 \setstretch{1.3} % Reset the line-spacing to 1.3 for body text (if it has changed)
 
 \acknowledgements{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+There are so many people to which I feel immensely grateful. The first ones that I wish to thank are Perfe and professor Giovanni De Poli: Perfe for showing a warm involvement in my progress with this work, and always trying to bring out the best of me in order to successfully reach the goal of it. I’m very grateful to professor Giovanni De Poli for having kindly supported me in this choice of doing an internship at MTG, a choice that has truly changed my life. Thanks to my family, always very close to my feelings and needs despite the distance, I love you. Thanks to my sister Mariantonietta, the most precious person of my life. Thanks to the amazing people I met in Spain: Dara, Oriol, Cárthach, Emese. They have made everything much easier and funnier. Thanks to Jean-Baptiste and Jesper, the best flatmates I had: I hope to see you again somewhere in this world. Thanks to my dear friend Enrico, for always sharing with me incredible experiences. Thanks to my friends of Conegliano: Nicola, Mattia, Giulia, Andrea, Matteo, Elena, Andrea, Irene; I regret not being able to see you more often.\\
+Finally, thanks to life, for giving the chance of growing, learning and meeting wonderful people while feeding passions.
+}
+\clearpage % Start a new page
 
-The acknowledgements and the people to thank go here, don't forget to include your project advisor\ldots
+\setstretch{1.3} % Reset the line-spacing to 1.3 for body text (if it has changed)
+
+\ringraziamenti{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+Ci sono così tante persone a cui sono immensamente grato. Le prime che mi sento in dovere di ringraziare sono Perfe e il professore Giovanni De Poli: Perfe per aver dimostrato un interesse entusiastico nei confronti dei miei progressi, e portandomi a tirare fuori il meglio da me stesso in ogni situazione. Grazie al professore Giovanni De Poli per aver strenuamente supportato la mia volontà di svolgere un tirocinio all’MTG, scelta che mi ha cambiato la vita. Grazie alla mia famiglia, sempre vicinissima ai miei sentimenti e alle mie necessità nonostante la distanza, vi voglio bene. Grazie a mia sorella Mariantonietta, la persona più preziosa della mia vita. Grazie alle persone straordinarie che ho conosciuto in Spagna: Dara, Oriol, Cárthach, Emese. Hanno reso tutto molto più facile e divertente. Grazie a Jean-Baptiste e Jesper, i migliori conquilini: spero di rivedervi di nuovo da qualche parte in giro per il mondo. Grazie al mio amico Enrico, compagno delle avventure più straordinarie. Grazie ai miei amici di Conegliano: Nicola, Mattia, Giulia, Andrea, Matteo, Elena, Andrea, Irene. Mi dispiace non potervi vedere più spesso.\\
+Infine, grazie alla vita, per dare l’opportunità di crescere, imparare e incontrare persone meravigliose coltivando una passione.
 }
 \clearpage % Start a new page
 
@@ -202,16 +225,16 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \lhead{\emph{Abbreviations}} % Set the left side page header to "Abbreviations"
 \listofsymbols{ll} % Include a list of Abbreviations (a table of two columns)
 {
-\textbf{MFCC} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
-\textbf{GUI} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
-\textbf{HPCP} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
-\textbf{MIR} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
-\textbf{RS} & \textbf{R}ecommender \textbf{S}ystems \\
-\textbf{BPM} & \textbf{R}ecommender \textbf{S}ystems \\
-\textbf{FFT} & \textbf{R}ecommender \textbf{S}ystems \\
-\textbf{OR} & \textbf{R}ecommender \textbf{S}ystems \\
+\textbf{BPM} & \textbf{B}eats \textbf{Per} \textbf{M}inute \\
 \textbf{EM} & \textbf{E}xpectation \textbf{M}aximization \\
 \textbf{EMD} & \textbf{E}arth \textbf{M}overs \textbf{D}istance \\
+\textbf{FFT} & \textbf{F}ast \textbf{F}ourier \textbf{T}ransform \\
+\textbf{GUI} & \textbf{G}raphical \textbf{U}ser \textbf{I}nterface \\
+\textbf{HPCP} & \textbf{H}armonic \textbf{P}itch \textbf{C}lass \textbf{P}rofile \\
+\textbf{MFCC} & \textbf{M}el \textbf{F}requency \textbf{C}epstrum \textbf{C}oefficients \\
+\textbf{MIR} & \textbf{M}usic \textbf{I}nformation \textbf{R}etrieval \\
+\textbf{OR} & \textbf{O}nset \textbf{R}ate \\
+\textbf{RS} & \textbf{R}ecommender \textbf{S}ystems \\
 \textbf{SVM} & \textbf{S}upport \textbf{V}ector \textbf{M}achine \\
 }
 
@@ -224,7 +247,7 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 
 \pagestyle{empty} % Page style needs to be empty for this page
 
-\dedicatory{For/Dedicated to/To my\ldots} % Dedication text
+\dedicatory{To Music} % Dedication text
 
 \addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
 
@@ -279,165 +302,169 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \lhead{\emph{Bibliography}} % Change the page header to say "Bibliography"
 
 \begin{thebibliography}{99}
-\bibitem{shazam03} 
-A. Li-chun Wang, and Th Floor Block F. 
-\textit{An industrial-strength audio search algorithm}. 
-Proceedings of the 4 th International Conference on Music Information Retrieval, 2003.
- 
-\bibitem{downieMIR} 
-J.S. Downie.
-\textit{The Scientific Evaluation of Music Information Retrieval Systems: Foundations and Future}. 
-Computer Music Journal, 28:12-23, 2004.
- 
-\bibitem{orio06} 
-N. Orio.
-\textit{Music Retrieval: A Tutorial and Review}. 
-Foundations and Trends\textregistered in Information Retrieval, 1(1):1-90, 2006.
 
-\bibitem{gomez14} 
-M. Schedl, E. Gómez, and J. Urbano.
-\textit{Music Information Retrieval: Recent Developments and Applications}. 
-Foundations and Trends\textregistered in Information Retrieval, 8(2-3):127-261, 2014.
-
-\bibitem{aucou04} 
-J.J. Aucouturier, and F. Pachet.
-\textit{Improving Timbre Similarity: How High is the Sky?}. 
-Journal of Negative Results in Speech and Audio Sciences, 1(1):1-13, 2004.
-
-\bibitem{aucou02} 
-J.J. Aucouturier, and F. Pachet.
-\textit{Music similarity measures: What's the use?}. 
-ISMIR, 2002.
-
-\bibitem{xavier2013} 
-X. Serra, M. Magas, E. Benetos, M. Chudy, S. Dixon, A. Flexer, E. Gómez, F. Gouyon, P. Herrera, S. Jorda, O. Paytuvi, G. Peeters, J. Schlüter, H. Vinet, and G. Widmer.
-\textit{Roadmap for Music Information ReSearch}. 
-Geoffroy Peeters (editor), Creative Commons BY NC ND 3.0 license, 2013.
-
-\bibitem{automash14} 
-M.E.P. Davies, P. Hamel, K. Yoshii and M. Goto.
-\textit{AutoMashUpper: Automatic Creation of Multi-Song Music Mashups}. 
-IEEE/ACM Transactions on Audio, Speech, and Language Processing, 22(12):1726-1737, 2014.
-
-\bibitem{Szyma09}
-G. Szymanski.
-\textit{Pandora, or, a never-ending box of musical delights}. 
-Music Reference Services Quarterly, 12(1):21-22, 2009.
-
-\bibitem{slaney2011}
-M. Slaney.
-\textit{Web-scale multimedia analysis: Does content matter?}. 
-IEEE Multimedia, 18(2):12-15, 2011.
-
-\bibitem{aucou2009}
-J.J. Aucouturier.
-\textit{Sounds like teen spirit: Computational insights into the grounding of everyday musical terms}. 
-Language, Evolution and the Brain. Frontiers in Linguistics, 35-64, 2009.
-
-\bibitem{green09}
-S.J. Green, P. Lamere, J. Alexander, F. Maillet, S. Kirk, J. Holt, J. Bourque, and X.W. Mak.
-\textit{Generating transparent, steerable recommendations from textual descriptions of items}.
-ACM Conference on Recommender Systems (RecSys'09), 281-284, 2009.
-
-\bibitem{bogdanov13}
-D. Bogdanov, and X. Serra.
-\textit{From music similarity to music recommendation: Computational approaches based on audio features and metadata}.
-PhD Thesis, Universitat Pompeu Fabra, 2013.
-
-\bibitem{mirage07}
-D. Schnitzer.
-\textit{Mirage – High-Performance Music Similarity Computation and Automatic Playlist Generation}.
-Master's Thesis, Vienna University of Technology, 2007.
-
-\bibitem{barrington07}
-L. Barrington, D. Turnbull, D. Torres, and G. Lanckriet.
-\textit{Semantic similarity for music retrieval}.
-Music Information Retrieval Evaluation Exchange (MIREX), 2007.
-
-\bibitem{west07}
-K. West, and P. Lamere.
-\textit{A model-based approach to constructing music similarity functions}.
-EURASIP Journal on Advances in Signal Processing, 149-149, 2007.
-
-\bibitem{bonnin14}
-G. Bonnin, and D. Jannach.
-\textit{Automated Generation of Music Playlists: Survey and Experiments}.
-ACM Computing Surveys, 47(2), Article 26, 2014.
-
-\bibitem{dias10}
-R. Dias, and M. J. Fonseca.
-\textit{MuVis: An application for interactive exploration of large music collections}.
-Proceedings of MM, 1043-1046, 2010.
-
-\bibitem{downey03}
-J.S. Downie.
-\textit{Music information retrieval}.
-Annual Review of Information Science and Technology, 37(1):295-340, 2003.
-
-\bibitem{grachten09}
-M. Grachten, M. Schedl, T. Pohle, and G. Widmer.
-\textit{The ISMIR cloud: A decade of ISMIR conferences at your fingertips}.
-Proceedings of ISMIR, 63-68, 2009.
-
-\bibitem{dopler08}
-M. Dopler, M. Schedl, T. Pohle, and P. Knees.
-\textit{Accessing music collections via representative cluster prototypes in a hierarchical organization scheme}.
-Proceedings of ISMIR, 179-184, 2009.
-
-\bibitem{schma13}
-I. Schm\"{a}decke, and H. Blume.
-\textit{High performance hardware architectures for automated music classification}.
-Algorithms from and for Nature and Life, 539-547, 2013.
-
-\bibitem{celma08}
-O. Celma, and X. Serra.
-\textit{FOAFing the music: Bridging the semantic gap in music recommendation}.
-Web Semantics: Science, Services and Agents on the World Wide Web, 6(4):250-256, 2008.
-
-\bibitem{pachet00}
-F. Pachet, P. Roy, and D. Cazaly.
-\textit{A combinatorial approach to content-based music selection}.
-Multimedia, 7(1):44-51, 2000.
-
-\bibitem{perfe11}
-D. Bogdanov, and P. Herrera.
-\textit{How much metadata do we need in music recommendation? A subjective evaluation using preference sets}.
-WProceedings of ISMIR, 97-102, 2011.
 
 \bibitem{aizenberg12}
 N. Aizenberg, Y. Koren, and O. Somekh.
 \textit{Build your own music recommender by modeling internet radio streams}.
 Proceedings of WWW, 1-10, 2012.
 
-\bibitem{vangulik05}
-R. Van Gulik, and F. Vignoli.
-\textit{Visual playlist generation on the artist map}.
-Proceedings of ISMIR, 520-523, 2005.
+\bibitem{aucou02} 
+J.J. Aucouturier, and F. Pachet.
+\textit{Music similarity measures: What's the use?}. 
+ISMIR, 2002.
 
-\bibitem{coelho13}
-F. Coelho, J. Devezas, and C. Ribeiro.
-\textit{Large-scale crossmedia retrieval for playlist generation and song discovery}.
-Proceedings of OAIR, 61-64, 2013.
+\bibitem{aucou04} 
+J.J. Aucouturier, and F. Pachet.
+\textit{Improving Timbre Similarity: How High is the Sky?}. 
+Journal of Negative Results in Speech and Audio Sciences, 1(1):1-13, 2004.
+
+\bibitem{aucou2009}
+J.J. Aucouturier.
+\textit{Sounds like teen spirit: Computational insights into the grounding of everyday musical terms}. 
+Language, Evolution and the Brain. Frontiers in Linguistics, 35-64, 2009.
+
+
+\bibitem{barrington07}
+L. Barrington, D. Turnbull, D. Torres, and G. Lanckriet.
+\textit{Semantic similarity for music retrieval}.
+Music Information Retrieval Evaluation Exchange (MIREX), 2007.
+
+
+\bibitem{bello04}
+J.P. Bello, C. Duxbury, M. Davies, and M. Sandler.
+\textit{On the use of phase and energy for musical onset detection in the complex domain}.
+Signal Processing Letters, IEEE, 11(6):553-556, 2004.
+
+\bibitem{bock13}
+S. Böck, and G. Widmer.
+\textit{Maximum filter vibrato suppression for onset detection}.
+Proceedings of the 16th International Conference on Digital Audio Effects (DAFx-13), Maynooth, Ireland, 2013.
+
+\bibitem{perfe11}
+D. Bogdanov, and P. Herrera.
+\textit{How much metadata do we need in music recommendation? A subjective evaluation using preference sets}.
+WProceedings of ISMIR, 97-102, 2011.
+
+
+
+
+\bibitem{bogdanov13}
+D. Bogdanov, and X. Serra.
+\textit{From music similarity to music recommendation: Computational approaches based on audio features and metadata}.
+PhD Thesis, Universitat Pompeu Fabra, 2013.
+
+
+\bibitem{essentia13}
+D. Bogdanov, N. Wack, E. Gómez, S. Gulati, P. Herrera, O. Mayor, G. Roma, J. Salamon, J. Zapata, and X. Serra.
+\textit{ESSENTIA: an open-source library for sound and music analysis}.
+Proceedings of the 21st ACM international conference on Multimedia, 855-858, 2013.
+
+\bibitem{bonada00}
+J. Bonada.
+\textit{Automatic technique in frequency domain for near-lossless time-scale modification of audio}.
+Proceedings of International Computer Music Conference, 396-399, 2000.
+
+\bibitem{bonnin14}
+G. Bonnin, and D. Jannach.
+\textit{Automated Generation of Music Playlists: Survey and Experiments}.
+ACM Computing Surveys, 47(2), Article 26, 2014.
+
+
+\bibitem{cabral05}
+G. Cabral, J.P. Briot, and F. Pachet. 
+\textit{Impact of distance in pitch class profile computation}.
+Proceedings of the Brazilian Symposium on Computer Music, 319-324, 2005.
+
+\bibitem{cano05}
+P. Cano, M. Kaltenbrunner, and N. Wack.
+\textit{An industrial-strength content-based music recommendation system}.
+Proceedings of the 28th annual internation ACM SIGIR conference on research and development in information retrieval, 673-673, 2005.
+
+
+
+\bibitem{celma08}
+O. Celma, and X. Serra.
+\textit{FOAFing the music: Bridging the semantic gap in music recommendation}.
+Web Semantics: Science, Services and Agents on the World Wide Web, 6(4):250-256, 2008.
+
 
 \bibitem{celma2010}
 O. Celma. 
 \textit{Music Recommendation and Discovery: The Long Tail, Long Fail, and Long Play in the Digital Music Space}.
 Springer, 2010.
 
-\bibitem{mcdermott12}
-J. McDermott.
-\textit{Auditory preferences and aesthetics: Music, voices, and everyday sounds}.
-Neuroscience of Performance and Choice. Elsevier, 227-256, 2012.
+
+
+\bibitem{coelho13}
+F. Coelho, J. Devezas, and C. Ribeiro.
+\textit{Large-scale crossmedia retrieval for playlist generation and song discovery}.
+Proceedings of OAIR, 61-64, 2013.
+
+
+
+\bibitem{automash14} 
+M.E.P. Davies, P. Hamel, K. Yoshii and M. Goto.
+\textit{AutoMashUpper: Automatic Creation of Multi-Song Music Mashups}. 
+IEEE/ACM Transactions on Audio, Speech, and Language Processing, 22(12):1726-1737, 2014.
+
+\bibitem{dias10}
+R. Dias, and M. J. Fonseca.
+\textit{MuVis: An application for interactive exploration of large music collections}.
+Proceedings of MM, 1043-1046, 2010.
+
+\bibitem{dixon06}
+S. Dixon
+\textit{Onset Detection Revised}.
+Proc. of the 9th Int. Conference on Digital Audio Effects (DAFx’06), p.133-137, 2006.
+
+\bibitem{dopler08}
+M. Dopler, M. Schedl, T. Pohle, and P. Knees.
+\textit{Accessing music collections via representative cluster prototypes in a hierarchical organization scheme}.
+Proceedings of ISMIR, 179-184, 2009.
+
+\bibitem{downey03}
+J.S. Downie.
+\textit{Music information retrieval}.
+Annual Review of Information Science and Technology, 37(1):295-340, 2003.
+
+\bibitem{downieMIR} 
+J.S. Downie.
+\textit{The Scientific Evaluation of Music Information Retrieval Systems: Foundations and Future}. 
+Computer Music Journal, 28:12-23, 2004.
+
 
 \bibitem{germain13} 
 A. Germain, and J. Chakareski.
 \textit{Spotify me: Facebook-assisted automatic playlist generation}.
 Proceedings of MMSP, 25-28, 2013.
 
+
+
+
+
+\bibitem{grachten09}
+M. Grachten, M. Schedl, T. Pohle, and G. Widmer.
+\textit{The ISMIR cloud: A decade of ISMIR conferences at your fingertips}.
+Proceedings of ISMIR, 63-68, 2009.
+
+
+
+
+
+
+
+\bibitem{green09}
+S.J. Green, P. Lamere, J. Alexander, F. Maillet, S. Kirk, J. Holt, J. Bourque, and X.W. Mak.
+\textit{Generating transparent, steerable recommendations from textual descriptions of items}.
+ACM Conference on Recommender Systems (RecSys'09), 281-284, 2009.
+
+
 \bibitem{hauger13} 
 D. Hauger, J. Kepler, M. Schedl, A. Kosir, and M. Tkalcic.
 \textit{The million musical tweets dataset: What can we learn from microblogs}.
 Proceedings of ISMIR, 189-194, 2013.
+
 
 \bibitem{logan04}
 B. Logan. 
@@ -448,6 +475,128 @@ Proceedings of ISMIR, 425–428, 2004.
 B. Logan. 
 \textit{Mel frequency cepstral coefficients for music modeling}.
 Proceedings of ISMIR, 2000.
+
+
+
+\bibitem{mcdermott12}
+J. McDermott.
+\textit{Auditory preferences and aesthetics: Music, voices, and everyday sounds}.
+Neuroscience of Performance and Choice. Elsevier, 227-256, 2012.
+
+
+
+\bibitem{orio06} 
+N. Orio.
+\textit{Music Retrieval: A Tutorial and Review}. 
+Foundations and Trends\textregistered in Information Retrieval, 1(1):1-90, 2006.
+
+
+\bibitem{pachet00}
+F. Pachet, P. Roy, and D. Cazaly.
+\textit{A combinatorial approach to content-based music selection}.
+Multimedia, 7(1):44-51, 2000.
+
+
+\bibitem{gomez14} 
+M. Schedl, E. Gómez, and J. Urbano.
+\textit{Music Information Retrieval: Recent Developments and Applications}. 
+Foundations and Trends\textregistered in Information Retrieval, 8(2-3):127-261, 2014.
+
+\bibitem{schma13}
+I. Schm\"{a}decke, and H. Blume.
+\textit{High performance hardware architectures for automated music classification}.
+Algorithms from and for Nature and Life, 539-547, 2013.
+
+\bibitem{mirage07}
+D. Schnitzer.
+\textit{Mirage – High-Performance Music Similarity Computation and Automatic Playlist Generation}.
+Master's Thesis, Vienna University of Technology, 2007.
+
+\bibitem{fastmap12}
+D. Schnitzer, A. Flexer, and G. Widmer
+\textit{A fast audio similarity retrieval method for millions of music tracks}.
+Multimedia Tools and Applications, 58(1):23-40, 2012.
+
+\bibitem{xavier2013} 
+X. Serra, M. Magas, E. Benetos, M. Chudy, S. Dixon, A. Flexer, E. Gómez, F. Gouyon, P. Herrera, S. Jorda, O. Paytuvi, G. Peeters, J. Schlüter, H. Vinet, and G. Widmer.
+\textit{Roadmap for Music Information ReSearch}. 
+Geoffroy Peeters (editor), Creative Commons BY NC ND 3.0 license, 2013.
+
+\bibitem{slaney2011}
+M. Slaney.
+\textit{Web-scale multimedia analysis: Does content matter?}. 
+IEEE Multimedia, 18(2):12-15, 2011.
+
+\bibitem{Szyma09}
+G. Szymanski.
+\textit{Pandora, or, a never-ending box of musical delights}. 
+Music Reference Services Quarterly, 12(1):21-22, 2009.
+
+
+\bibitem{vangulik05}
+R. Van Gulik, and F. Vignoli.
+\textit{Visual playlist generation on the artist map}.
+Proceedings of ISMIR, 520-523, 2005.
+
+
+\bibitem{shazam03} 
+A. L.-C. Wang, and T.F. Block F. 
+\textit{An industrial-strength audio search algorithm}. 
+Proceedings of the 4 th International Conference on Music Information Retrieval, 2003.
+
+\bibitem{west07}
+K. West, and P. Lamere.
+\textit{A model-based approach to constructing music similarity functions}.
+EURASIP Journal on Advances in Signal Processing, 149-149, 2007.
+
+
+
+
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \bibitem{vignoli05}
 F. Vignoli, and S. Pauws.
@@ -484,15 +633,6 @@ B. Whitman, and S. Lawrence.
 \textit{Inferring Descriptions and Similarity for Music from Community Metadata}.
 Proceedings of the 2002 International Computer Music Conference (ICMC 2002), p.591-598, 2012.
 
-\bibitem{dixon06}
-S. Dixon
-\textit{Onset Detection Revised}.
-Proc. of the 9th Int. Conference on Digital Audio Effects (DAFx’06), p.133-137, 2006.
-
-\bibitem{bello04}
-J.P. Bello, C. Duxbury, M. Davies, and M. Sandler.
-\textit{On the use of phase and energy for musical onset detection in the complex domain}.
-Signal Processing Letters, IEEE, 11(6):553-556, 2004.
 
 \bibitem{masri96}
 P. Masri.
@@ -504,10 +644,6 @@ J.P. Bello, L. Daudet, S. Abdallah, C. Duxbury, M. Davies, and M. B. Sandler.
 \textit{A tutorial on onset detection in music signals}.
 IEEE Transactions on Speech and Audio Processing, 13(5):1035-1047, 2005.
 
-\bibitem{bock13}
-S. Böck, and G. Widmer.
-\textit{Maximum filter vibrato suppression for onset detection}.
-Proceedings of the 16th International Conference on Digital Audio Effects (DAFx-13), Maynooth, Ireland, 2013.
 
 \bibitem{degara12}
 N. Degara, E.A. Rua, A. Pena, S. Torres-Guijarro, M.E. Davies, and M.D. Plumbley.
@@ -524,30 +660,6 @@ E. Gómez.
 \textit{Tonal Description of Polyphonic Audio for Music Content Processing}.
 INFORMS Journal on Computing, 18(3):294-304, 2006.
 
-\bibitem{bonada00}
-J. Bonada.
-\textit{Automatic technique in frequency domain for near-lossless time-scale modification of audio}.
-Proceedings of International Computer Music Conference, 396-399, 2000.
-
-\bibitem{cabral05}
-G. Cabral, J.P. Briot, and F. Pachet. 
-\textit{Impact of distance in pitch class profile computation}.
-Proceedings of the Brazilian Symposium on Computer Music, 319-324, 2005.
-
-\bibitem{essentia13}
-D. Bogdanov, N. Wack, E. Gómez, S. Gulati, P. Herrera, O. Mayor, G. Roma, J. Salamon, J. Zapata, and X. Serra.
-\textit{ESSENTIA: an open-source library for sound and music analysis}.
-Proceedings of the 21st ACM international conference on Multimedia, 855-858, 2013.
-
-\bibitem{fastmap12}
-D. Schnitzer, A. Flexer, and G. Widmer
-\textit{A fast audio similarity retrieval method for millions of music tracks}.
-Multimedia Tools and Applications, 58(1):23-40, 2012.
-
-\bibitem{cano05}
-P. Cano, M. Kaltenbrunner, and N. Wack.
-\textit{An industrial-strength content-based music recommendation system}.
-Proceedings of the 28th annual internation ACM SIGIR conference on research and development in information retrieval, 673-673, 2005.
 
 \bibitem{roy05}
 P. Roy, J.J. Aucouturier, F. Pachet, and A. Beurivé.
