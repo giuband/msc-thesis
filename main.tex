@@ -134,7 +134,7 @@
 \tikz[remember picture,overlay] \node[opacity=1,inner sep=0pt] at (-5.57, -5.8){\includegraphics[scale=1]{Figures/mtg_logo.png}};
 \tikz[remember picture,overlay] \node[opacity=1,inner sep=0pt] at (5.6, -5.5){\includegraphics[scale=0.5]{Figures/dei-logo.png}};
  
-{\large March 10th, 2015}\\[4cm] % Date
+{\large March 10, 2015}\\[4cm] % Date
 %\includegraphics{Logo} % University/department logo - uncomment to place it
  
 \vfill
@@ -186,7 +186,7 @@ La crescita straordinaria del Web negli ultimi anni ha radicalmente cambiato mol
 \setstretch{1.3} % Reset the line-spacing to 1.3 for body text (if it has changed)
 
 \acknowledgements{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
-There are so many people to which I feel immensely grateful. The first ones that I wish to thank are Perfe and professor Giovanni De Poli: Perfe for showing a warm involvement in my progress with this work, and always trying to bring out the best of me in order to successfully reach the goal of it. I’m very grateful to professor Giovanni De Poli for having kindly supported me in this choice of doing an internship at MTG, a choice that has truly changed my life. Thanks to my family, always very close to my feelings and needs despite the distance, I love you. Thanks to my sister Mariantonietta, the most precious person of my life. Thanks to the amazing people I met in Spain: Dara, Oriol, Cárthach, Emese. They have made everything much easier and funnier. Thanks to Jean-Baptiste and Jesper, the best flatmates I had: I hope to see you again somewhere in this world. Thanks to my dear friend Enrico, for always sharing with me incredible experiences. Thanks to my friends of Conegliano: Nicola, Mattia, Giulia, Andrea, Matteo, Elena, Andrea, Irene; I regret not being able to see you more often.\\
+There are so many people to which I feel immensely grateful. The first ones that I wish to thank are professor Giovanni De Poli and Perfe: Perfe for showing a warm involvement in my progress with this work, and always trying to bring out the best of me in order to successfully reach the goal of it. I’m very grateful to professor Giovanni De Poli for having kindly supported me in this choice of doing an internship at MTG, a choice that has truly changed my life. Thanks to my family, always very close to my feelings and needs despite the distance, I love you. Thanks to my sister Mariantonietta, the most precious person of my life. Thanks to the amazing people I met in Spain: Dara, Oriol, Cárthach, Emese. They have made everything much easier and funnier. Thanks to Jean-Baptiste and Jesper, the best flatmates I had: I hope to see you again somewhere in this world. Thanks to my dear friend Enrico, for always sharing with me incredible experiences. Thanks to my friends of Conegliano: Nicola, Mattia, Giulia, Andrea, Matteo, Elena, Andrea, Irene; I regret not being able to see you more often.\\
 Finally, thanks to life, for giving the chance of growing, learning and meeting wonderful people while feeding passions.
 }
 \clearpage % Start a new page
@@ -309,6 +309,11 @@ N. Aizenberg, Y. Koren, and O. Somekh.
 \textit{Build your own music recommender by modeling internet radio streams}.
 Proceedings of WWW, 1-10, 2012.
 
+\bibitem{athi04}
+V. Athitsos, J. Alon, S. Sclaroff, and G. Kollios.
+\textit{Boostmap: A method for efficient approximate similarity rankings}.
+Proceedings of the 2004 IEEE Computer Society Conference, 2:II-268, 2004.
+
 \bibitem{aucou02} 
 J.J. Aucouturier, and F. Pachet.
 \textit{Music similarity measures: What's the use?}. 
@@ -324,36 +329,50 @@ J.J. Aucouturier.
 \textit{Sounds like teen spirit: Computational insights into the grounding of everyday musical terms}. 
 Language, Evolution and the Brain. Frontiers in Linguistics, 35-64, 2009.
 
-
 \bibitem{barrington07}
 L. Barrington, D. Turnbull, D. Torres, and G. Lanckriet.
 \textit{Semantic similarity for music retrieval}.
 Music Information Retrieval Evaluation Exchange (MIREX), 2007.
 
+\bibitem{barrington09}
+L. Barrington, R. Oda, and G.R.G. Lanckriet. 
+\textit{Smarter than genius? Human evaluation of music recommender systems}. 
+Proceedings of ISMIR, 357–362, 2009.
 
 \bibitem{bello04}
 J.P. Bello, C. Duxbury, M. Davies, and M. Sandler.
 \textit{On the use of phase and energy for musical onset detection in the complex domain}.
 Signal Processing Letters, IEEE, 11(6):553-556, 2004.
 
+\bibitem{bello05}
+J.P. Bello, L. Daudet, S. Abdallah, C. Duxbury, M. Davies, and M. B. Sandler.
+\textit{A tutorial on onset detection in music signals}.
+IEEE Transactions on Speech and Audio Processing, 13(5):1035-1047, 2005.
+
+\bibitem{million11}
+T. Bertin-Mahieux, D. P. Ellis, B. Whitman, and P. Lamere. 
+\textit{The million song dataset}. 
+Proceedings of the 12th International Society for Music Information Retrieval Conference (ISMIR 2011), 2011.
+
 \bibitem{bock13}
 S. Böck, and G. Widmer.
 \textit{Maximum filter vibrato suppression for onset detection}.
 Proceedings of the 16th International Conference on Digital Audio Effects (DAFx-13), Maynooth, Ireland, 2013.
+
+\bibitem{dimi10}
+D. Bogdanov, J. Serrà, N. Wack, P. Herrera, and X. Serra. 
+\textit{Unifying low-level and high-level music similarity measures}.
+IEEE Transactions on Multimedia, 13(4):687-701, 2011.
 
 \bibitem{perfe11}
 D. Bogdanov, and P. Herrera.
 \textit{How much metadata do we need in music recommendation? A subjective evaluation using preference sets}.
 WProceedings of ISMIR, 97-102, 2011.
 
-
-
-
 \bibitem{bogdanov13}
 D. Bogdanov, and X. Serra.
 \textit{From music similarity to music recommendation: Computational approaches based on audio features and metadata}.
 PhD Thesis, Universitat Pompeu Fabra, 2013.
-
 
 \bibitem{essentia13}
 D. Bogdanov, N. Wack, E. Gómez, S. Gulati, P. Herrera, O. Mayor, G. Roma, J. Salamon, J. Zapata, and X. Serra.
@@ -370,43 +389,70 @@ G. Bonnin, and D. Jannach.
 \textit{Automated Generation of Music Playlists: Survey and Experiments}.
 ACM Computing Surveys, 47(2), Article 26, 2014.
 
+\bibitem{clef00}
+M. Braschler and C. Peters. 
+\textit{Cross-language evaluation forum: Objectives, results, achievements}. 
+Information retrieval, 7(1-2):7–31, 2004.
 
 \bibitem{cabral05}
 G. Cabral, J.P. Briot, and F. Pachet. 
 \textit{Impact of distance in pitch class profile computation}.
 Proceedings of the Brazilian Symposium on Computer Music, 319-324, 2005.
 
+\bibitem{cano02}
+P. Cano, M. Kaltenbrunner, F. Gouyon, and E. Batlle.
+\textit{On the use of FastMap for Audio Retrieval and Browsing}.
+ISMIR, 2002
+
 \bibitem{cano05}
 P. Cano, M. Kaltenbrunner, and N. Wack.
 \textit{An industrial-strength content-based music recommendation system}.
 Proceedings of the 28th annual internation ACM SIGIR conference on research and development in information retrieval, 673-673, 2005.
-
-
 
 \bibitem{celma08}
 O. Celma, and X. Serra.
 \textit{FOAFing the music: Bridging the semantic gap in music recommendation}.
 Web Semantics: Science, Services and Agents on the World Wide Web, 6(4):250-256, 2008.
 
-
 \bibitem{celma2010}
 O. Celma. 
 \textit{Music Recommendation and Discovery: The Long Tail, Long Fail, and Long Play in the Digital Music Space}.
 Springer, 2010.
-
-
 
 \bibitem{coelho13}
 F. Coelho, J. Devezas, and C. Ribeiro.
 \textit{Large-scale crossmedia retrieval for playlist generation and song discovery}.
 Proceedings of OAIR, 61-64, 2013.
 
+\bibitem{cohen00}
+W.W. Cohen, and W. Fan.
+\textit{Web-Collaborative Filtering: Recommending Music by Crawling the Web}.
+WWW9 / Computer Networks, 33(1-6):685-698, 2000.
 
+\bibitem{cremonesi11}
+P. Cremonesi, F. Garzotto, S. Negro, A.V. Papadopoulos, and R. Turrin. 
+\textit{Looking for “good” recommendations: A comparative evaluation of recommender systems}. 
+Proceedings of INTERACT, 152–168, 2011.
+
+\bibitem{davies07}
+M.E.P. Davies, and M.D. Plumbey.
+\textit{Context-dependent beat tracking of musical audio}.
+IEEE Transactions on Audio, Speech, and Language Processing, 15(3):1009-1020, 2007.
 
 \bibitem{automash14} 
 M.E.P. Davies, P. Hamel, K. Yoshii and M. Goto.
 \textit{AutoMashUpper: Automatic Creation of Multi-Song Music Mashups}. 
 IEEE/ACM Transactions on Audio, Speech, and Language Processing, 22(12):1726-1737, 2014.
+
+\bibitem{davis80}
+S. Davis, and P. Mermelstein.
+\textit{Comparison of parametric representations for monosyllabic word recognition in continuously spoken sentences}.
+IEEE Transactions on Acoustics, Speech and Signal Processing, 28(4):357-366, 1980.
+
+\bibitem{degara12}
+N. Degara, E.A. Rua, A. Pena, S. Torres-Guijarro, M.E. Davies, and M.D. Plumbley.
+\textit{Reliability-informed beat tracking of musical signals}.
+IEEE Transactions on Audio, Speech, and Language Processing, 20(1):290-301, 2012.
 
 \bibitem{dias10}
 R. Dias, and M. J. Fonseca.
@@ -433,69 +479,190 @@ J.S. Downie.
 \textit{The Scientific Evaluation of Music Information Retrieval Systems: Foundations and Future}. 
 Computer Music Journal, 28:12-23, 2004.
 
+\bibitem{falo95}
+C. Faloutsos, and K.I. Lin. 
+\textit{FastMap: A fast algorithm for indexing, data-mining and visualization of traditional and multimedia datasets}.
+Proceedings of the 1995 ACM SIGMOD international conference on management of data, 24(2):163-174, 1995.
+
+\bibitem{fields11}
+B. Fields.
+\textit{Contextualize Your Listening: The Playlist as Recommendation Engine}.
+Ph.D. Dissertation. Department of Computing Goldsmiths, University of London, London, 2011.
+
+\bibitem{foote00}
+J. Foote.
+\textit{Automatic audio segmentation using a measure of audio novelty}.
+IEEE International Conference on Multimedia and Expo, 1:452-455, 2000.
+
+\bibitem{fujishima99}
+T. Fujishima.
+\textit{Realtime chord recognition of musical sound: A system using Common Lisp Music}.
+Proceedings of the International Computer Music Conference, Beijing. 1999.
 
 \bibitem{germain13} 
 A. Germain, and J. Chakareski.
 \textit{Spotify me: Facebook-assisted automatic playlist generation}.
 Proceedings of MMSP, 25-28, 2013.
 
-
-
-
+\bibitem{gomez06}
+E. Gómez.
+\textit{Tonal Description of Polyphonic Audio for Music Content Processing}.
+INFORMS Journal on Computing, 18(3):294-304, 2006.
 
 \bibitem{grachten09}
 M. Grachten, M. Schedl, T. Pohle, and G. Widmer.
 \textit{The ISMIR cloud: A decade of ISMIR conferences at your fingertips}.
 Proceedings of ISMIR, 63-68, 2009.
 
-
-
-
-
-
-
 \bibitem{green09}
 S.J. Green, P. Lamere, J. Alexander, F. Maillet, S. Kirk, J. Holt, J. Bourque, and X.W. Mak.
 \textit{Generating transparent, steerable recommendations from textual descriptions of items}.
 ACM Conference on Recommender Systems (RecSys'09), 281-284, 2009.
 
+\bibitem{harman11}
+D. K. Harman. 
+\textit{Information retrieval evaluation}. 
+Synthesis Lectures on Information Concepts, Retrieval, and Services, 3(2):1–119, 2011.
 
 \bibitem{hauger13} 
 D. Hauger, J. Kepler, M. Schedl, A. Kosir, and M. Tkalcic.
 \textit{The million musical tweets dataset: What can we learn from microblogs}.
 Proceedings of ISMIR, 189-194, 2013.
 
+\bibitem{helmholtz}
+H. von Helmholtz.
+\textit{The physiological causes of harmony in music}.
+Popular Lectures on Scientific Lectures, p.53-54, 1903. 
 
-\bibitem{logan04}
-B. Logan. 
-\textit{Music recommendation from song sets}.
-Proceedings of ISMIR, 425–428, 2004.
+\bibitem{jannach12}
+D. Jannach, M. Zanker, M. Ge, and M. Gr\"{o}ning.
+\textit{Recommender systems in computer science and information systems — A landscape of research}.
+Proceedings of EC-Web, 76-87, 2012.
+
+\bibitem{jawaheer10}
+G. Jawaheer, M. Szomszor, and P. Kostkova.
+\textit{Comparison of implicit and explicit feedback from an online music recommendation system}.
+Int. Workshop on Information Heterogeneity and Fusion in Recommender Systems (HetRec'10), p.47-51, 2010.
+
+\bibitem{knees06}
+P. Knees, T. Pohle, M. Schedl, and G. Widmer.
+\textit{Combining audio-based similarity with Web-based data to accelerate automatic music playlist generation}.
+Proceedings of MIR, 147-154, 2006.
+
+\bibitem{lee11}
+J.H. Lee, B. Bare, and G. Meek. 
+\textit{How similar is too similar? Exploring users’ perceptions of similarity in playlist evaluation}. 
+Proceedings of ISMIR, 109–114, 2011.
+
+\bibitem{levy06}
+M. Levy, and M. Sandler.
+\textit{Lightweight measures for timbral similarity of musical audio}.
+Proceedings of the 1st ACM workshop on Audio and music computing multimedia, 27-36, 2006.
+
+\bibitem{musicdatamining}
+T. Li, M. Ogihara, and G. Tzanetakis.
+\textit{Music Data Mining}.
+CRC Press, p. 95, 2011.
+
+\bibitem{ling07}
+H. Ling, and K. Okada. 
+\textit{An efficient earth mover's distance algorithm for robust histogram comparison}.
+IEEE Transactions on Pattern Analysis and Machine Intelligence, 29(5):840-853, 2007.
+
+\bibitem{liu09}
+N.H. Liu, S.W. Lai, C.Y. Chen, and S.J. Hsieh.
+\textit{Adaptive music recommendation based on user behavior in time slot}.
+Computer Science and Network Security, 9(2):219-227, 2009.
 
 \bibitem{logan00}
 B. Logan. 
 \textit{Mel frequency cepstral coefficients for music modeling}.
 Proceedings of ISMIR, 2000.
 
+\bibitem{logan01}
+B. Logan, and A. Salomon. 
+\textit{A Music Similarity Function Based on Signal Analysis}.
+ICME, 2001.
 
+\bibitem{logan04}
+B. Logan. 
+\textit{Music recommendation from song sets}.
+Proceedings of ISMIR, 425–428, 2004.
+
+\bibitem{mandel05}
+M.I. Mandel, and D.P. Ellis.
+\textit{Song-level features and support vector machines for music classification}.
+ISMIR 2005: 6th International Conference on Music Information Retrieval: Proceedings: Variation 2: Queen Mary, University of London & Goldsmiths College, p. 594-599, 2005.
+
+\bibitem{masri96}
+P. Masri.
+\textit{Computer Modeling of Sound for Transformation and Synthesis of Musical Signal}.
+Ph.D. dissertation, Univ. of Bristol, 1996.
 
 \bibitem{mcdermott12}
 J. McDermott.
 \textit{Auditory preferences and aesthetics: Music, voices, and everyday sounds}.
 Neuroscience of Performance and Choice. Elsevier, 227-256, 2012.
 
+\bibitem{mcfee11}
+B. McFee, and G.R.G. Lanckriet. 
+\textit{The natural language of playlists}.
+Proceedings of ISMIR:537–542, 2011.
 
+\bibitem{mcnee06}
+S. McNee, J. Riedl, and J. Konstan.
+\textit{Being accurate is not enough: how accuracy metrics have hurt recommender systems}.
+CHI'06 extended abstracts on Human Factors in Computing Systems, p.1001, 2006.
 
 \bibitem{orio06} 
 N. Orio.
 \textit{Music Retrieval: A Tutorial and Review}. 
 Foundations and Trends\textregistered in Information Retrieval, 1(1):1-90, 2006.
 
-
 \bibitem{pachet00}
 F. Pachet, P. Roy, and D. Cazaly.
 \textit{A combinatorial approach to content-based music selection}.
 Multimedia, 7(1):44-51, 2000.
 
+\bibitem{pachet01}
+F. Pachet, G. Westermann, and D. Laigre.
+\textit{Musical data mining for electronic music distribution}.
+Web Delivering of Music, Proceedings, First International Conference, p.101-106, 2001.
+
+\bibitem{pohle09}
+T. Pohle, D. Schnitzer, M. Schedl, P. Knees, and G. Widmer.
+\textit{On Rhythm and General Music Similarity}.
+ISMIR, p. 525-530, 2009.
+
+\bibitem{roy05}
+P. Roy, J.J. Aucouturier, F. Pachet, and A. Beurivé.
+\textit{Exploiting the Tradeoff Between Precision and Cpu-Time to Speed Up Nearest Neighbor Search}.
+ISMIR, 230-237, 2005.
+
+\bibitem{emd}
+Y. Rubner, C. Tomasi, and L.J. Guibas.
+\textit{The earth mover's distance as a metric for image retrieval}.
+International journal of computer vision, 40(2):99-121, 2000.
+
+\bibitem{sanderson10}
+M. Sanderson. 
+\textit{Test collection based evaluation of information retrieval systems}.
+Foundations and Trends in Information Retrieval, 4(4):247–375, 2010.
+
+\bibitem{schedlpohle}
+M. Schedl, T. Pohle, P. Knees, and G. Widmer.
+\textit{Exploring the Music Similarity Space on the Web}.
+ACM Transactions on Information Systems, 29(3), 2011.
+
+\bibitem{schedl12}
+M. Schedl.
+\textit{#nowplaying Madonna: a large-scale evaluation on estimating similarities between music artists and between movies from microblogs}.
+Information retrieval, 15(3-4):183-217, 2012.
+
+\bibitem{schedlmicro}
+M. Schedl, D. Hauger, and J. Urbano.
+\textit{Harvesting microblogs for contextual music similarity estimation - a co-occurence-based framework}.
+Multimedia Systems, 2013.
 
 \bibitem{gomez14} 
 M. Schedl, E. Gómez, and J. Urbano.
@@ -522,22 +689,50 @@ X. Serra, M. Magas, E. Benetos, M. Chudy, S. Dixon, A. Flexer, E. Gómez, F. Gou
 \textit{Roadmap for Music Information ReSearch}. 
 Geoffroy Peeters (editor), Creative Commons BY NC ND 3.0 license, 2013.
 
+\bibitem{latin08}
+C. N. Silla Jr, A. L. Koerich, and C. A. Kaestner. 
+\textit{The latin music database}.
+Proceedings of the 9th International Conference on Music Information Retrieval (ISMIR 2008), p.451–456, 2008.
+
+\bibitem{slaney06}
+M. Slaney and W. White. 
+\textit{Measuring playlist diversity for recommendation systems}. 
+Proceedings of AMCMM, 77–82. 2006.
+
 \bibitem{slaney2011}
 M. Slaney.
 \textit{Web-scale multimedia analysis: Does content matter?}. 
 IEEE Multimedia, 18(2):12-15, 2011.
+
+\bibitem{stevens57}
+S.S. Stevens. 
+\textit{On the psychophysical law}. 
+Psychological Review, 64(3): 153–181, 1957.
+
+\bibitem{stober11}
+S. Stober.
+\textit{Adaptive methods for user-centered organization of music collections}.
+Doctoral dissertation, Magdeburg, Universität, Diss., 2011.
 
 \bibitem{Szyma09}
 G. Szymanski.
 \textit{Pandora, or, a never-ending box of musical delights}. 
 Music Reference Services Quarterly, 12(1):21-22, 2009.
 
-
 \bibitem{vangulik05}
 R. Van Gulik, and F. Vignoli.
 \textit{Visual playlist generation on the artist map}.
 Proceedings of ISMIR, 520-523, 2005.
 
+\bibitem{vignoli05}
+F. Vignoli, and S. Pauws.
+\textit{A music retrieval system based on user driven similarity and its evaluation}.
+Proceedings of ISMIR, 272-279, 2005.
+
+\bibitem{trec05}
+E. M. Voorhees and D. K. Harman. 
+\textit{TREC: Experiment and Evaluation in Information Retrieval}. 
+MIT Press, 2005.
 
 \bibitem{shazam03} 
 A. L.-C. Wang, and T.F. Block F. 
@@ -549,292 +744,20 @@ K. West, and P. Lamere.
 \textit{A model-based approach to constructing music similarity functions}.
 EURASIP Journal on Advances in Signal Processing, 149-149, 2007.
 
-
-
-
- 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\bibitem{vignoli05}
-F. Vignoli, and S. Pauws.
-\textit{A music retrieval system based on user driven similarity and its evaluation}.
-Proceedings of ISMIR, 272-279, 2005.
-
-\bibitem{knees06}
-P. Knees, T. Pohle, M. Schedl, and G. Widmer.
-\textit{Combining audio-based similarity with Web-based data to accelerate automatic music playlist generation}.
-Proceedings of MIR, 147-154, 2006.
-
-\bibitem{jannach12}
-D. Jannach, M. Zanker, M. Ge, and M. Gr\"{o}ning.
-\textit{Recommender systems in computer science and information systems — A landscape of research}.
-Proceedings of EC-Web, 76-87, 2012.
-
-\bibitem{liu09}
-N.H. Liu, S.W. Lai, C.Y. Chen, and S.J. Hsieh.
-\textit{Adaptive music recommendation based on user behavior in time slot}.
-Computer Science and Network Security, 9(2):219-227, 2009.
-
-\bibitem{mcnee06}
-S. McNee, J. Riedl, and J. Konstan.
-\textit{Being accurate is not enough: how accuracy metrics have hurt recommender systems}.
-CHI'06 extended abstracts on Human Factors in Computing Systems, p.1001, 2006.
-
-\bibitem{jawaheer10}
-G. Jawaheer, M. Szomszor, and P. Kostkova.
-\textit{Comparison of implicit and explicit feedback from an online music recommendation system}.
-Int. Workshop on Information Heterogeneity and Fusion in Recommender Systems (HetRec'10), p.47-51, 2010.
-
 \bibitem{whitman02}
 B. Whitman, and S. Lawrence.
 \textit{Inferring Descriptions and Similarity for Music from Community Metadata}.
 Proceedings of the 2002 International Computer Music Conference (ICMC 2002), p.591-598, 2012.
-
-
-\bibitem{masri96}
-P. Masri.
-\textit{Computer Modeling of Sound for Transformation and Synthesis of Musical Signal}.
-Ph.D. dissertation, Univ. of Bristol, 1996.
-
-\bibitem{bello05}
-J.P. Bello, L. Daudet, S. Abdallah, C. Duxbury, M. Davies, and M. B. Sandler.
-\textit{A tutorial on onset detection in music signals}.
-IEEE Transactions on Speech and Audio Processing, 13(5):1035-1047, 2005.
-
-
-\bibitem{degara12}
-N. Degara, E.A. Rua, A. Pena, S. Torres-Guijarro, M.E. Davies, and M.D. Plumbley.
-\textit{Reliability-informed beat tracking of musical signals}.
-IEEE Transactions on Audio, Speech, and Language Processing, 20(1):290-301, 2012.
-
-\bibitem{fujishima99}
-T. Fujishima.
-\textit{Realtime chord recognition of musical sound: A system using Common Lisp Music}.
-Proceedings of the International Computer Music Conference, Beijing. 1999.
-
-\bibitem{gomez06}
-E. Gómez.
-\textit{Tonal Description of Polyphonic Audio for Music Content Processing}.
-INFORMS Journal on Computing, 18(3):294-304, 2006.
-
-
-\bibitem{roy05}
-P. Roy, J.J. Aucouturier, F. Pachet, and A. Beurivé.
-\textit{Exploiting the Tradeoff Between Precision and Cpu-Time to Speed Up Nearest Neighbor Search}.
-ISMIR, 230-237, 2005.
-
-\bibitem{levy06}
-M. Levy, and M. Sandler.
-\textit{Lightweight measures for timbral similarity of musical audio}.
-Proceedings of the 1st ACM workshop on Audio and music computing multimedia, 27-36, 2006.
-
-\bibitem{athi04}
-V. Athitsos, J. Alon, S. Sclaroff, and G. Kollios.
-\textit{Boostmap: A method for efficient approximate similarity rankings}.
-Proceedings of the 2004 IEEE Computer Society Conference, 2:II-268, 2004.
-
-\bibitem{cano02}
-P. Cano, M. Kaltenbrunner, F. Gouyon, and E. Batlle.
-\textit{On the use of FastMap for Audio Retrieval and Browsing}.
-ISMIR, 2002
-
-\bibitem{falo95}
-C. Faloutsos, and K.I. Lin. 
-\textit{FastMap: A fast algorithm for indexing, data-mining and visualization of traditional and multimedia datasets}.
-Proceedings of the 1995 ACM SIGMOD international conference on management of data, 24(2):163-174, 1995.
-
-\bibitem{pohle09}
-T. Pohle, D. Schnitzer, M. Schedl, P. Knees, and G. Widmer.
-\textit{On Rhythm and General Music Similarity}.
-ISMIR, p. 525-530, 2009.
-
-\bibitem{musicdatamining}
-T. Li, M. Ogihara, and G. Tzanetakis.
-\textit{Music Data Mining}.
-CRC Press, p. 95, 2011.
-
-\bibitem{schedl12}
-M. Schedl.
-\textit{#nowplaying Madonna: a large-scale evaluation on estimating similarities between music artists and between movies from microblogs}.
-Information retrieval, 15(3-4):183-217, 2012.
-
-\bibitem{pachet01}
-F. Pachet, G. Westermann, and D. Laigre.
-\textit{Musical data mining for electronic music distribution}.
-Web Delivering of Music, Proceedings, First International Conference, p.101-106, 2001.
-
+ 
 \bibitem{zadel04}
 M. Zadel, and I. Fujinaga.
 \textit{Web Services for Music Information Retrieval}.
 Proceedings of the 5th International Symposium on Music Information Retrieval (ISMIR 2004), 2004.
 
-\bibitem{cohen00}
-W.W. Cohen, and W. Fan.
-\textit{Web-Collaborative Filtering: Recommending Music by Crawling the Web}.
-WWW9 / Computer Networks, 33(1-6):685-698, 2000.
-
 \bibitem{zangerle12}
 E. Zangerle, W. Gassler, and G. Specht.
 \textit{Exploiting Twitter's Collective Knowledge for Music Recommendations}.
 Proceedings of the 21st International World Wide Web Conference: Making Sense of Microposts, p.14-17, 2012.
-
-\bibitem{schedlmicro}
-M. Schedl, D. Hauger, and J. Urbano.
-\textit{Harvesting microblogs for contextual music similarity estimation - a co-occurence-based framework}.
-Multimedia Systems, 2013.
-
-\bibitem{schedlpohle}
-M. Schedl, T. Pohle, P. Knees, and G. Widmer.
-\textit{Exploring the Music Similarity Space on the Web}.
-ACM Transactions on Information Systems, 29(3), 2011.
-
-\bibitem{davis80}
-S. Davis, and P. Mermelstein.
-\textit{Comparison of parametric representations for monosyllabic word recognition in continuously spoken sentences}.
-IEEE Transactions on Acoustics, Speech and Signal Processing, 28(4):357-366, 1980.
-
-\bibitem{davies07}
-M.E.P. Davies, and M.D. Plumbey.
-\textit{Context-dependent beat tracking of musical audio}.
-IEEE Transactions on Audio, Speech, and Language Processing, 15(3):1009-1020, 2007.
-
-\bibitem{foote00}
-\textit{Automatic audio segmentation using a measure of audio novelty}.
-IEEE International Conference on Multimedia and Expo, 1:452-455, 2000.
-
-\bibitem{dimi10}
-D. Bogdanov, J. Serrà, N. Wack, P. Herrera, and X. Serra. 
-\textit{Unifying low-level and high-level music similarity measures}.
-IEEE Transactions on Multimedia, 13(4):687-701, 2011.
-
-\bibitem{stober11}
-S. Stober.
-\textit{Adaptive methods for user-centered organization of music collections}.
-Doctoral dissertation, Magdeburg, Universität, Diss., 2011.
-
-\bibitem{emd}
-Y. Rubner, C. Tomasi, and L.J. Guibas.
-\textit{The earth mover's distance as a metric for image retrieval}.
-International journal of computer vision, 40(2):99-121, 2000.
-
-\bibitem{ling07}
-H. Ling, and K. Okada. 
-\textit{An efficient earth mover's distance algorithm for robust histogram comparison}.
-IEEE Transactions on Pattern Analysis and Machine Intelligence, 29(5):840-853, 2007.
-
-\bibitem{logan01}
-B. Logan, and A. Salomon. 
-\textit{A Music Similarity Function Based on Signal Analysis}.
-ICME, 2001.
-
-\bibitem{mandel05}
-M.I. Mandel, and D.P. Ellis.
-\textit{Song-level features and support vector machines for music classification}.
-ISMIR 2005: 6th International Conference on Music Information Retrieval: Proceedings: Variation 2: Queen Mary, University of London & Goldsmiths College, p. 594-599, 2005.
-
-\bibitem{sanderson10}
-M. Sanderson. 
-\textit{Test collection based evaluation of information retrieval systems}.
-Foundations and Trends in Information Retrieval, 4(4):247–375, 2010.
-
-\bibitem{harman11}
-D. K. Harman. 
-\textit{Information retrieval evaluation}. 
-Synthesis Lectures on Information Concepts, Retrieval, and Services, 3(2):1–119, 2011.
-
-\bibitem{trec05}
-E. M. Voorhees and D. K. Harman. 
-\textit{TREC: Experiment and Evaluation in Information Retrieval}. 
-MIT Press, 2005.
-
-\bibitem{clef00}
-M. Braschler and C. Peters. 
-\textit{Cross-language evaluation forum: Objectives, results, achievements}. 
-Information retrieval, 7(1-2):7–31, 2004.
-
-\bibitem{latin08}
-C. N. Silla Jr, A. L. Koerich, and C. A. Kaestner. 
-\textit{The latin music database}.
-Proceedings of the 9th International Conference on Music Information Retrieval (ISMIR 2008), p.451–456, 2008.
-
-\bibitem{million11}
-T. Bertin-Mahieux, D. P. Ellis, B. Whitman, and P. Lamere. 
-\textit{The million song dataset}. 
-Proceedings of the 12th International Society for Music Information Retrieval Conference (ISMIR 2011), 2011.
-
-\bibitem{fields11}
-B. Fields.
-\textit{Contextualize Your Listening: The Playlist as Recommendation Engine}.
-Ph.D. Dissertation. Department of Computing Goldsmiths, University of London, London, 2011.
-
-\bibitem{mcfee11}
-B. McFee, and G.R.G. Lanckriet. 
-\textit{The natural language of playlists}.
-Proceedings of ISMIR:537–542, 2011.
-
-\bibitem{barrington09}
-L. Barrington, R. Oda, and G.R.G. Lanckriet. 
-\textit{Smarter than genius? Human evaluation of music recommender systems}. 
-Proceedings of ISMIR, 357–362, 2009.
-
-\bibitem{cremonesi11}
-P. Cremonesi, F. Garzotto, S. Negro, A.V. Papadopoulos, and R. Turrin. 
-\textit{Looking for “good” recommendations: A comparative evaluation of recommender systems}. 
-Proceedings of INTERACT, 152–168, 2011.
-
-\bibitem{slaney06}
-M. Slaney and W. White. 
-\textit{Measuring playlist diversity for recommendation systems}. 
-Proceedings of AMCMM, 77–82. 2006.
-
-\bibitem{lee11}
-J.H. Lee, B. Bare, and G. Meek. 
-\textit{How similar is too similar? Exploring users’ perceptions of similarity in playlist evaluation}. 
-Proceedings of ISMIR, 109–114, 2011.
-
 
 \end{thebibliography}
 

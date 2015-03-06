@@ -3669,7 +3669,7 @@ Overfull \hbox (13.88892pt too wide) in paragraph at lines 28--28
 
 
 Overfull \hbox (33.19449pt too wide) in paragraph at lines 28--28
-\OT1/cmr/m/n/10 MFCC-
+\OT1/cmr/m/n/10 MFCCs-
  []
 
 
@@ -3959,7 +3959,7 @@ Overfull \hbox (27.55559pt too wide) in paragraph at lines 28--28
 
 
 Overfull \hbox (25.48595pt too wide) in paragraph at lines 28--29
-\OT1/cmtt/m/n/10 Mfcc[] 
+\OT1/cmtt/m/n/10 MFCCs[] 
  []
 
 Missing character: There is no t in font nullfont!
@@ -6317,7 +6317,7 @@ Missing character: There is no F in font nullfont!
 Missing character: There is no C in font nullfont!
 Missing character: There is no C in font nullfont!
 ! Misplaced alignment tab character &.
-l.48 MFCC &
+l.48 MFCCs &
             Essentia & Bar-Level & Timbre similarity computation \\ \midrule
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6335,7 +6335,7 @@ Missing character: There is no t in font nullfont!
 Missing character: There is no i in font nullfont!
 Missing character: There is no a in font nullfont!
 ! Misplaced alignment tab character &.
-l.48 MFCC & Essentia &
+l.48 MFCCs & Essentia &
                        Bar-Level & Timbre similarity computation \\ \midrule
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -6354,7 +6354,7 @@ Missing character: There is no v in font nullfont!
 Missing character: There is no e in font nullfont!
 Missing character: There is no l in font nullfont!
 ! Misplaced alignment tab character &.
-l.48 MFCC & Essentia & Bar-Level &
+l.48 MFCCs & Essentia & Bar-Level &
                                    Timbre similarity computation \\ \midrule
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
