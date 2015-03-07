@@ -140,7 +140,7 @@ Therefore, significance and interpretation is more direct with Bark bands.
 \subsubsection*{Other relevant timbre descriptors}
 The number of timbre descriptors that have been proposed is substantial (see Appendix~\ref{AppendixA} to specifically see what low-level descriptors can be extracted with Essentia). Many of them are barely intelligible, but seem to somehow be related to perceptive aspects. Some low-level descriptors that are quite intelligible and have been used often in research are:
 \begin{itemize}
-\item \textbf{Loudness}: the loudness of a signal corresponds to its energy raised to the power of 0.67. This formula has been proposed by Stevens in \cite{stevens57}, in the attempt of providing a relationship between the magnitude of a physical stimulus and its perceived intensity or strength. Therefore the loudness can be seen as the perception of the energy of an audio signal.
+\item \textbf{Loudness}: the loudness of a signal corresponds to its energy raised to the power of 0.67. This formula has been proposed by Stevens in \cite{stevens57}, in an attempt of providing a relationship between the magnitude of a physical stimulus and its perceived intensity or strength. Therefore the loudness can be seen as the perception of the energy of an audio signal.
 \item \textbf{Dissonance}: for sensory dissonance (which is different from musical or theoretical dissonance) we mean the measure of perceptual roughness of the sound and is based on the roughness of its spectral peaks, as it depends on the distance between the partials measured in critical bandwidth. Any simultaneous pair of partials of about the same amplitude that is less than a critical bandwith apart produces roughness associated with the inability of the basilar membrane to separate them clearly. 
 \end{itemize}
 
@@ -154,7 +154,7 @@ Onsets are generally defined as the beginning of a new musical event, and onset 
 \begin{center}
 \includegraphics[scale=0.75]{Figures/onsets.pdf}
     \rule{20em}{0.5pt}
-  \caption[Onset and sound envelope]{Onset and sound envelope.}
+  \caption[Onset and sound envelope]{Onset in a sound envelope.}
   \label{fig:Onsets}
 \end{center}
 \end{figure} \\
@@ -169,7 +169,7 @@ HFC was proposed by Masri in \cite{masri96}. Given the short-time Fourier transf
 \begin{equation}
 X_k(n) = \sum\limits_{m=-\frac{N}{2}}^{\frac{N}{2}-1} x(nh + m)w(m)e^{-\frac{2j\pi mk}{N}}
 \end{equation}
-(where $w(m)$ is again an $N$-point window, $N$ is the frame size, $j$ the imaginary unit, and $k$ is the index of the frequency bin, and $h$ is the hop size, or time shift, between adjacent windows), the idea behind HFC is to give more weight to higher frequencies, by defining a onset function whose values are computed in the following way:
+(where $w(m)$ is again an $N$-point window, $j$ the imaginary unit, and $k$ is the index of the frequency bin, and $h$ is the hop size, or time shift, between adjacent windows), the idea behind HFC is to give more weight to higher frequencies, by defining a onset function whose values are computed in the following way:
 \begin{equation}
 HFC(n) = \frac{1}{N}\sum\limits_{k=-\frac{N}{2}}^{\frac{N}{2}-1} k\abs{X_k(n)}^{2}
 \end{equation}

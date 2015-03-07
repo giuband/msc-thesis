@@ -1,8 +1,8 @@
-\chapter{Results, usage and future work} 
+\chapter{Results} 
 
 \label{Chapter7} 
 
-\lhead{Chapter 7. \emph{Results, usage and future work}}
+\lhead{Chapter 7. \emph{Results}}
 
 \section{Performance}
 \label{sec:performanceanalysis}
@@ -173,22 +173,3 @@ Overall, evaluation results can be considered very satisfactory: the application
 \end{center}
 \end{figure}
 The inauguration of the exhibition has been on December 18th 2014, at Museu de la Musica, Barcelona. Many people have interacted with the system in order to explore the Phonos catalogue of music. The system hasn't incurred in any problem. At the time of the writing (February 2015), it's still daily used by several visitors at the Museum. The interactive kiosk will be dismissed at the end of the exhibition, on late September 2015.\\
-
-
-\section{Results obtained by the study}
-The main result achieved by the study was the exploitation of latest MIR findings for the development of a system that could easily be used by people not related to the research field and, more in general, not accustomed to the use of software. \\
-This is a further proof that MIR technologies may be extremely useful in a wide range of applications, the most of which linked to common daily life situations. The software integrates not only different descriptors, but also different tools to extract them (Essentia and Echo Nest) in order to maximize the output, something that has rarely been done before.\\
-Another contribute of this study lies in the integration of different researches into a single system: a study of of latest findings has been conducted in order to find what results have been achieved and could have been useful for our purposes. Despite being influenced by other solutions, ours constitutes an original way of solving the problem, for the algorithm we developed offer several new ideas; these are mainly due to the requirement of developing a low-latency system. Furthermore, the requirement of mixing together tracks (instead of just building a playlist of songs to be played one after another) has lead to the choice of implementing some personal musical knowledge in order to discard mixes that would have been perceived highly contrasting. This knowledge is especially related to the field of music composition and perception.\\
-
-\section{Future work}
-Despite having successfully reached its main goals, there is a lot of room for improving the system. \\
-At first, the use of JSON files should be discarded in favour of much faster database tables, for instance PostgreSQL or MySQL. As seen in \ref{sec:performanceanalysis}, accessing and parsing JSON files is one of the slowest operations of the algorithm (almost 100 times longer than computing the symmetric Kullback-Leibler distance). Implementing a database should allow to use the more computationally intensive variant of the algorithm more frequently and to make the sampling less aggressive, therefore leading to generally better results. \\
-The computation of music similarity could also be improved and use more sophisticated techniques, such as Fluctuation Patterns, that have shown very good results in similar systems \cite{pohle09}. \\
-Furthermore, the development of a web application imposes several limitations (such as general low performances and high latency on audio streaming) that could easily be solved in a native mobile application for tablets or smartphones. \\
-The source code for the application is entirely available at \url{https://github.com/giuband/Phonos-Music-Explorer}, so that many users can contribute in making it better.\\
-Once the above cited aspects are refined, the development of the system could follow two different paths.
-\begin{enumerate}
-\item The system could be improved in its use for music discovery. For instance the user interface could implement some way of letting the user explore his current position inside the map of excerpts, in order to give a more clear idea about the music of the catalogue. New descriptors could be used and some of them could also be inherited from metadata or machine learning processes. 
-\item The system could additionaly be integrated into a more creative environment for making music. It could be used for the automatic generation of recommendations while in the process of composing music. For instance, it could suggest the user of using a particular excerpt at some point of his composition to improve the quality of the work. It could also be used as the only source to compose music, providing the ability of automatically composing music made of excerpts while the user gives a direction to this flow, according to his creative intent. 
-\end{enumerate}
-The use suggested in 2. is particularly interesting, for such an application would perfectly fit the vision embraced by the GiantSteps project and provide a new system of producing music, making this amazing creative task accessible at anyone, indipendently from the skill. The process of making music could therefore overthrow its innate boundaries, leading to a world where the creation of art arises from the purest intent of contributing to the world cultural heritage, in spite of lack of limited technical knowledge, economic unavailability and physical impediments.

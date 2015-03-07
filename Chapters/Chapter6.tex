@@ -19,8 +19,8 @@ As already stated above, the server application is in charge of offering several
 
 \subsection{Realtime computation of music similarity and playlist generation}
 \label{subsec:rtalgorithm}
-As we mentioned, this computation is performed on the server machine, for the hardware configuration of the interactive kiosk has been unknown until the beginning of the exhibition, and might have not been able to achieve good performance with the software developed. The hardware configuration of the server machine is shown in table~\ref{table:serverhardware}. 
-
+As we mentioned, this computation is performed on the server machine, for the hardware configuration of the interactive kiosk has been unknown until the beginning of the exhibition, and might have not been able to achieve good performance with the software developed. The hardware configuration of the server machine is shown in Table~\ref{table:serverhardware}. 
+\newpage
 \begin{center}
 \begin{longtable}{ p{.25\textwidth}  p{.45\textwidth} } 
 \toprule
@@ -33,7 +33,7 @@ As we mentioned, this computation is performed on the server machine, for the ha
 \end{longtable}
 \end{center}
 
-The task for generating the playlist follows a well-defined schema: at first, the FastMap computed as described in section~\ref{sec:fastmap} is loaded into memory; this process usually takes just few seconds. A random point of this map is pick, and will be used as the first excerpt of the playlist. This excerpt in then put inside the playlist, a Python dictionary whose keys are the position of the elements inside the playlist and the corresponding values are tuples containing several important aspects for the playback; the details of these tuples are shown in table~\ref{table:playlistelements}.
+The task for generating the playlist follows a well-defined schema: at first, the FastMap computed as described in Section~\ref{sec:fastmap} is loaded into memory; this process usually takes just few seconds. A random point of this map is pick, and will be used as the first excerpt of the playlist. This excerpt in then put inside the playlist, a Python dictionary whose keys are the position of the elements inside the playlist and the corresponding values are tuples containing several important aspects for the playback; the details of these tuples are shown in Table~\ref{table:playlistelements}.
 
 \begin{center}
 \begin{longtable}{| p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |} 
@@ -152,6 +152,7 @@ Given that we want to smooth the transition between two consecutive excerpts, th
 \end{longtable}
 \end{center}
 
+\newpage
 
 
 \begin{figure}[h]
