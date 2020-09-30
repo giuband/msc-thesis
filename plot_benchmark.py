@@ -1,4 +1,4 @@
-# IPython log file
+# IPython log file For fun
 
 # IPython log file
 
